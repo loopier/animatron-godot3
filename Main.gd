@@ -4,12 +4,11 @@ var oscrcv
 var anims
 
 func _ready():
-
 	anims = {
 		"runner": [get_node("KinematicBody2D/AnimatedSprite"), "run"],
 		"frog": [get_node("KinematicBody2D2/AnimatedSprite"), ""],
 		"fox": [get_node("KinematicBody2D3/AnimationPlayer"), "walk"]
-	}
+		}
 	
 	oscrcv = load("res://addons/gdosc/gdoscreceiver.gdns").new()
 	# [optional] maximum number of messages in the buffer, default is 100
@@ -21,31 +20,25 @@ func _ready():
 	# [mandatory] starting the reception of messages
 	oscrcv.start()
 
-func doPlay(address, args):
-	if address == "/play":
-		var entry = anims.get(args[0])
-		if entry != null:
-			var target = entry[0]
-			if target != null:
-				target.play(entry[1])
-		else:
-			print("Unknown play target: " + args[0])
-		return true
-	else:
-		return false
+func processOscMsg(address, args):
+	var entry = anims.get(args[0])
 
-func doStop(address, args):
-	if address == "/stop":
-		var entry = anims.get(args[0])
-		if entry != null:
-			var target = entry[0]
-			if target != null:
-				target.stop()
-		else:
-			print("Unknown stop target: " + args[0])
-		return true
-	else:
-		return false
+	if entry == null:
+		print("Unknown OSC command: " + address)
+		pass
+
+	var target = entry[0]
+	if target == null:
+		print("Unknown play target: " + args[0])
+		pass
+
+	var cmds = {
+		"/play": funcref(target, "play"),
+		"/stop": funcref(target, "stop")
+		}
+
+	print("target:", target, " args: ", entry[1])
+	cmds[address].call_func()
 
 func _process(delta):
 	
@@ -62,11 +55,8 @@ func _process(delta):
 		print( "arguments: ")
 		for i in range( 0, msg["arg_num"] ):
 			print( "\t", i, " = ", args[i] )
-		if doPlay(address, args): pass
-		elif doStop(address, args): pass
-		else:
-			print("Unknown OSC command: " + address)
 
+		processOscMsg(address, args)
 	pass
 	
 func _exit_tree ( ):
