@@ -8,10 +8,10 @@
 [ext_resource path="res://animations/run-3.png" type="Texture" id=6]
 [ext_resource path="res://animations/run-5.png" type="Texture" id=7]
 [ext_resource path="res://animations/run-7.png" type="Texture" id=8]
-[ext_resource path="res://KinematicBody2D.gd" type="Script" id=9]
+[ext_resource path="res://Runner.gd" type="Script" id=9]
 [ext_resource path="res://animations/2d_animation_frog_spritesheet.png" type="Texture" id=10]
 [ext_resource path="res://animations/fox-walk.png" type="Texture" id=11]
-[ext_resource path="res://KinematicBody2D3.gd" type="Script" id=12]
+[ext_resource path="res://Fox.gd" type="Script" id=12]
 [ext_resource path="res://Main.gd" type="Script" id=13]
 
 [sub_resource type="SpriteFrames" id=1]
@@ -87,41 +87,40 @@ tracks/0/keys = {
 "values": [ 0, 1, 2, 3, 4, 5 ]
 }
 
-[node name="Node2D" type="Node2D"]
+[node name="Main" type="Node2D"]
 script = ExtResource( 13 )
 
-[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+[node name="Runner" type="KinematicBody2D" parent="."]
 position = Vector2( 200, 100 )
 script = ExtResource( 9 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="KinematicBody2D"]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Runner"]
 frames = SubResource( 1 )
 animation = "run"
 frame = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Runner"]
 
-[node name="KinematicBody2D2" type="KinematicBody2D" parent="."]
+[node name="Frog" type="KinematicBody2D" parent="."]
 position = Vector2( 500, 300 )
 
-[node name="AnimatedSprite" type="AnimatedSprite" parent="KinematicBody2D2"]
+[node name="AnimatedSprite" type="AnimatedSprite" parent="Frog"]
 frames = SubResource( 10 )
 animation = "jump"
 frame = 1
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D2"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Frog"]
 
-[node name="KinematicBody2D3" type="KinematicBody2D" parent="."]
+[node name="Fox" type="KinematicBody2D" parent="."]
 position = Vector2( 400, 200 )
 script = ExtResource( 12 )
 
-[node name="Sprite" type="Sprite" parent="KinematicBody2D3"]
+[node name="Sprite" type="Sprite" parent="Fox"]
 position = Vector2( 1, 0 )
 texture = ExtResource( 11 )
 hframes = 6
-frame = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D3"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Fox"]
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="KinematicBody2D3"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Fox"]
 anims/walk = SubResource( 11 )

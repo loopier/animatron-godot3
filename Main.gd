@@ -5,9 +5,9 @@ var anims
 
 func _ready():
 	anims = {
-		"runner": [get_node("KinematicBody2D/AnimatedSprite"), "run"],
-		"frog": [get_node("KinematicBody2D2/AnimatedSprite"), ""],
-		"fox": [get_node("KinematicBody2D3/AnimationPlayer"), "walk"]
+		"runner": [get_node("Runner/AnimatedSprite"), "run"],
+		"frog": [get_node("Frog/AnimatedSprite"), "jump"],
+		"fox": [get_node("Fox/AnimationPlayer"), "walk"]
 		}
 	
 	oscrcv = load("res://addons/gdosc/gdoscreceiver.gdns").new()
@@ -33,12 +33,16 @@ func processOscMsg(address, args):
 		pass
 
 	var cmds = {
-		"/play": funcref(target, "play"),
-		"/stop": funcref(target, "stop")
+		"/play": [funcref(target, "play"), [entry[1]]],
+		"/stop": [funcref(target, "stop"), []]
 		}
 
 	print("target:", target, " args: ", entry[1])
-	cmds[address].call_func()
+	if cmds.has(address):
+		var cmdAndArgs = cmds[address]
+		cmdAndArgs[0].call_funcv(cmdAndArgs[1])
+	else:
+		print("Command not found: ", address)
 
 func _process(delta):
 	
