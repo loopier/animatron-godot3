@@ -98,7 +98,6 @@ script = ExtResource( 9 )
 frames = SubResource( 1 )
 animation = "run"
 frame = 1
-playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
 
@@ -108,8 +107,7 @@ position = Vector2( 500, 300 )
 [node name="AnimatedSprite" type="AnimatedSprite" parent="KinematicBody2D2"]
 frames = SubResource( 10 )
 animation = "jump"
-frame = 3
-playing = true
+frame = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D2"]
 
