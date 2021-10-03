@@ -26,12 +26,14 @@ n.sendMsg("/stop", "frog")
 n.sendMsg("/play", "frog")
 n.sendMsg("/invalid", "frog")
 
-n.sendMsg("/stop", "runner")
+n.sendMsg("/stop", "@runner@2")
 n.sendMsg("/play", "@runner@2")
 n.sendMsg("/play", "fox")
 
-n.sendMsg("/free", "*")
+n.sendMsg("/list")
 n.sendMsg("/free", "*run*")
 n.sendMsg("/free", "@fox*")
 n.sendMsg("/free", "*g*")
+
+n.sendMsg("/free", "*")
 n.sendMsg("/list")
