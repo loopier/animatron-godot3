@@ -1,0 +1,28 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://animations/run-8.png" type="Texture" id=2]
+[ext_resource path="res://animations/run-6.png" type="Texture" id=3]
+[ext_resource path="res://animations/run-4.png" type="Texture" id=4]
+[ext_resource path="res://animations/run-5.png" type="Texture" id=5]
+[ext_resource path="res://animations/run-1.png" type="Texture" id=6]
+[ext_resource path="res://animations/run-3.png" type="Texture" id=7]
+[ext_resource path="res://animations/run-7.png" type="Texture" id=8]
+[ext_resource path="res://animations/run-2.png" type="Texture" id=9]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 6 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 3 ), ExtResource( 8 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "run",
+"speed": 10.0
+} ]
+
+[node name="Runner" type="KinematicBody2D"]
+position = Vector2( 200, 100 )
+
+[node name="Animation" type="AnimatedSprite" parent="."]
+frames = SubResource( 1 )
+animation = "run"
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
