@@ -4,32 +4,30 @@ var main
 var animsNode
 var animScenes
 
+var metanode
+var nodes
+
 func _ready():
 	main = get_parent()
 	animsNode = main.get_node("Anims")
 
-	animScenes = {
-		"runner": [preload("res://Runner.tscn"), "run"],
-		"frog": [preload("res://Frog.tscn"), "jump"],
-		"fox": [preload("res://Fox.tscn"), "walk"],
-	}
+	nodes = {}
+	metanode = preload("res://MetaNode.tscn")
 
 	pass # Replace with function body.
 
 func createAnim(args, sender):
-	var sceneName = args[0]
-	var entry = animScenes.get(sceneName)
-	if entry == null:
-		print("Unknown animation type to create: " + sceneName)
-		pass
-	
-	var scene = entry[0]
-	var animName = entry[1]
-	var anim = scene.instance()
-	anim.name = sceneName
-	animsNode.add_child(anim)
-	anim.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
-	anim.get_node("Animation").play(animName)
+	var nodeName = args[0]
+	var animName = args[1]
+	var newNode = metanode.instance()
+	nodes[nodeName] = newNode
+	animsNode.add_child(newNode)
+	newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
+	# print(newNode.get_node("Animation").get_sprite_frames())
+	newNode.get_node("Animation").play(animName)
+	print("node: ", nodeName, newNode)
+	print("anim: ", animName, newNode.get_node("Animation").get_animation())
+	# print(args, nodes[nodeName], newNode)
 	pass
 
 func freeAnim(args, sender):
@@ -61,13 +59,11 @@ func sendMessage(target, oscAddress, oscArgs):
 	pass
 
 func listAnims(args, sender):
-	#print_tree()
-	var childNames = []
-	for a in animsNode.get_children():
-		childNames.push_back(a.name)
-	if !childNames.empty(): print("Anims: ", childNames)
-	else: print("No anims...")
-	sendMessage(sender, "/list/reply", childNames)
+	var pairs = {}
+	for k in nodes.keys():
+		pairs[k] = nodes[k].get_node("Animation").get_animation()
+	print(pairs)
+	sendMessage(sender, "/list/reply", pairs)
 	pass
 
 func reportError(errString, target):
@@ -79,27 +75,18 @@ func reportStatus(statusString, target):
 	sendMessage(target, "/status/reply", [statusString])
 
 func playAnim(args, sender):
-	var objName = args[0]
-	var node = animsNode.get_node(objName)
-	if node:
-		var nodePath = node.filename
-		for a in animScenes:
-			var scenePath = animScenes[a][0].resource_path
-			if scenePath == nodePath:
-				var animName = animScenes[a][1]
-				var anim = node.get_node("Animation")
-				if anim: anim.play(animName)
-				break
+	var nodeName = args[0]
+	var animName = nodes[nodeName].get_node("Animation").get_animation()
+	if nodes.has(nodeName):
+		nodes[nodeName].get_node("Animation").play(animName)
 	else:
-		reportError("Play anim not found: " + objName, sender)
-		pass
+		reportError("Node not found: " + nodeName, sender)
+	pass
 
 func stopAnim(args, sender):
-	var objName = args[0]
-	var node = animsNode.get_node(objName)
-	if node:
-		var anim = node.get_node("Animation")
-		if anim: anim.stop()
+	var nodeName = args[0]
+	if nodes.has(nodeName):
+		nodes[nodeName].get_node("Animation").stop()
 	else:
-		reportError("Stop anim not found: " + objName, sender)
-		pass
+		reportError("Node not found: " + nodeName, sender)
+	pass
