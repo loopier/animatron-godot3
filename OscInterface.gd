@@ -2,7 +2,6 @@ extends Node
 
 var main
 var animsNode
-var animScenes
 
 var metanode
 var nodes
@@ -19,15 +18,18 @@ func _ready():
 func createAnim(args, sender):
 	var nodeName = args[0]
 	var animName = args[1]
-	var newNode = metanode.instance()
-	nodes[nodeName] = newNode
-	animsNode.add_child(newNode)
-	newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
-	# print(newNode.get_node("Animation").get_sprite_frames())
+	var newNode
+	if nodes.has(nodeName):
+		# replace animation if a node with this name exists
+		newNode = nodes[nodeName]
+	else:
+		newNode = metanode.instance()
+		animsNode.add_child(newNode)
+		nodes[nodeName] = newNode
+		newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
 	newNode.get_node("Animation").play(animName)
 	print("node: ", nodeName, newNode)
 	print("anim: ", animName, newNode.get_node("Animation").get_animation())
-	# print(args, nodes[nodeName], newNode)
 	pass
 
 func freeAnim(args, sender):

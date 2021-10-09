@@ -18,6 +18,7 @@ n.sendMsg("/create", "runner", "runner-run")
 n.sendMsg("/create", "fox", "fox-walk")
 n.sendMsg("/create", "om", "om-walk-SW");
 n.sendMsg("/create", "oma", "om-walk-SW");
+n.sendMsg("/create", "om", "frog-jump")
 n.sendMsg("/create", "frog", "frog-jump")
 
 n.sendMsg("/stop", "runner")
