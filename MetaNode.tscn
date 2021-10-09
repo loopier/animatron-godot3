@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=2]
+[gd_scene load_steps=73 format=2]
 
 [ext_resource path="res://animations/default.png" type="Texture" id=1]
 [ext_resource path="res://animations/2d_animation_frog_spritesheet.png" type="Texture" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://animations/run-3.png" type="Texture" id=10]
 [ext_resource path="res://animations/run-1.png" type="Texture" id=11]
 [ext_resource path="res://animations/om-walk-8s-128p.png" type="Texture" id=12]
+[ext_resource path="res://animations/om-walk-W-8s-128p.png" type="Texture" id=13]
 
 [sub_resource type="AtlasTexture" id=26]
 flags = 4
@@ -193,6 +194,86 @@ flags = 4
 atlas = ExtResource( 12 )
 region = Rect2( 384, 384, 128, 128 )
 
+[sub_resource type="AtlasTexture" id=52]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 0, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=53]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 128, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=54]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 256, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=55]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 384, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=56]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 0, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=57]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 128, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=58]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 256, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=59]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 384, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=60]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 0, 256, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=61]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 128, 256, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=62]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 256, 256, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=63]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 384, 256, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=64]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 0, 384, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=65]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 128, 384, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=66]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 256, 384, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=67]
+flags = 4
+atlas = ExtResource( 13 )
+region = Rect2( 384, 384, 128, 128 )
+
 [sub_resource type="AtlasTexture" id=46]
 flags = 4
 atlas = ExtResource( 4 )
@@ -240,6 +321,11 @@ animations = [ {
 "name": "om-walk-SW",
 "speed": 24.0
 }, {
+"frames": [ SubResource( 52 ), SubResource( 53 ), SubResource( 54 ), SubResource( 55 ), SubResource( 56 ), SubResource( 57 ), SubResource( 58 ), SubResource( 59 ), SubResource( 60 ), SubResource( 61 ), SubResource( 62 ), SubResource( 63 ), SubResource( 64 ), SubResource( 65 ), SubResource( 66 ), SubResource( 67 ) ],
+"loop": true,
+"name": "om-walk-W",
+"speed": 24.0
+}, {
 "frames": [ SubResource( 46 ), SubResource( 47 ), SubResource( 48 ), SubResource( 49 ), SubResource( 50 ), SubResource( 51 ) ],
 "loop": true,
 "name": "fox-walk",
@@ -256,5 +342,6 @@ position = Vector2( 500, 300 )
 
 [node name="Animation" type="AnimatedSprite" parent="."]
 frames = SubResource( 25 )
+animation = "om-walk-W"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

@@ -17,7 +17,9 @@ n.sendMsg("/list")
 n.sendMsg("/create", "runner", "runner-run")
 n.sendMsg("/create", "fox", "fox-walk")
 n.sendMsg("/create", "om", "om-walk-SW");
+n.sendMsg("/create", "om", "om-walk-W");
 n.sendMsg("/create", "oma", "om-walk-SW");
+n.sendMsg("/create", "oma", "om-walk-W")
 n.sendMsg("/create", "om", "frog-jump")
 n.sendMsg("/create", "frog", "frog-jump")
 
