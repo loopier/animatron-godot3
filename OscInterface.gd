@@ -97,6 +97,14 @@ func stopAnim(args, sender):
 		reportError("Node not found: " + nodeName, sender)
 	pass
 
+func speedAnim(args, sender):
+	var nodeName = args[0]
+	if nodes.has(nodeName):
+		nodes[nodeName].get_node("Animation").set_speed_scale(args[1])
+	else:
+		reportError("Node not found: " + nodeName, sender)
+	pass
+
 func selectAnim(args, sender):
 	for arg in args:
 		if nodes.has(arg) and not(selected.has(arg)):

@@ -65,8 +65,9 @@ Loopier.boot;
 Tdef(\a, {
 	100.do{|x|
 		// "om"++x.postln;
-	// n.sendMsg("/create", "om"++x, "om-walk-SW");
-	n.sendMsg("/stop", "om"++x);
+	n.sendMsg("/create", "om"++x, "om-walk-SW");
+	n.sendMsg("/speed", "om"++x, rrand(0.7,2.0));
+	// n.sendMsg("/stop", "om"++x);
 	// n.sendMsg("/play", "om"++x);
 		0.1.wait;
 }
@@ -79,3 +80,7 @@ n.sendMsg("/select", "omo", "ome");
 n.sendMsg("/select",  "blu"); // should do nothing
 n.sendMsg("/deselect",  "omo");
 n.sendMsg("/selected");
+
+
+n.sendMsg("/create", "omo", "om-walk-SW");
+n.sendMsg("/speed", "omo", 0.9);
