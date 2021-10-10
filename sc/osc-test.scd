@@ -19,6 +19,7 @@ n.sendMsg("/create", "fox", "fox-walk")
 n.sendMsg("/create", "om", "om-walk-S");
 n.sendMsg("/create", "om", "om-walk-SW");
 n.sendMsg("/create", "om", "om-to-idle-SW");
+n.sendMsg("/create", "om", "om-idle-SW");
 n.sendMsg("/create", "om", "om-to-idle-SE");
 n.sendMsg("/create", "om", "om-walk-W");
 n.sendMsg("/create", "om", "om-walk-NW");
