@@ -100,6 +100,14 @@ func stopAnim(args, sender):
 		node.get_node("Animation").stop()
 	pass
 
+func setAnimPosition(args, sender):
+	var node = getNode(args[0], sender)
+	if node:
+		var w = ProjectSettings.get_setting("display/window/size/width") * args[1]
+		var h = ProjectSettings.get_setting("display/window/size/height") * args[2]
+		node.set_position(Vector2(w,h))
+	pass
+
 func setAnimSpeed(args, sender):
 	var node = getNode(args[0], sender)
 	if node:

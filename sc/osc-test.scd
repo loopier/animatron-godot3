@@ -88,4 +88,6 @@ n.sendMsg("/stop", "omo");
 n.sendMsg("/frame", "omo", 100);
 n.sendMsg("/fliph", "omo");
 n.sendMsg("/flipv", "omo");
+n.sendMsg("/create", "omo", "om-to-idle-SW");
+n.sendMsg("/create", "omo", "om-idle-SW");
 n.sendMsg("/play", "omo");

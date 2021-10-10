@@ -22,6 +22,7 @@ func processOscMsg(address, args, msg):
 		"/list": funcref($OscInterface, "listAnims"),
 		"/play": funcref($OscInterface, "playAnim"),
 		"/stop": funcref($OscInterface, "stopAnim"),
+		"/position": funcref($OscInterface, "setAnimPosition"),
 		"/speed": funcref($OscInterface, "setAnimSpeed"),
 		"/frame": funcref($OscInterface, "setAnimFrame"),
 		"/fliph": funcref($OscInterface, "flipAnimH"),
