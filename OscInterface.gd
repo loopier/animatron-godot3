@@ -6,12 +6,16 @@ var animsNode
 var metanode
 var nodes
 
+var selected
+
 func _ready():
 	main = get_parent()
 	animsNode = main.get_node("Anims")
 
 	nodes = {}
 	metanode = preload("res://MetaNode.tscn")
+
+	selected = []
 
 	pass # Replace with function body.
 
@@ -92,3 +96,17 @@ func stopAnim(args, sender):
 	else:
 		reportError("Node not found: " + nodeName, sender)
 	pass
+
+func selectAnim(args, sender):
+	for arg in args:
+		if nodes.has(arg) and not(selected.has(arg)):
+			selected.append(arg)
+	selectedAnims(sender)
+
+func deselectAnim(args, sender):
+	for arg in args:
+		selected.erase(arg)
+	selectedAnims(sender)
+
+func selectedAnims(sender):
+	reportStatus("selected: " + str(selected), sender)

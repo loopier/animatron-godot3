@@ -24,11 +24,17 @@ func processOscMsg(address, args, msg):
 		"/stop": funcref($OscInterface, "stopAnim"),
 		"/create": funcref($OscInterface, "createAnim"),
 		"/free": funcref($OscInterface, "freeAnim"),
+		"/select": funcref($OscInterface, "selectAnim"),
+		"/deselect": funcref($OscInterface, "deselectAnim"),
+		"/selected": funcref($OscInterface, "selectedAnims"),
 		}
 
 	var sender = [msg["ip"], msg["port"]]
 	if cmds.has(address):
-		cmds[address].call_func(args, sender)
+		if args.empty():
+			cmds[address].call_func(sender)
+		else:
+			cmds[address].call_func(args, sender)
 	else:
 		$OscInterface.reportError("OSC command not found: " + address, sender)
 
