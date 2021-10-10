@@ -111,6 +111,18 @@ func setAnimFrame(args, sender):
 	if node:
 		node.get_node("Animation").set_frame(args[1])
 
+func flipAnimV(args, sender):
+	var node = getNode(args[0], sender)
+	if node:
+		var anim = node.get_node("Animation")
+		anim.set_flip_v(not(anim.is_flipped_v()))
+
+func flipAnimH(args, sender):
+	var node = getNode(args[0], sender)
+	if node:
+		var anim = node.get_node("Animation")
+		anim.set_flip_h(not(anim.is_flipped_h()))
+
 func selectAnim(args, sender):
 	for arg in args:
 		if nodes.has(arg) and not(selected.has(arg)):

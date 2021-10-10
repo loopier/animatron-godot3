@@ -86,4 +86,6 @@ n.sendMsg("/create", "omo", "om-walk-SW");
 n.sendMsg("/speed", "omo", 2.5);
 n.sendMsg("/stop", "omo");
 n.sendMsg("/frame", "omo", 100);
+n.sendMsg("/fliph", "omo");
+n.sendMsg("/flipv", "omo");
 n.sendMsg("/play", "omo");
