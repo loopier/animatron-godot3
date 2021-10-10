@@ -16,6 +16,17 @@ n.sendMsg("/list")
 
 n.sendMsg("/create", "runner", "runner-run")
 n.sendMsg("/create", "fox", "fox-walk")
+n.sendMsg("/create", "om", "om-walk-S");
+n.sendMsg("/create", "om", "om-walk-SW");
+n.sendMsg("/create", "om", "om-to-idle-SW");
+n.sendMsg("/create", "om", "om-to-idle-SE");
+n.sendMsg("/create", "om", "om-walk-W");
+n.sendMsg("/create", "om", "om-walk-NW");
+n.sendMsg("/create", "om", "om-walk-N");
+n.sendMsg("/create", "om", "om-walk-NE");
+n.sendMsg("/create", "om", "om-walk-E");
+n.sendMsg("/create", "om", "om-walk-SE");
+n.sendMsg("/create", "om", "om-walk-S");
 n.sendMsg("/create", "om", "om-walk-SW");
 n.sendMsg("/create", "om", "om-walk-W");
 n.sendMsg("/create", "oma", "om-walk-SW");
