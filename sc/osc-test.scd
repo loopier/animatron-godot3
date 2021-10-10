@@ -20,7 +20,7 @@ n.sendMsg("/create", "om", "om-walk-SW");
 n.sendMsg("/create", "om", "om-walk-W");
 n.sendMsg("/create", "oma", "om-walk-SW");
 n.sendMsg("/create", "oma", "om-walk-W")
-n.sendMsg("/create", "om", "frog-jump")
+n.sendMsg("/create", "oma", "frog-jump")
 n.sendMsg("/create", "frog", "frog-jump")
 
 n.sendMsg("/stop", "runner")
@@ -47,3 +47,16 @@ n.sendMsg("/free", "*om*")
 
 n.sendMsg("/free", "*")
 n.sendMsg("/list")
+
+Loopier.boot;
+(
+Tdef(\a, {
+	100.do{|x|
+		// "om"++x.postln;
+	// n.sendMsg("/create", "om"++x, "om-walk-SW");
+	n.sendMsg("/stop", "om"++x);
+	// n.sendMsg("/play", "om"++x);
+		0.1.wait;
+}
+}).play
+)
