@@ -100,11 +100,16 @@ func stopAnim(args, sender):
 		node.get_node("Animation").stop()
 	pass
 
-func speedAnim(args, sender):
+func setAnimSpeed(args, sender):
 	var node = getNode(args[0], sender)
 	if node:
 		node.get_node("Animation").set_speed_scale(args[1])
 	pass
+
+func setAnimFrame(args, sender):
+	var node = getNode(args[0], sender)
+	if node:
+		node.get_node("Animation").set_frame(args[1])
 
 func selectAnim(args, sender):
 	for arg in args:
