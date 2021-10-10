@@ -26,7 +26,7 @@ func processOscMsg(address, args, msg):
 		"/free": funcref($OscInterface, "freeAnim"),
 		"/select": funcref($OscInterface, "selectAnim"),
 		"/deselect": funcref($OscInterface, "deselectAnim"),
-		"/selected": funcref($OscInterface, "selectedAnims"),
+		"/selected": funcref($OscInterface, "listSelectedAnims"),
 		}
 
 	var sender = [msg["ip"], msg["port"]]

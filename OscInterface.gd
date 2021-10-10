@@ -101,12 +101,12 @@ func selectAnim(args, sender):
 	for arg in args:
 		if nodes.has(arg) and not(selected.has(arg)):
 			selected.append(arg)
-	selectedAnims(sender)
+	listSelectedAnims(sender)
 
 func deselectAnim(args, sender):
 	for arg in args:
 		selected.erase(arg)
-	selectedAnims(sender)
+	listSelectedAnims(sender)
 
-func selectedAnims(sender):
+func listSelectedAnims(sender):
 	reportStatus("selected: " + str(selected), sender)
