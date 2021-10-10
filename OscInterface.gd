@@ -80,29 +80,30 @@ func reportStatus(statusString, target):
 	print(statusString)
 	sendMessage(target, "/status/reply", [statusString])
 
-func playAnim(args, sender):
-	var nodeName = args[0]
-	var animName = nodes[nodeName].get_node("Animation").get_animation()
+func getNode(nodeName, sender):
 	if nodes.has(nodeName):
-		nodes[nodeName].get_node("Animation").play(animName)
+		return nodes[nodeName]
 	else:
 		reportError("Node not found: " + nodeName, sender)
+		return false
+
+func playAnim(args, sender):
+	var node = getNode(args[0], sender)
+	if node:
+		var animName = node.get_node("Animation").get_animation()
+		node.get_node("Animation").play(animName)
 	pass
 
 func stopAnim(args, sender):
-	var nodeName = args[0]
-	if nodes.has(nodeName):
-		nodes[nodeName].get_node("Animation").stop()
-	else:
-		reportError("Node not found: " + nodeName, sender)
+	var node = getNode(args[0], sender)
+	if node:
+		node.get_node("Animation").stop()
 	pass
 
 func speedAnim(args, sender):
-	var nodeName = args[0]
-	if nodes.has(nodeName):
-		nodes[nodeName].get_node("Animation").set_speed_scale(args[1])
-	else:
-		reportError("Node not found: " + nodeName, sender)
+	var node = getNode(args[0], sender)
+	if node:
+		node.get_node("Animation").set_speed_scale(args[1])
 	pass
 
 func selectAnim(args, sender):

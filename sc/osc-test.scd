@@ -42,9 +42,9 @@ n.sendMsg("/play", "fox")
 n.sendMsg("/stop", "frog")
 n.sendMsg("/play", "frog")
 n.sendMsg("/stop", "om")
+n.sendMsg("/play", "om")
 n.sendMsg("/stop", "oma")
 n.sendMsg("/play", "oma")
-n.sendMsg("/play", "om")
 n.sendMsg("/invalid", "frog")
 
 n.sendMsg("/stop", "@runner@2")
@@ -83,4 +83,6 @@ n.sendMsg("/selected");
 
 
 n.sendMsg("/create", "omo", "om-walk-SW");
-n.sendMsg("/speed", "omo", 0.9);
+n.sendMsg("/speed", "omo", 2.5);
+n.sendMsg("/stop", "omo");
+n.sendMsg("/play", "omo");
