@@ -44,7 +44,6 @@ func processOscMsg(address, args, msg):
 		$OscInterface.reportError("OSC command not found: " + address, sender)
 
 func _process(delta):
-	
 	# check if there are pending messages
 	while( oscrcv.has_message() ):
 		# retrieval of the messages as a dictionary
@@ -61,7 +60,6 @@ func _process(delta):
 				print( "\t", i, " = ", args[i] )
 
 		processOscMsg(address, args, msg)
-	pass
 	
 func _exit_tree ( ):
 	# disable the receiver, highly recommended!

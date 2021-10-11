@@ -60,7 +60,6 @@ n.sendMsg("/free", "*om*")
 n.sendMsg("/free", "*")
 n.sendMsg("/list")
 
-s.boot;
 (
 Tdef(\a, {
 	100.do{|x|
@@ -83,15 +82,16 @@ n.sendMsg("/selected");
 
 
 n.sendMsg("/create", "omo", "om-walk-SW");
-n.sendMsg("/create", "omo", "om-idle-S");
+n.sendMsg("/create", "oma", "om-idle-S");
 n.sendMsg("/position", "omo", 0.5, 0.5);
-n.sendMsg("/speed", "omo", 2.5);
-n.sendMsg("/stop", "omo");
-n.sendMsg("/frame", "omo", 100);
+n.sendMsg("/speed", "om*", 2.5);
+n.sendMsg("/stop", "om*");
+n.sendMsg("/play", "om*");
+n.sendMsg("/frame", "om3?", 100);
 n.sendMsg("/fliph", "omo");
 n.sendMsg("/flipv", "omo");
 n.sendMsg("/create", "omo", "om-to-idle-SW");
 n.sendMsg("/create", "omo", "om-idle-SW");
 n.sendMsg("/play", "omo");
 n.sendMsg("/list");
-n.sendMsg("/free", "omo");
+n.sendMsg("/free", "om*");
