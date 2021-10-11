@@ -73,8 +73,8 @@ func reportStatus(statusString, target):
 	sendMessage(target, "/status/reply", [statusString])
 
 func getNode(nodeName, sender):
-	var node = animsNode.find_node(nodeName)
-	if node:
+	var node = animsNode.get_node(nodeName)
+	if node != null:
 		return node
 	else:
 		reportError("Node not found: " + nodeName, sender)
