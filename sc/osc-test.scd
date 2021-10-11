@@ -74,12 +74,16 @@ Tdef(\a, {
 )
 
 n.sendMsg("/create", "omo", "om-walk-SW");
-n.sendMsg("/create", "omo", "om-walk-SE");
-n.sendMsg("/select", "omo", "ome");
+n.sendMsg("/create", "oma", "om-walk-SE");
+n.sendMsg("/select", "om?");
 n.sendMsg("/select",  "blu"); // should do nothing
 n.sendMsg("/deselect",  "omo");
-n.sendMsg("/selected");
+n.sendMsg("/selected"); // list selected nodes
 
+n.sendMsg("/group", "walkers", "om?") // add omo and oma to "walkers" group
+n.sendMsg("/group", "walkers") // list group members
+n.sendMsg("/ungroup", "walkers", "oma") // remove oma from "walkers"
+n.sendMsg("/group", "walkers") // list group members
 
 n.sendMsg("/create", "omo", "om-walk-SW");
 n.sendMsg("/create", "oma", "om-idle-S");

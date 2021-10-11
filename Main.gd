@@ -29,6 +29,8 @@ func processOscMsg(address, args, msg):
 		"/flipv": funcref($OscInterface, "flipAnimV"),
 		"/create": funcref($OscInterface, "createAnim"),
 		"/free": funcref($OscInterface, "freeAnim"),
+		"/group": funcref($OscInterface, "groupAnim"),
+		"/ungroup": funcref($OscInterface, "ungroupAnim"),
 		"/select": funcref($OscInterface, "selectAnim"),
 		"/deselect": funcref($OscInterface, "deselectAnim"),
 		"/selected": funcref($OscInterface, "listSelectedAnims"),
