@@ -1,4 +1,4 @@
-[gd_scene load_steps=210 format=2]
+[gd_scene load_steps=217 format=2]
 
 [ext_resource path="res://animations/default.png" type="Texture" id=1]
 [ext_resource path="res://animations/2d_animation_frog_spritesheet.png" type="Texture" id=2]
@@ -22,6 +22,7 @@
 [ext_resource path="res://animations/om-to-idle-se-24fps-128p.png" type="Texture" id=20]
 [ext_resource path="res://animations/om-walk-e-8s-24fps-128p.png" type="Texture" id=21]
 [ext_resource path="res://animations/om-idle-sw-24fps-128x128.png" type="Texture" id=22]
+[ext_resource path="res://animations/om-idle-s-24fps.png" type="Texture" id=23]
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 4
@@ -953,6 +954,36 @@ flags = 4
 atlas = ExtResource( 22 )
 region = Rect2( 384, 128, 128, 128 )
 
+[sub_resource type="AtlasTexture" id=188]
+flags = 4
+atlas = ExtResource( 23 )
+region = Rect2( 0, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=189]
+flags = 4
+atlas = ExtResource( 23 )
+region = Rect2( 128, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=190]
+flags = 4
+atlas = ExtResource( 23 )
+region = Rect2( 256, 0, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=191]
+flags = 4
+atlas = ExtResource( 23 )
+region = Rect2( 0, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=192]
+flags = 4
+atlas = ExtResource( 23 )
+region = Rect2( 128, 128, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=193]
+flags = 4
+atlas = ExtResource( 23 )
+region = Rect2( 256, 128, 128, 128 )
+
 [sub_resource type="SpriteFrames" id=187]
 animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
@@ -1029,6 +1060,11 @@ animations = [ {
 "loop": true,
 "name": "om-idle-SW",
 "speed": 24.0
+}, {
+"frames": [ SubResource( 188 ), SubResource( 189 ), SubResource( 190 ), SubResource( 191 ), SubResource( 192 ), SubResource( 193 ) ],
+"loop": true,
+"name": "om-idle-S",
+"speed": 24.0
 } ]
 
 [node name="MetaNode" type="KinematicBody2D"]
@@ -1036,6 +1072,6 @@ position = Vector2( 500, 300 )
 
 [node name="Animation" type="AnimatedSprite" parent="."]
 frames = SubResource( 187 )
-animation = "om-idle-SW"
+animation = "om-idle-S"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

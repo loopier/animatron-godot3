@@ -4,18 +4,13 @@ var main
 var animsNode
 
 var metanode
-var nodes
-
 var selected
 
 func _ready():
 	main = get_parent()
 	animsNode = main.get_node("Anims")
 
-	nodes = {}
 	metanode = preload("res://MetaNode.tscn")
-
-	selected = []
 
 	pass # Replace with function body.
 
@@ -23,14 +18,12 @@ func createAnim(args, sender):
 	var nodeName = args[0]
 	var animName = args[1]
 	var newNode
-	if nodes.has(nodeName):
-		# replace animation if a node with this name exists
-		newNode = nodes[nodeName]
-	else:
+	newNode = animsNode.find_node(nodeName)
+	if not(newNode):
 		newNode = metanode.instance()
-		animsNode.add_child(newNode)
-		nodes[nodeName] = newNode
+		newNode.name = nodeName
 		newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
+		animsNode.add_child(newNode)
 	newNode.get_node("Animation").play(animName)
 	print("node: ", nodeName, newNode)
 	print("anim: ", animName, newNode.get_node("Animation").get_animation())
@@ -64,10 +57,10 @@ func sendMessage(target, oscAddress, oscArgs):
 	oscsnd.stop()
 	pass
 
-func listAnims(args, sender):
+func listAnims(sender):
 	var pairs = {}
-	for k in nodes.keys():
-		pairs[k] = nodes[k].get_node("Animation").get_animation()
+	for a in animsNode.get_children():
+		pairs[a.name] = a.get_node("Animation").get_animation()
 	print(pairs)
 	sendMessage(sender, "/list/reply", pairs)
 	pass
@@ -81,8 +74,9 @@ func reportStatus(statusString, target):
 	sendMessage(target, "/status/reply", [statusString])
 
 func getNode(nodeName, sender):
-	if nodes.has(nodeName):
-		return nodes[nodeName]
+	var node = animsNode.find_node(nodeName)
+	if node:
+		return node
 	else:
 		reportError("Node not found: " + nodeName, sender)
 		return false
@@ -132,15 +126,18 @@ func flipAnimH(args, sender):
 		anim.set_flip_h(not(anim.is_flipped_h()))
 
 func selectAnim(args, sender):
-	for arg in args:
-		if nodes.has(arg) and not(selected.has(arg)):
-			selected.append(arg)
-	listSelectedAnims(sender)
+	pass
+	# for arg in args:
+	# 	if nodes.has(arg) and not(selected.has(arg)):
+	# 		selected.append(arg)
+	# listSelectedAnims(sender)
 
 func deselectAnim(args, sender):
-	for arg in args:
-		selected.erase(arg)
-	listSelectedAnims(sender)
+	pass
+	# for arg in args:
+	# 	selected.erase(arg)
+	# listSelectedAnims(sender)
 
 func listSelectedAnims(sender):
-	reportStatus("selected: " + str(selected), sender)
+	pass
+	# reportStatus("selected: " + str(selected), sender)
