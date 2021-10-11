@@ -75,7 +75,7 @@ Tdef(\a, {
 )
 
 n.sendMsg("/create", "omo", "om-walk-SW");
-n.sendMsg("/create", "ome", "om-walk-SE");
+n.sendMsg("/create", "omo", "om-walk-SE");
 n.sendMsg("/select", "omo", "ome");
 n.sendMsg("/select",  "blu"); // should do nothing
 n.sendMsg("/deselect",  "omo");

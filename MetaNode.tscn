@@ -954,37 +954,37 @@ flags = 4
 atlas = ExtResource( 22 )
 region = Rect2( 384, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=188]
+[sub_resource type="AtlasTexture" id=187]
 flags = 4
 atlas = ExtResource( 23 )
 region = Rect2( 0, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=189]
+[sub_resource type="AtlasTexture" id=188]
 flags = 4
 atlas = ExtResource( 23 )
 region = Rect2( 128, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=190]
+[sub_resource type="AtlasTexture" id=189]
 flags = 4
 atlas = ExtResource( 23 )
 region = Rect2( 256, 0, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=191]
+[sub_resource type="AtlasTexture" id=190]
 flags = 4
 atlas = ExtResource( 23 )
 region = Rect2( 0, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=192]
+[sub_resource type="AtlasTexture" id=191]
 flags = 4
 atlas = ExtResource( 23 )
 region = Rect2( 128, 128, 128, 128 )
 
-[sub_resource type="AtlasTexture" id=193]
+[sub_resource type="AtlasTexture" id=192]
 flags = 4
 atlas = ExtResource( 23 )
 region = Rect2( 256, 128, 128, 128 )
 
-[sub_resource type="SpriteFrames" id=187]
+[sub_resource type="SpriteFrames" id=193]
 animations = [ {
 "frames": [ SubResource( 1 ), SubResource( 2 ), SubResource( 3 ), SubResource( 4 ), SubResource( 5 ), SubResource( 6 ), SubResource( 7 ), SubResource( 8 ), SubResource( 9 ), SubResource( 10 ), SubResource( 11 ), SubResource( 12 ) ],
 "loop": true,
@@ -1061,7 +1061,7 @@ animations = [ {
 "name": "om-idle-SW",
 "speed": 24.0
 }, {
-"frames": [ SubResource( 188 ), SubResource( 189 ), SubResource( 190 ), SubResource( 191 ), SubResource( 192 ), SubResource( 193 ) ],
+"frames": [ SubResource( 187 ), SubResource( 188 ), SubResource( 189 ), SubResource( 190 ), SubResource( 191 ), SubResource( 192 ) ],
 "loop": true,
 "name": "om-idle-S",
 "speed": 24.0
@@ -1071,7 +1071,7 @@ animations = [ {
 position = Vector2( 500, 300 )
 
 [node name="Animation" type="AnimatedSprite" parent="."]
-frames = SubResource( 187 )
+frames = SubResource( 193 )
 animation = "om-idle-S"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

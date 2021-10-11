@@ -2,9 +2,7 @@ extends Node
 
 var main
 var animsNode
-
 var metanode
-var selected
 
 func _ready():
 	main = get_parent()
@@ -17,16 +15,17 @@ func _ready():
 func createAnim(args, sender):
 	var nodeName = args[0]
 	var animName = args[1]
-	var newNode
-	newNode = animsNode.find_node(nodeName)
-	if not(newNode):
+	var newNode = animsNode.get_node(nodeName)
+	if newNode == null:
+		print("creating node '%s'" % [nodeName])
 		newNode = metanode.instance()
 		newNode.name = nodeName
 		newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
 		animsNode.add_child(newNode)
 	newNode.get_node("Animation").play(animName)
-	print("node: ", nodeName, newNode)
-	print("anim: ", animName, newNode.get_node("Animation").get_animation())
+	print("node: ", newNode.name)
+	print("anim: ", newNode.get_node("Animation").get_animation())
+	reportStatus("Created node '%s' width '%s'" % [newNode.name, newNode.get_node("Animation").get_animation()], sender)
 	pass
 
 func freeAnim(args, sender):
@@ -126,18 +125,16 @@ func flipAnimH(args, sender):
 		anim.set_flip_h(not(anim.is_flipped_h()))
 
 func selectAnim(args, sender):
+	# add_to_group("selected")
+	reportError("TODO", sender)
 	pass
-	# for arg in args:
-	# 	if nodes.has(arg) and not(selected.has(arg)):
-	# 		selected.append(arg)
-	# listSelectedAnims(sender)
 
 func deselectAnim(args, sender):
+	# remove_from_group("selected")
+	reportError("TODO", sender)
 	pass
-	# for arg in args:
-	# 	selected.erase(arg)
-	# listSelectedAnims(sender)
 
 func listSelectedAnims(sender):
+	# reportStatus("selected: " + get_tree().get_nodes_in_group(selected), sender)
+	reportError("TODO", sender)
 	pass
-	# reportStatus("selected: " + str(selected), sender)
