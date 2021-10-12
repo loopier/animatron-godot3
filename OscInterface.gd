@@ -23,7 +23,7 @@ func createAnim(args, sender):
 	newNode.get_node("Animation").play(animName)
 	print("node: ", newNode.name)
 	print("anim: ", newNode.get_node("Animation").get_animation())
-	reportStatus("Created node '%s' width '%s'" % [newNode.name, newNode.get_node("Animation").get_animation()], sender)
+	reportStatus("Created node '%s' with '%s'" % [newNode.name, newNode.get_node("Animation").get_animation()], sender)
 
 func freeAnim(args, sender):
 	var objName = args[0]
