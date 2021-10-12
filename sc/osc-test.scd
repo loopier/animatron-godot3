@@ -26,6 +26,9 @@ Tdef(\a, {
 )
 
 (
+////////////////////////////////////////////////////////////
+// Comprehensive unit tests
+////////////////////////////////////////////////////////////
 var test = { |description, msg, waittime=1.0|
 	("-- "++description).postln;
 	msg.();
@@ -159,7 +162,7 @@ var group = {
 //     		n.sendMsg(...);
 //     		// ...
 // 		},
-// 		wiattime: defaults-to-1.0);
+// 		waittime: defaults-to-1.0);
 // };
 //
 // then add it to the task with:
@@ -187,7 +190,7 @@ t.start;
 
 (
 ////////////////////////////////////////////////////////////
-// OSC interface testing (run OSCdef setup first)
+// Alternative OSC interface testing (run OSCdef setup first)
 ////////////////////////////////////////////////////////////
 Tdef(\test, {
 	n.sendMsg("/invalid", "frog");
@@ -229,7 +232,7 @@ Tdef(\test, {
 	n.sendMsg("/group", "others", "f*");
 	n.sendMsg("/group", "others");
 	n.sendMsg("/speed", "others", 4);
-	n.sendMsg("/select", "others");
+	n.sendMsg("/select", "omo");
 	n.sendMsg("/list");
 	n.sendMsg("/free");
 	n.sendMsg("/list");
@@ -262,4 +265,3 @@ Anims: [ omo, oma, omi ]
 // the upper-left, a blue om facing you in the
 // centre, and a fast black upside-down om at the right.
 )
-
