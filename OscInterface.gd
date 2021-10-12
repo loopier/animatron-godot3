@@ -31,7 +31,7 @@ func freeAnim(inArgs, sender):
 	var args = getOptionalSelectionArgs(inArgs, "freeAnim", 0, sender)
 	if args: for node in args.nodes:
 		animsNode.remove_child(node)
-		reportStatus("Freed: " + String(getNames(args.nodes)), sender)
+	reportStatus("Freed: " + String([] if !args else getNames(args.nodes)), sender)
 
 # For now, it just creates a sender instance each call,
 # so isn't designed for continuous/heavy use...
@@ -189,13 +189,17 @@ func setShaderUniform(node, uName, uValue):
 	image.material.set_shader_param(uName, uValue)
 
 func sayAnim(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "sayAnim", len(inArgs) - 1, sender)
-	if args:
-		for node in args.nodes:
-			var msg = args.args[0]
+	if !inArgs.empty():
+		var nodes = matchNodes(inArgs[0], sender)
+		var args = inArgs.slice(1, -1)
+		if nodes.empty():
+			nodes = get_tree().get_nodes_in_group(selectionGroup)
+			args = inArgs
+		for node in nodes:
+			var msg = String(args[0])
 			var bubble = speechBubbleNode.instance()
 			node.add_child(bubble)
-			if len(args.args) == 2:
-				bubble.setText(msg, args.args[1])
+			if len(args) == 2:
+				bubble.setText(msg, args[1])
 			else:
 				bubble.setText(msg)

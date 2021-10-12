@@ -269,6 +269,11 @@ Tdef(\test, {
 	n.sendMsg("/list");
 	n.sendMsg("/free");
 	n.sendMsg("/list");
+	n.sendMsg("/say", "omo", "something");
+	n.sendMsg("/say", "omi", "something else", 8);
+	n.sendMsg("/select", "oma");
+	n.sendMsg("/say", "I'm oma", 4);
+	n.sendMsg("/deselect", "*");
 }).play
 
 // The expected output is:
@@ -277,24 +282,26 @@ Error: OSC command not found: /invalid
 Status: Freed: [omo, oma, omi]
 (or "Error: No matches found for: * / Status: Freed: []" if you were running with an empty scene)
 Anims: [  ]
-Status: Created node 'omo' width 'om-walk-SW'
-Status: Created node 'oma' width 'om-walk-NW'
+Status: Created node 'omo' with 'om-walk-SW'
+Status: Created node 'oma' with 'om-walk-NW'
 Status: selected: [omo, oma]
 Status: selected: [oma]
-Status: Created node 'omi' width 'om-walk-S'
+Status: Created node 'omi' with 'om-walk-S'
 Status: 'inverted' members: [omo, oma, omi]
 Status: 'inverted' members: [omo, oma]
 Anims: [ omo, oma, omi ]
 Status: Freed: []
-Status: Created node 'fox' width 'fox-walk'
-Status: Created node 'frog' width 'frog-jump'
+Status: Created node 'fox' with 'fox-walk'
+Status: Created node 'frog' with 'frog-jump'
 Status: 'others' members: [fox, frog]
 Anims: [ omo, oma, omi, fox, frog ]
 Status: Freed: [fox, frog]
 Anims: [ omo, oma, omi ]
+Error: No matches found for: I'm oma
 */
 
 // And you should see a slow orange upside-down om at
 // the upper-left, a blue om facing you in the
 // centre, and a fast black upside-down om at the right.
+// They'll have some speech bubbles that last a short while.
 )
