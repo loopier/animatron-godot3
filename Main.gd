@@ -34,6 +34,7 @@ func processOscMsg(address, args, msg):
 		"/deselect": funcref($OscInterface, "deselectAnim"),
 		"/selected": funcref($OscInterface, "listSelectedAnims"),
 		"/color": funcref($OscInterface, "colorAnim"),
+		"/say": funcref($OscInterface, "sayAnim"),
 	}
 
 	var sender = [msg["ip"], msg["port"]]

@@ -3,12 +3,14 @@ extends Node
 var main
 var animsNode
 var metanode
+var speechBubbleNode
 const selectionGroup = "selected"
 
 func _ready():
 	main = get_parent()
 	animsNode = main.get_node("Anims")
 	metanode = preload("res://MetaNode.tscn")
+	speechBubbleNode = preload("res://SpeechBubble.tscn")
 
 func createAnim(args, sender):
 	var nodeName = args[0]
@@ -185,3 +187,15 @@ func colorAnim(inArgs, sender):
 func setShaderUniform(node, uName, uValue):
 	var image = node.get_node("Animation")
 	image.material.set_shader_param(uName, uValue)
+
+func sayAnim(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "sayAnim", len(inArgs) - 1, sender)
+	if args:
+		for node in args.nodes:
+			var msg = args.args[0]
+			var bubble = speechBubbleNode.instance()
+			node.add_child(bubble)
+			if len(args.args) == 2:
+				bubble.setText(msg, args.args[1])
+			else:
+				bubble.setText(msg)

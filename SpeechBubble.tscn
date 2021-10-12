@@ -6,7 +6,7 @@
 font_path = "res://fonts/WalterTurncoat.ttf"
 
 [sub_resource type="DynamicFont" id=2]
-size = 24
+size = 18
 extra_spacing_bottom = -11
 font_data = SubResource( 1 )
 
@@ -37,4 +37,6 @@ one_shot = true
 
 [node name="Tween" type="Tween" parent="."]
 
+[connection signal="resized" from="Anchor/RichTextLabel" to="." method="_on_RichTextLabel_resized"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
+[connection signal="tween_all_completed" from="Tween" to="." method="_on_Tween_tween_all_completed"]

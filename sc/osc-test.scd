@@ -155,6 +155,36 @@ var group = {
 		n.sendMsg("/group", "walkers");
 	});
 };
+var say = {
+	test.("say something", {
+		n.sendMsg("/create", "omo", "om-idle-SW");
+		n.sendMsg("/position", "omo", 0.5, 0.5);
+		n.sendMsg("/say", "omo", "something");
+		4.wait;
+		// n.sendMsg("/say", "omo", "something else\nin two lines");
+		n.sendMsg("/say", "omo", "something else in two lines");
+		4.wait;
+		// n.sendMsg("/say", "omo", "something\nvertcial\nin many\nlines");
+		n.sendMsg("/say", "omo", "something vertcial in many lines");
+		4.wait;
+		// n.sendMsg("/say", "omo", "something during\na given time", 4);
+		n.sendMsg("/say", "omo", "something during a given time", 4);
+
+	})
+};
+var manysay = {
+	test.("many say something",{
+		10.do{|x|
+			n.sendMsg("/create", "om"++x, "om-idle-"++["SW","S"].choose);
+			if(0.5.coin, {n.sendMsg("/fliph", "om"++x)});
+			n.sendMsg("/color", "om"++x, 1.0.rand, 0.2.rand, 0.2.rand);
+			n.sendMsg("/position", "om"++x, rrand(0.2,0.6), rrand(0.2,1.8));
+			rrand(0.2,3.0).wait;
+			n.sendMsg("/say", "om"++x, "I'm om"++x, rrand(3,6));
+			rrand(0.1,2.0).wait;
+		};
+	});
+};
 
 // syntax for a new test:
 // var testname = {
@@ -171,17 +201,20 @@ var group = {
 //
 // comment to disble tests
 t = Task {
-	create.();
-	transform.();
-	walkcycle.();
-	transport.();
-	2.0.wait;
-	free.();
-	wildcards.();
-	select.();
-	1.0.wait;
-	group.();
-	2.wait;
+	// create.();
+	// transform.();
+	// walkcycle.();
+	// transport.();
+	// 2.0.wait;
+	// free.();
+	// wildcards.();
+	// select.();
+	// 1.0.wait;
+	// group.();
+	// 2.wait;
+	// say.();
+	manysay.();
+	4.wait;
 	wildcardsfree.();
 };
 t.start;
