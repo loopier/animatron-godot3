@@ -23,13 +23,13 @@ func createAnim(args, sender):
 	newNode.get_node("Animation").play(animName)
 	print("node: ", newNode.name)
 	print("anim: ", newNode.get_node("Animation").get_animation())
-	reportStatus("Created node '%s' width '%s'" % [newNode.name, newNode.get_node("Animation").get_animation()], sender)
+	reportStatus("Created node '%s' with '%s'" % [newNode.name, newNode.get_node("Animation").get_animation()], sender)
 
 func freeAnim(inArgs, sender):
 	var args = getOptionalSelectionArgs(inArgs, "freeAnim", 0, sender)
 	if args: for node in args.nodes:
 		animsNode.remove_child(node)
-	reportStatus("Freed: " + String(getNames(args.nodes)), sender)
+		reportStatus("Freed: " + String(getNames(args.nodes)), sender)
 
 # For now, it just creates a sender instance each call,
 # so isn't designed for continuous/heavy use...

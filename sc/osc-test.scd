@@ -1,5 +1,7 @@
 (
+////////////////////////////////////////////////////////////
 // Setup
+////////////////////////////////////////////////////////////
 OSCdef(\listReply, { arg msg;
 	"Anims: %".format(msg[1..]).postln;
 }, "/list/reply");
@@ -12,86 +14,181 @@ OSCdef(\statusReply, { arg msg;
 n = NetAddr("localhost", 56101);
 )
 
-n.sendMsg("/list")
-
-n.sendMsg("/create", "runner", "runner-run")
-n.sendMsg("/select", "runner")
-n.sendMsg("/create", "fox", "fox-walk")
-n.sendMsg("/create", "om", "om-walk-S");
-n.sendMsg("/create", "om", "om-walk-SW");
-n.sendMsg("/create", "om", "om-to-idle-SW");
-n.sendMsg("/create", "om", "om-idle-SW");
-n.sendMsg("/create", "om", "om-to-idle-SE");
-n.sendMsg("/create", "om", "om-walk-W");
-n.sendMsg("/create", "om", "om-walk-NW");
-n.sendMsg("/create", "om", "om-walk-N");
-n.sendMsg("/create", "om", "om-walk-NE");
-n.sendMsg("/create", "om", "om-walk-E");
-n.sendMsg("/create", "om", "om-walk-SE");
-n.sendMsg("/create", "om", "om-walk-S");
-n.sendMsg("/create", "om", "om-walk-SW");
-n.sendMsg("/create", "om", "om-walk-W");
-n.sendMsg("/create", "oma", "om-walk-SW");
-n.sendMsg("/create", "oma", "om-walk-W")
-n.sendMsg("/create", "oma", "frog-jump")
-n.sendMsg("/create", "frog", "frog-jump")
-
-n.sendMsg("/list")
-n.sendMsg("/free", "*run*")
-n.sendMsg("/free", "@fox*")
-n.sendMsg("/free", "*g*")
-n.sendMsg("/free", "*om*")
-
-n.sendMsg("/free", "*")
-n.sendMsg("/list")
-
 (
 Tdef(\a, {
 	100.do{|x|
 		// "om"++x.postln;
 	n.sendMsg("/create", "om"++x, "om-walk-SW");
 	n.sendMsg("/speed", "om"++x, rrand(0.7,2.0));
-	// n.sendMsg("/stop", "om"++x);
-	// n.sendMsg("/play", "om"++x);
 		0.1.wait;
 }
 }).play
 )
 
-n.sendMsg("/deselect", "*")
-n.sendMsg("/select", "om5*")
+(
+var test = { |description, msg, waittime=1.0|
+	("-- "++description).postln;
+	msg.();
+	waittime.wait;
+};
+var create = {
+	test.("empty list", {
+		n.sendMsg("/list");
+	});
+	test.("create one instance with animation", {
+		n.sendMsg("/create", "omo", "om-walk-SW");
+		n.sendMsg("/list");
+	});
+};
+var transform = {
+	test.("transform", {
+		n.sendMsg("/position", "omo", 0.5, 0.5);
+		1.0.wait;
+		n.sendMsg("/fliph", "omo");
+		1.0.wait;
+		n.sendMsg("/fliph", "omo");
+		n.sendMsg("/flipv", "omo");
+		1.0.wait;
+		n.sendMsg("/flipv", "omo");
+	});
+};
+var walkcycle = {
+	test.("turn-around test", {
+		n.sendMsg("/create", "omo", "om-walk-W");
+		1.0.wait;
+		n.sendMsg("/create", "omo", "om-walk-NW");
+		1.0.wait;
+		n.sendMsg("/create", "omo", "om-walk-N");
+		1.0.wait;
+		n.sendMsg("/create", "omo", "om-walk-NE");
+		1.0.wait;
+		n.sendMsg("/create", "omo", "om-walk-E");
+		1.0.wait;
+		n.sendMsg("/create", "omo", "om-walk-SE");
+		1.0.wait;
+		n.sendMsg("/create", "omo", "om-walk-S");
+		1.0.wait;
+		n.sendMsg("/create", "omo", "om-to-idle-S");
+		1.0.wait;
+		n.sendMsg("/create", "omo", "om-to-idle-SW");
+		1.0.wait;
+		n.sendMsg("/create", "omo", "om-to-idle-SE");
+	});
+};
+var transport = {
+	test.("transport", {
+		n.sendMsg("/create", "omo", "om-walk-SW");
+		n.sendMsg("/stop", "omo");
+		1.0.wait;
+		n.sendMsg("/play", "omo");
+	});
+	test.("speed", {
+		n.sendMsg("/speed", "omo", 2.0);
+		1.0.wait;
+		n.sendMsg("/speed", "omo", 0.5);
+		1.0.wait;
+		n.sendMsg("/speed", "omo", 1.0);
+	});
+	test.("frame navigation", {
+		n.sendMsg("/stop", "omo");
+	});
+	test.("wraps frame number", {
+		n.sendMsg("/frame", "omo", 100);
+		1.0.wait;
+		n.sendMsg("/frame", "omo", 4);
+	});
+};
+var free = {
+	test.("free", {n.sendMsg("/free", "omo", 4);});
+};
+var wildcards = {
+	10.do { |x|
+		test.("wildcards",
+			{
+			n.sendMsg("/create", "om"++x, "om-walk-SW");
+			n.sendMsg("/speed", "om"++x, rrand(0.7,2.0));
+		}, 0.1);
+	};
+};
+var wildcardsfree = {
+	test.("wildcards free", {n.sendMsg("/free", "om*");})
+};
+var select = {
+	test.("none selected", {n.sendMsg("/selected")});
+	test.("select one", {
+		n.sendMsg("/create", "omo", "om-walk-SW");
+		n.sendMsg("/position", "omo", 0.5, 0.5);
+		n.sendMsg("/select",  "omo");
+		n.sendMsg("/selected");
+	});
+	test.("select non-existent", {
+		n.sendMsg("/select",  "blu");
+		n.sendMsg("/selected".postln);
+	});
+	test.("select with '?'", {
+		n.sendMsg("/create", "oma", "om-walk-SE");
+		n.sendMsg("/position", "oma", 0.25, 0.5);
+		n.sendMsg("/select", "om?");
+		n.sendMsg("/selected".postln);
+	});
+	test.("deselect one", {
+		n.sendMsg("/deselect",  "omo");
+	});
+	test.("list selected", {
+		n.sendMsg("/selected".postln);
+	});
+};
+var group = {
+	test.("add omo and oma to 'walkers' group", {
+		n.sendMsg("/group", "walkers", "om?");
+	});
+	test.("list group members", {
+		n.sendMsg("/group", "walkers");
+	});
+	test.("remove oma from 'walkers'", {
+		n.sendMsg("/ungroup", "walkers", "omo");
+	});
+	test.("list group members", {
+		n.sendMsg("/group", "walkers");
+	});
+};
 
-n.sendMsg("/create", "omo", "om-walk-SW");
-n.sendMsg("/create", "oma", "om-walk-SE");
-n.sendMsg("/select", "oma");
-n.sendMsg("/select",  "blu"); // should do nothing
-n.sendMsg("/select"); // list selected nodes
-n.sendMsg("/deselect",  "oma");
-n.sendMsg("/selected"); // another way to list selected nodes
+// syntax for a new test:
+// var testname = {
+//     test.("a description", {
+//     		n.sendMsg(...);
+//     		// ...
+// 		},
+// 		wiattime: defaults-to-1.0);
+// };
+//
+// then add it to the task with:
+//
+// testname.();
+//
+// comment to disble tests
+t = Task {
+	create.();
+	transform.();
+	walkcycle.();
+	transport.();
+	2.0.wait;
+	free.();
+	wildcards.();
+	select.();
+	1.0.wait;
+	group.();
+	2.wait;
+	wildcardsfree.();
+};
+t.start;
+)
 
-n.sendMsg("/group", "walkers", "om?") // add omo and oma to "walkers" group
-n.sendMsg("/group", "walkers") // list group members
-n.sendMsg("/ungroup", "walkers", "oma") // remove oma from "walkers"
-n.sendMsg("/group", "walkers") // list group members
-
-n.sendMsg("/create", "omo", "om-walk-SW");
-n.sendMsg("/create", "oma", "om-idle-S");
-n.sendMsg("/color");
-n.sendMsg("/color", 0.2, 0.5, 0);
-n.sendMsg("/position", "omo", 0.5, 0.5);
-n.sendMsg("/speed", "om*", 2.5);
-n.sendMsg("/stop", "om*");
-n.sendMsg("/play", "om*");
-n.sendMsg("/frame", "om3?", 100);
-n.sendMsg("/fliph", "omo");
-n.sendMsg("/flipv", "omo");
-n.sendMsg("/create", "omo", "om-to-idle-SW");
-n.sendMsg("/create", "omo", "om-idle-SW");
-n.sendMsg("/play", "omo");
-n.sendMsg("/list");
-n.sendMsg("/free", "om*");
 
 (
+////////////////////////////////////////////////////////////
+// OSC interface testing (run OSCdef setup first)
+////////////////////////////////////////////////////////////
 Tdef(\test, {
 	n.sendMsg("/invalid", "frog");
 	n.sendMsg("/free", "*");
@@ -142,6 +239,7 @@ Tdef(\test, {
 /*
 Error: OSC command not found: /invalid
 Status: Freed: [omo, oma, omi]
+(or "Error: No matches found for: * / Status: Freed: []" if you were running with an empty scene)
 Anims: [  ]
 Status: Created node 'omo' width 'om-walk-SW'
 Status: Created node 'oma' width 'om-walk-NW'
@@ -164,3 +262,4 @@ Anims: [ omo, oma, omi ]
 // the upper-left, a blue om facing you in the
 // centre, and a fast black upside-down om at the right.
 )
+
