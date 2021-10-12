@@ -265,7 +265,7 @@ Tdef(\test, {
 	n.sendMsg("/group", "others", "f*");
 	n.sendMsg("/group", "others");
 	n.sendMsg("/speed", "others", 4);
-	n.sendMsg("/select", "omo");
+	n.sendMsg("/select", "others");
 	n.sendMsg("/list");
 	n.sendMsg("/free");
 	n.sendMsg("/list");
