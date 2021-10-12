@@ -25,12 +25,11 @@ func createAnim(args, sender):
 	print("anim: ", newNode.get_node("Animation").get_animation())
 	reportStatus("Created node '%s' width '%s'" % [newNode.name, newNode.get_node("Animation").get_animation()], sender)
 
-func freeAnim(args, sender):
-	var objName = args[0]
-	var matches = matchNodes(objName, sender)
-	for m in matches:
-		animsNode.remove_child(m)
-	reportStatus("Freed: " + String(getNames(matches)), sender)
+func freeAnim(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "freeAnim", 0, sender)
+	if args: for node in args.nodes:
+		animsNode.remove_child(node)
+	reportStatus("Freed: " + String(getNames(args.nodes)), sender)
 
 # For now, it just creates a sender instance each call,
 # so isn't designed for continuous/heavy use...
@@ -46,7 +45,10 @@ func sendMessage(target, oscAddress, oscArgs):
 	oscsnd.send()
 	oscsnd.stop()
 
-func listAnims(sender):
+func listAnims(args, sender):
+	if !args.empty():
+		reportError("listAnims expects no arguments", sender)
+		return
 	var pairs = {}
 	for a in animsNode.get_children():
 		pairs[a.name] = a.get_node("Animation").get_animation()
@@ -79,42 +81,62 @@ func matchNodes(nameWildcard, sender):
 	for a in animsNode.get_children():
 		if a.name.match(nameWildcard):
 			matches.push_back(a)
+	if matches.empty(): matches = get_tree().get_nodes_in_group(nameWildcard)
 	if matches.empty():
-		reportError("No matches found for: " + nameWildcard, sender)
+		reportError("No matches found for: " + String(nameWildcard), sender)
 	else:
 		print("Matched: ", getNames(matches))
 	return matches
 
-func playAnim(args, sender):
-	for node in matchNodes(args[0], sender):
+func getOptionalSelectionArgs(inArgs, methodName, expectedArgs, sender):
+	if inArgs.size() == expectedArgs:
+			return { nodes = get_tree().get_nodes_in_group(selectionGroup), args = inArgs }
+	elif inArgs.size() == expectedArgs + 1:
+			return { nodes = matchNodes(inArgs[0], sender), args = [] if inArgs.size() < 2 else inArgs.slice(1, -1) }
+	else:
+		reportError(methodName + ": unexpected number of arguments: " + String(inArgs.size()) + " instead of " + String(expectedArgs), sender)
+		return
+	
+func playAnim(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "playAnim", 0, sender)
+	if args: for node in args.nodes:
 		var animName = node.get_node("Animation").get_animation()
 		node.get_node("Animation").play(animName)
 
-func stopAnim(args, sender):
-	for node in matchNodes(args[0], sender):
+func stopAnim(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "stopAnim", 0, sender)
+	if args: for node in args.nodes:
 		node.get_node("Animation").stop()
 
-func setAnimPosition(args, sender):
-	for node in matchNodes(args[0], sender):
-		var w = ProjectSettings.get_setting("display/window/size/width") * args[1]
-		var h = ProjectSettings.get_setting("display/window/size/height") * args[2]
-		node.set_position(Vector2(w,h))
+func setAnimPosition(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "setAnimPosition", 2, sender)
+	if args:
+		var viewSize = Vector2(
+			ProjectSettings.get_setting("display/window/size/width"),
+			ProjectSettings.get_setting("display/window/size/height")
+		)
+		for node in args.nodes:
+			node.set_position(viewSize * Vector2(args.args[0], args.args[1]))
 
-func setAnimSpeed(args, sender):
-	for node in matchNodes(args[0], sender):
-		node.get_node("Animation").set_speed_scale(args[1])
+func setAnimSpeed(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "setAnimSpeed", 1, sender)
+	if args: for node in args.nodes:
+		node.get_node("Animation").set_speed_scale(args.args[0])
 
-func setAnimFrame(args, sender):
-	for node in matchNodes(args[0], sender):
-		node.get_node("Animation").set_frame(args[1])
+func setAnimFrame(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "setAnimFrame", 1, sender)
+	if args: for node in args.nodes:
+		node.get_node("Animation").set_frame(args.args[0])
 
-func flipAnimV(args, sender):
-	for node in matchNodes(args[0], sender):
+func flipAnimV(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "flipAnimV", 0, sender)
+	if args: for node in args.nodes:
 		var anim = node.get_node("Animation")
 		anim.set_flip_v(not(anim.is_flipped_v()))
 
-func flipAnimH(args, sender):
-	for node in matchNodes(args[0], sender):
+func flipAnimH(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "flipAnimH", 0, sender)
+	if args: for node in args.nodes:
 		var anim = node.get_node("Animation")
 		anim.set_flip_h(not(anim.is_flipped_h()))
 
@@ -134,13 +156,32 @@ func ungroupAnim(args, sender):
 		node.remove_from_group(groupName)
 	
 func selectAnim(args, sender):
-	for node in matchNodes(args[0], sender):
-		node.add_to_group(selectionGroup)
+	if args.empty():
+		listSelectedAnims(args, sender)
+	else:
+		for node in matchNodes(args[0], sender):
+			node.add_to_group(selectionGroup)
+			setShaderUniform(node, "uSelected", true)
 
 func deselectAnim(args, sender):
 	for node in matchNodes(args[0], sender):
 		node.remove_from_group(selectionGroup)
+		setShaderUniform(node, "uSelected", false)
 
-func listSelectedAnims(sender):
+func listSelectedAnims(args, sender):
+	if !args.empty():
+		reportError("listSelectedAnims expects no arguments", sender)
+		return
 	var nodes = get_tree().get_nodes_in_group(selectionGroup)
 	reportStatus("selected: " + String(getNames(nodes)), sender)
+
+func colorAnim(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "colorAnim", 3, sender)
+	if args:
+		var rgb = Vector3(args.args[0], args.args[1], args.args[2])
+		for node in args.nodes:
+			setShaderUniform(node, "uAddColor", rgb)
+
+func setShaderUniform(node, uName, uValue):
+	var image = node.get_node("Animation")
+	image.material.set_shader_param(uName, uValue)

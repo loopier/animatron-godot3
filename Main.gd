@@ -8,16 +8,15 @@ func _ready():
 	# See: https://gitlab.com/frankiezafe/gdosc
 	oscrcv = load("res://addons/gdosc/gdoscreceiver.gdns").new()
 	# [optional] maximum number of messages in the buffer, default is 100
-	oscrcv.max_queue( 20 )
+	oscrcv.max_queue( 256 )
 	# [optional]  receiver will only keeps the "latest" message for each address
-	oscrcv.avoid_duplicate( true )
+	oscrcv.avoid_duplicate( false )
 	# [mandatory] listening to port 14000
 	oscrcv.setup( 56101 )
 	# [mandatory] starting the reception of messages
 	oscrcv.start()
 			
 func processOscMsg(address, args, msg):
-	var animArgs = [] if args.empty() else [args[0]]
 	var cmds = {
 		"/list": funcref($OscInterface, "listAnims"),
 		"/play": funcref($OscInterface, "playAnim"),
@@ -34,14 +33,12 @@ func processOscMsg(address, args, msg):
 		"/select": funcref($OscInterface, "selectAnim"),
 		"/deselect": funcref($OscInterface, "deselectAnim"),
 		"/selected": funcref($OscInterface, "listSelectedAnims"),
-		}
+		"/color": funcref($OscInterface, "colorAnim"),
+	}
 
 	var sender = [msg["ip"], msg["port"]]
 	if cmds.has(address):
-		if args.empty():
-			cmds[address].call_func(sender)
-		else:
-			cmds[address].call_func(args, sender)
+		cmds[address].call_func(args, sender)
 	else:
 		$OscInterface.reportError("OSC command not found: " + address, sender)
 

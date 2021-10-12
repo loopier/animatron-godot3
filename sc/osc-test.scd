@@ -15,6 +15,7 @@ n = NetAddr("localhost", 56101);
 n.sendMsg("/list")
 
 n.sendMsg("/create", "runner", "runner-run")
+n.sendMsg("/select", "runner")
 n.sendMsg("/create", "fox", "fox-walk")
 n.sendMsg("/create", "om", "om-walk-S");
 n.sendMsg("/create", "om", "om-walk-SW");
@@ -34,22 +35,6 @@ n.sendMsg("/create", "oma", "om-walk-SW");
 n.sendMsg("/create", "oma", "om-walk-W")
 n.sendMsg("/create", "oma", "frog-jump")
 n.sendMsg("/create", "frog", "frog-jump")
-
-n.sendMsg("/stop", "runner")
-n.sendMsg("/play", "runner")
-n.sendMsg("/stop", "fox")
-n.sendMsg("/play", "fox")
-n.sendMsg("/stop", "frog")
-n.sendMsg("/play", "frog")
-n.sendMsg("/stop", "om")
-n.sendMsg("/play", "om")
-n.sendMsg("/stop", "oma")
-n.sendMsg("/play", "oma")
-n.sendMsg("/invalid", "frog")
-
-n.sendMsg("/stop", "@runner@2")
-n.sendMsg("/play", "@runner@2")
-n.sendMsg("/play", "fox")
 
 n.sendMsg("/list")
 n.sendMsg("/free", "*run*")
@@ -73,12 +58,16 @@ Tdef(\a, {
 }).play
 )
 
+n.sendMsg("/deselect", "*")
+n.sendMsg("/select", "om5*")
+
 n.sendMsg("/create", "omo", "om-walk-SW");
 n.sendMsg("/create", "oma", "om-walk-SE");
-n.sendMsg("/select", "om?");
+n.sendMsg("/select", "oma");
 n.sendMsg("/select",  "blu"); // should do nothing
-n.sendMsg("/deselect",  "omo");
-n.sendMsg("/selected"); // list selected nodes
+n.sendMsg("/select"); // list selected nodes
+n.sendMsg("/deselect",  "oma");
+n.sendMsg("/selected"); // another way to list selected nodes
 
 n.sendMsg("/group", "walkers", "om?") // add omo and oma to "walkers" group
 n.sendMsg("/group", "walkers") // list group members
@@ -87,6 +76,8 @@ n.sendMsg("/group", "walkers") // list group members
 
 n.sendMsg("/create", "omo", "om-walk-SW");
 n.sendMsg("/create", "oma", "om-idle-S");
+n.sendMsg("/color");
+n.sendMsg("/color", 0.2, 0.5, 0);
 n.sendMsg("/position", "omo", 0.5, 0.5);
 n.sendMsg("/speed", "om*", 2.5);
 n.sendMsg("/stop", "om*");
@@ -99,3 +90,77 @@ n.sendMsg("/create", "omo", "om-idle-SW");
 n.sendMsg("/play", "omo");
 n.sendMsg("/list");
 n.sendMsg("/free", "om*");
+
+(
+Tdef(\test, {
+	n.sendMsg("/invalid", "frog");
+	n.sendMsg("/free", "*");
+	n.sendMsg("/list");
+	n.sendMsg("/create", "omo", "om-walk-SW");
+	n.sendMsg("/create", "oma", "om-walk-NW");
+	n.sendMsg("/select", "om*");
+	n.sendMsg("/select");
+	n.sendMsg("/deselect", "omo");
+	n.sendMsg("/selected");
+	n.sendMsg("/stop");
+	n.sendMsg("/stop", "omo");
+	n.sendMsg("/frame", 3);
+	n.sendMsg("/frame", "omo", 3);
+	n.sendMsg("/play");
+	n.sendMsg("/play", "om?");
+	n.sendMsg("/position", 0.25, 0.25);
+	n.sendMsg("/position", "omo", 0.75, 0.5);
+	n.sendMsg("/speed", 0.5);
+	n.sendMsg("/speed", "omo", 1.5);
+	n.sendMsg("/fliph");
+	n.sendMsg("/fliph", "omo");
+	n.sendMsg("/flipv");
+	n.sendMsg("/flipv", "omo");
+	n.sendMsg("/create", "omi", "om-walk-S");
+	n.sendMsg("/position", "omi", 0.5, 0.5);
+	n.sendMsg("/group", "inverted", "om*");
+	n.sendMsg("/group", "inverted");
+	n.sendMsg("/ungroup", "inverted", "omi");
+	n.sendMsg("/group", "inverted");
+	n.sendMsg("/color", 0.8, 0.5, 0);
+	n.sendMsg("/color", "omi", 0, 0.5, 0.8);
+	n.sendMsg("/deselect", "*");
+	n.sendMsg("/list");
+	n.sendMsg("/free");
+	n.sendMsg("/create", "fox", "fox-walk");
+	n.sendMsg("/create", "frog", "frog-jump");
+	n.sendMsg("/group", "others", "f*");
+	n.sendMsg("/group", "others");
+	n.sendMsg("/speed", "others", 4);
+	n.sendMsg("/select", "others");
+	n.sendMsg("/list");
+	n.sendMsg("/free");
+	n.sendMsg("/list");
+}).play
+
+// The expected output is:
+/*
+Error: OSC command not found: /invalid
+Status: Freed: [omo, oma, omi]
+Anims: [  ]
+Status: Created node 'omo' width 'om-walk-SW'
+Status: Created node 'oma' width 'om-walk-NW'
+Status: selected: [omo, oma]
+Status: selected: [oma]
+Status: Created node 'omi' width 'om-walk-S'
+Status: 'inverted' members: [omo, oma, omi]
+Status: 'inverted' members: [omo, oma]
+Anims: [ omo, oma, omi ]
+Status: Freed: []
+Status: Created node 'fox' width 'fox-walk'
+Status: Created node 'frog' width 'frog-jump'
+Status: 'others' members: [fox, frog]
+Anims: [ omo, oma, omi, fox, frog ]
+Status: Freed: [fox, frog]
+Anims: [ omo, oma, omi ]
+*/
+
+// And you should see a slow orange upside-down om at
+// the upper-left, a blue om facing you in the
+// centre, and a fast black upside-down om at the right.
+)
