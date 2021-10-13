@@ -36,6 +36,26 @@ func getExternalTexture(path):
 	var texture = ImageTexture.new()
 	texture.create_from_image(img)
 	return texture
+
+func getSpriteFileInfo(name):
+	var dict = {}
+	var regex = RegEx.new()
+	regex.compile("(.+)_(\\d+)x(\\d+)_(\\d+)fps")
+	var result = regex.search(name)
+	if result:
+		print(result.get_string()) # Would print n-0123
+		dict.name = result.get_string(1)
+		dict.xStep = result.get_string(2).to_int()
+		dict.yStep = result.get_string(3).to_int()
+		dict.fps = result.get_string(4).to_int()
+		print(dict)
+		print(result.get_string(1), result.get_string(2), result.get_string(3), result.get_string(4))
+	else:
+		dict.name = name
+		dict.xStep = 4
+		dict.yStep = 4
+		dict.fps = 24
+	return dict
 	
 func loadRuntimeAnimations(path):
 	var sprites = getRuntimeSpriteFiles(path)
@@ -43,25 +63,24 @@ func loadRuntimeAnimations(path):
 	# Add the runtime-loaded sprites to our pre-existing library
 	var frames = metanode.instance().get_node("Animation").frames
 	for spritePath in sprites:
-		var res = load(spritePath)
+		var res
+		# res = load(spritePath)
 		if !res: res = getExternalTexture(spritePath)
 		if res:
-			var type = spritePath.get_file().get_basename()
-			frames.remove_animation(type)
-			frames.add_animation(type)
-			frames.set_animation_speed(type, 24)
-			var xStep = 4
-			var yStep = 4
-			var width = res.get_size().x / xStep
-			var height = res.get_size().y / yStep
+			var info = getSpriteFileInfo(spritePath.get_file().get_basename())
+			frames.remove_animation(info.name)
+			frames.add_animation(info.name)
+			frames.set_animation_speed(info.name, info.fps)
+			var width = res.get_size().x / info.xStep
+			var height = res.get_size().y / info.yStep
 			var frameId = 0
-			for y in range(0, yStep):
-				for x in range(0, xStep):
+			for y in range(0, info.yStep):
+				for x in range(0, info.xStep):
 					var texture : AtlasTexture = AtlasTexture.new()
 					texture.atlas = res
 					texture.region = Rect2(width * x, height * y, width, height)
 					texture.margin = Rect2(0, 0, 0, 0)
-					frames.add_frame(type, texture, frameId)
+					frames.add_frame(info.name, texture, frameId)
 					frameId += 1
 	return frames
 
