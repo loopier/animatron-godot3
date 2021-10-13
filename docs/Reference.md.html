@@ -1,6 +1,6 @@
 <meta charset="utf-8" emacsmode="-*- markdown -*-"><link rel="stylesheet" href="markdeep/apidoc.css?"">
 
-                          **Animatron OSC Command Reference**
+                          **Animatron Reference**
 
 This document exposes the API available (via OSC commands) through
 Animatron.
@@ -51,6 +51,19 @@ Address | Args | Description
 `/status/reply` | `status:s` | Return a status message to the client.
 `/list/reply` | `[anim:s] ...` | Return the list of instanced anims to the client (one name per argument).
 `/types/reply` | `[type:s] ...` | Return the list of available animation types to the client (one name per argument).
+
+# Custom sprite sheets
+
+You may place PNG files in the `runtime_data/` directory under the Animatron
+folder. These will be loaded as sprite sheets at launch and made available as
+additional animations in the library of types. There is a naming convention to
+specify the sprite layout and frame rate. Here is an example:
+
+`my-name_6x4_12fps.png` would load as an animation type called `my-name` using
+a 6x4 sprite layout, playing at 12 frames per second. For files that don't
+follow this (*name_dims_rate.png*) naming convention, the entire filename will
+be used as the type name in Animatron, and they will be assumed to contain 4x4
+sprites and play at 24 fps.
 
 <style class="fallback">body{visibility:hidden}</style><script>markdeepOptions={tocStyle:'none'};</script>
 <!-- Markdeep: --><script src="markdeep/markdeep.min.js?" charset="utf-8"></script>
