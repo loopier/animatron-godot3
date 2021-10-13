@@ -21,9 +21,10 @@ Animatron.
 
 Address | Args | Description
 --------|------|------------
-`/create` | `anim:s file:s` | Create a new anim with a given animation file. If the named anim already exists, change its animation file to the one specified. The initial position of the anim will be random.
+`/create` | `anim:s type:s` | Create a new anim with a given animation type. If the named anim already exists, change its animation type to the one specified. The initial position of a new anim will be random.
 `/free` | `[anim:s]` | Delete the anim (remove its instance).
-`/list` | | Get list of current anim instances.
+`/list` | | Get list of current anim instances. Returned in the form of a `/list/reply` OSC message.
+`/types` | | Get list of available animation types. Returned in the form of a `/types/reply` OSC message.
 `/play` | `[anim:s]` | Play the anim from the current frame.
 `/stop` | `[anim:s]` | Stop playing the anim.
 `/frame` | `[anim:s] frame:i` | Jump to the given frame number (with wrapping).
@@ -38,6 +39,18 @@ Address | Args | Description
 `/select` | `[anim:s]` | Add the anim to the seletect set. If run without `anim` it will return the list of selected anims.
 `/deselect` | `[anim:s]` | Remove the anim from the selected set. If run without `anim` it will deselect all (equivalent to `/deselect "*"`).
 `/selected` | | Get the list of selected anims.
+
+# OSC Replies
+
+These are the OSC messages that can be sent from Animatron to a client
+application, such as SuperCollider, which is sending OSC commands.
+
+Address | Args | Description
+--------|------|------------
+`/error/reply` | `error:s` | Return an error message to the client.
+`/status/reply` | `status:s` | Return a status message to the client.
+`/list/reply` | `[anim:s] ...` | Return the list of instanced anims to the client (one name per argument).
+`/types/reply` | `[type:s] ...` | Return the list of available animation types to the client (one name per argument).
 
 <style class="fallback">body{visibility:hidden}</style><script>markdeepOptions={tocStyle:'none'};</script>
 <!-- Markdeep: --><script src="markdeep/markdeep.min.js?" charset="utf-8"></script>

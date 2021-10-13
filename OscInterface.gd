@@ -111,6 +111,16 @@ func listAnims(args, sender):
 	print(pairs)
 	sendMessage(sender, "/list/reply", pairs)
 
+func listAnimTypes(args, sender):
+	if !args.empty():
+		reportError("listAnimTypes expects no arguments", sender)
+		return
+	var names = []
+	for a in metanode.instance().get_node("Animation").frames.get_animation_names():
+		names.push_back(a)
+	print(names)
+	sendMessage(sender, "/types/reply", names)
+
 func playAnim(inArgs, sender):
 	var args = getOptionalSelectionArgs(inArgs, "playAnim", 0, sender)
 	if args: for node in args.nodes:

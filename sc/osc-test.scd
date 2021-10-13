@@ -5,6 +5,9 @@
 OSCdef(\listReply, { arg msg;
 	"Anims: %".format(msg[1..]).postln;
 }, "/list/reply");
+OSCdef(\typesReply, { arg msg;
+	"Animation types:\n\t%".format(join(msg[1..], "\n\t")).postln;
+}, "/types/reply");
 OSCdef(\errorReply, { arg msg;
 	"Error: %".format(msg[1]).postln;
 }, "/error/reply");
@@ -29,12 +32,15 @@ Tdef(\a, {
 ////////////////////////////////////////////////////////////
 // Comprehensive unit tests
 ////////////////////////////////////////////////////////////
-var test = { |description, msg, waittime=1.0|
-	("-- "++description).postln;
+var test = { |description, msg, waittime=0.5|
+	("-- " ++ description).postln;
 	msg.();
 	waittime.wait;
 };
 var create = {
+	test.("list of types", {
+		n.sendMsg("/types");
+	});
 	test.("empty list", {
 		n.sendMsg("/list");
 	});
@@ -178,7 +184,7 @@ var manysay = {
 			n.sendMsg("/create", "om"++x, "om-idle-"++["SW","S"].choose);
 			if(0.5.coin, {n.sendMsg("/fliph", "om"++x)});
 			n.sendMsg("/color", "om"++x, 1.0.rand, 0.2.rand, 0.2.rand);
-			n.sendMsg("/position", "om"++x, rrand(0.2,0.6), rrand(0.2,1.8));
+			n.sendMsg("/position", "om"++x, rrand(0.1,0.9), rrand(0.2,0.8));
 			rrand(0.2,3.0).wait;
 			n.sendMsg("/say", "om"++x, "I'm om"++x, rrand(3,6));
 			rrand(0.1,2.0).wait;
@@ -226,6 +232,7 @@ t.start;
 // Alternative OSC interface testing (run OSCdef setup first)
 ////////////////////////////////////////////////////////////
 Tdef(\test, {
+	n.sendMsg("/types");
 	n.sendMsg("/invalid", "frog");
 	n.sendMsg("/free", "*");
 	n.sendMsg("/list");
@@ -278,9 +285,15 @@ Tdef(\test, {
 
 // The expected output is:
 /*
+Animation types:
+	default
+	fox-walk
+	...
+	om-walk-W
+	runner-run
 Error: OSC command not found: /invalid
-Status: Freed: [omo, oma, omi]
-(or "Error: No matches found for: * / Status: Freed: []" if you were running with an empty scene)
+Error: No matches found for: *
+Status: Freed: []
 Anims: [  ]
 Status: Created node 'omo' with 'om-walk-SW'
 Status: Created node 'oma' with 'om-walk-NW'
