@@ -1,0 +1,44 @@
+<meta charset="utf-8" emacsmode="-*- markdown -*-"><link rel="stylesheet" href="markdeep/apidoc.css?"">
+
+                          **Animatron OSC Command Reference**
+
+This document exposes the API available (via OSC commands) through
+Animatron.
+
+# OSC Commands
+
+!!! Note
+    OSC argument types are specified by a suffix after the name: `s`
+    is a **string**, `i` is an **integer**, `f` is a **float**.
+
+!!! Note
+    Commands with an optional initial `[anim]` argument will apply to
+    the current set of *selected* anims when this argument is skipped.
+    If the `[anim]` argument is sent, then it will look for anim
+    targets matching that name. Note that `*` (match zero or more
+    characters) and `?` (match exactly one character) may be used as
+    anim name wildcards.
+
+Address | Args | Description
+--------|------|------------
+`/create` | `anim:s file:s` | Create a new anim with a given animation file. If the named anim already exists, change its animation file to the one specified. The initial position of the anim will be random.
+`/free` | `[anim:s]` | Delete the anim (remove its instance).
+`/list` | | Get list of current anim instances.
+`/play` | `[anim:s]` | Play the anim from the current frame.
+`/stop` | `[anim:s]` | Stop playing the anim.
+`/frame` | `[anim:s] frame:i` | Jump to the given frame number (with wrapping).
+`/position` | `[anim:s] x:f y:f` | Set the anim to the x,y coordinates (specified as fractions of the viewport from 0-1).
+`/speed` | `[anim:s] rate:f` | Set the playback speed (1 is normal speed).
+`/fliph` | `[anim:s]` | Flip the anim horizontally.
+`/flipv` | `[anim:s]` | Flip the anim vertically.
+`/color` | `[anim:s] red:f green:f blue:f` | Add an RGB colour to the anim. Set to black (0,0,0) to restore original colour.
+`/say` | `[anim:s] text:s [dur:f]` | Have the anim "say" something via a speech bubble, with an optional duration (defaults to three seconds).
+`/group` | `group:s [anim:s]` | Add the anim to a named group. If run without `anim` it will return the list of anims in the group.
+`/ungroup` | `group:s anim:s` | Remove the anim from a named group.
+`/select` | `[anim:s]` | Add the anim to the seletect set. If run without `anim` it will return the list of selected anims.
+`/deselect` | `[anim:s]` | Remove the anim from the selected set. If run without `anim` it will deselect all (equivalent to `/deselect "*"`).
+`/selected` | | Get the list of selected anims.
+
+<style class="fallback">body{visibility:hidden}</style><script>markdeepOptions={tocStyle:'none'};</script>
+<!-- Markdeep: --><script src="markdeep/markdeep.min.js?" charset="utf-8"></script>
+

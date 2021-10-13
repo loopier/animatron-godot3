@@ -273,7 +273,7 @@ Tdef(\test, {
 	n.sendMsg("/say", "omi", "something else", 8);
 	n.sendMsg("/select", "oma");
 	n.sendMsg("/say", "I'm oma", 4);
-	n.sendMsg("/deselect", "*");
+	n.sendMsg("/deselect");
 }).play
 
 // The expected output is:

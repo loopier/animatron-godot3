@@ -12,26 +12,9 @@ func _ready():
 	metanode = preload("res://MetaNode.tscn")
 	speechBubbleNode = preload("res://SpeechBubble.tscn")
 
-func createAnim(args, sender):
-	var nodeName = args[0]
-	var animName = args[1]
-	var newNode = animsNode.get_node(nodeName)
-	if newNode == null:
-		print("creating node '%s'" % [nodeName])
-		newNode = metanode.instance()
-		newNode.name = nodeName
-		newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
-		animsNode.add_child(newNode)
-	newNode.get_node("Animation").play(animName)
-	print("node: ", newNode.name)
-	print("anim: ", newNode.get_node("Animation").get_animation())
-	reportStatus("Created node '%s' with '%s'" % [newNode.name, newNode.get_node("Animation").get_animation()], sender)
-
-func freeAnim(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "freeAnim", 0, sender)
-	if args: for node in args.nodes:
-		animsNode.remove_child(node)
-	reportStatus("Freed: " + String([] if !args else getNames(args.nodes)), sender)
+############################################################
+# Helpers
+############################################################
 
 # For now, it just creates a sender instance each call,
 # so isn't designed for continuous/heavy use...
@@ -46,16 +29,6 @@ func sendMessage(target, oscAddress, oscArgs):
 		oscsnd.add(arg)
 	oscsnd.send()
 	oscsnd.stop()
-
-func listAnims(args, sender):
-	if !args.empty():
-		reportError("listAnims expects no arguments", sender)
-		return
-	var pairs = {}
-	for a in animsNode.get_children():
-		pairs[a.name] = a.get_node("Animation").get_animation()
-	print(pairs)
-	sendMessage(sender, "/list/reply", pairs)
 
 func reportError(errString, target):
 	push_error(errString)
@@ -98,7 +71,46 @@ func getOptionalSelectionArgs(inArgs, methodName, expectedArgs, sender):
 	else:
 		reportError(methodName + ": unexpected number of arguments: " + String(inArgs.size()) + " instead of " + String(expectedArgs), sender)
 		return
-	
+
+func setShaderUniform(node, uName, uValue):
+	var image = node.get_node("Animation")
+	image.material.set_shader_param(uName, uValue)
+
+############################################################
+# OSC commands
+############################################################
+
+func createAnim(args, sender):
+	var nodeName = args[0]
+	var animName = args[1]
+	var newNode = animsNode.get_node(nodeName)
+	if newNode == null:
+		print("creating node '%s'" % [nodeName])
+		newNode = metanode.instance()
+		newNode.name = nodeName
+		newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
+		animsNode.add_child(newNode)
+	newNode.get_node("Animation").play(animName)
+	print("node: ", newNode.name)
+	print("anim: ", newNode.get_node("Animation").get_animation())
+	reportStatus("Created node '%s' with '%s'" % [newNode.name, newNode.get_node("Animation").get_animation()], sender)
+
+func freeAnim(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "freeAnim", 0, sender)
+	if args: for node in args.nodes:
+		animsNode.remove_child(node)
+	reportStatus("Freed: " + String([] if !args else getNames(args.nodes)), sender)
+
+func listAnims(args, sender):
+	if !args.empty():
+		reportError("listAnims expects no arguments", sender)
+		return
+	var pairs = {}
+	for a in animsNode.get_children():
+		pairs[a.name] = a.get_node("Animation").get_animation()
+	print(pairs)
+	sendMessage(sender, "/list/reply", pairs)
+
 func playAnim(inArgs, sender):
 	var args = getOptionalSelectionArgs(inArgs, "playAnim", 0, sender)
 	if args: for node in args.nodes:
@@ -109,6 +121,11 @@ func stopAnim(inArgs, sender):
 	var args = getOptionalSelectionArgs(inArgs, "stopAnim", 0, sender)
 	if args: for node in args.nodes:
 		node.get_node("Animation").stop()
+
+func setAnimFrame(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "setAnimFrame", 1, sender)
+	if args: for node in args.nodes:
+		node.get_node("Animation").set_frame(args.args[0])
 
 func setAnimPosition(inArgs, sender):
 	var args = getOptionalSelectionArgs(inArgs, "setAnimPosition", 2, sender)
@@ -125,10 +142,11 @@ func setAnimSpeed(inArgs, sender):
 	if args: for node in args.nodes:
 		node.get_node("Animation").set_speed_scale(args.args[0])
 
-func setAnimFrame(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "setAnimFrame", 1, sender)
+func flipAnimH(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "flipAnimH", 0, sender)
 	if args: for node in args.nodes:
-		node.get_node("Animation").set_frame(args.args[0])
+		var anim = node.get_node("Animation")
+		anim.set_flip_h(not(anim.is_flipped_h()))
 
 func flipAnimV(inArgs, sender):
 	var args = getOptionalSelectionArgs(inArgs, "flipAnimV", 0, sender)
@@ -136,11 +154,28 @@ func flipAnimV(inArgs, sender):
 		var anim = node.get_node("Animation")
 		anim.set_flip_v(not(anim.is_flipped_v()))
 
-func flipAnimH(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "flipAnimH", 0, sender)
-	if args: for node in args.nodes:
-		var anim = node.get_node("Animation")
-		anim.set_flip_h(not(anim.is_flipped_h()))
+func colorAnim(inArgs, sender):
+	var args = getOptionalSelectionArgs(inArgs, "colorAnim", 3, sender)
+	if args:
+		var rgb = Vector3(args.args[0], args.args[1], args.args[2])
+		for node in args.nodes:
+			setShaderUniform(node, "uAddColor", rgb)
+
+func sayAnim(inArgs, sender):
+	if !inArgs.empty():
+		var nodes = matchNodes(inArgs[0], sender)
+		var args = inArgs.slice(1, -1)
+		if nodes.empty():
+			nodes = get_tree().get_nodes_in_group(selectionGroup)
+			args = inArgs
+		for node in nodes:
+			var msg = String(args[0])
+			var bubble = speechBubbleNode.instance()
+			node.add_child(bubble)
+			if len(args) == 2:
+				bubble.setText(msg, args[1])
+			else:
+				bubble.setText(msg)
 
 func groupAnim(args, sender):
 	var groupName = args[0]
@@ -166,6 +201,7 @@ func selectAnim(args, sender):
 			setShaderUniform(node, "uSelected", true)
 
 func deselectAnim(args, sender):
+	if args.empty(): args = ["*"];
 	for node in matchNodes(args[0], sender):
 		node.remove_from_group(selectionGroup)
 		setShaderUniform(node, "uSelected", false)
@@ -177,29 +213,3 @@ func listSelectedAnims(args, sender):
 	var nodes = get_tree().get_nodes_in_group(selectionGroup)
 	reportStatus("selected: " + String(getNames(nodes)), sender)
 
-func colorAnim(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "colorAnim", 3, sender)
-	if args:
-		var rgb = Vector3(args.args[0], args.args[1], args.args[2])
-		for node in args.nodes:
-			setShaderUniform(node, "uAddColor", rgb)
-
-func setShaderUniform(node, uName, uValue):
-	var image = node.get_node("Animation")
-	image.material.set_shader_param(uName, uValue)
-
-func sayAnim(inArgs, sender):
-	if !inArgs.empty():
-		var nodes = matchNodes(inArgs[0], sender)
-		var args = inArgs.slice(1, -1)
-		if nodes.empty():
-			nodes = get_tree().get_nodes_in_group(selectionGroup)
-			args = inArgs
-		for node in nodes:
-			var msg = String(args[0])
-			var bubble = speechBubbleNode.instance()
-			node.add_child(bubble)
-			if len(args) == 2:
-				bubble.setText(msg, args[1])
-			else:
-				bubble.setText(msg)

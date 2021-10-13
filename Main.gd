@@ -18,23 +18,23 @@ func _ready():
 			
 func processOscMsg(address, args, msg):
 	var cmds = {
+		"/create": funcref($OscInterface, "createAnim"),
+		"/free": funcref($OscInterface, "freeAnim"),
 		"/list": funcref($OscInterface, "listAnims"),
 		"/play": funcref($OscInterface, "playAnim"),
 		"/stop": funcref($OscInterface, "stopAnim"),
+		"/frame": funcref($OscInterface, "setAnimFrame"),
 		"/position": funcref($OscInterface, "setAnimPosition"),
 		"/speed": funcref($OscInterface, "setAnimSpeed"),
-		"/frame": funcref($OscInterface, "setAnimFrame"),
 		"/fliph": funcref($OscInterface, "flipAnimH"),
 		"/flipv": funcref($OscInterface, "flipAnimV"),
-		"/create": funcref($OscInterface, "createAnim"),
-		"/free": funcref($OscInterface, "freeAnim"),
+		"/color": funcref($OscInterface, "colorAnim"),
+		"/say": funcref($OscInterface, "sayAnim"),
 		"/group": funcref($OscInterface, "groupAnim"),
 		"/ungroup": funcref($OscInterface, "ungroupAnim"),
 		"/select": funcref($OscInterface, "selectAnim"),
 		"/deselect": funcref($OscInterface, "deselectAnim"),
 		"/selected": funcref($OscInterface, "listSelectedAnims"),
-		"/color": funcref($OscInterface, "colorAnim"),
-		"/say": funcref($OscInterface, "sayAnim"),
 	}
 
 	var sender = [msg["ip"], msg["port"]]

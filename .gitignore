@@ -1,6 +1,9 @@
+# Godot-specific
 .import/
+*.translation
 export.cfg
 export_presets.cfg
+.mono/
 
 # For now, keep animations out of git by default (can be added explicitly when desired)
 animations/
