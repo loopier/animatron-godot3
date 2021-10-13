@@ -4,6 +4,7 @@ var main
 var animsNode
 var metanode
 var speechBubbleNode
+var runtimeLoadedFrames
 const selectionGroup = "selected"
 
 func _ready():
@@ -11,10 +12,58 @@ func _ready():
 	animsNode = main.get_node("Anims")
 	metanode = preload("res://MetaNode.tscn")
 	speechBubbleNode = preload("res://SpeechBubble.tscn")
+	runtimeLoadedFrames = loadRuntimeAnimations("res://runtime_data/")
 
 ############################################################
 # Helpers
 ############################################################
+func getRuntimeSpriteFiles(path):
+	var dir = Directory.new()
+	var files = []
+	if dir.open(path) == OK:
+		dir.list_dir_begin(true, true)
+		var file_name = dir.get_next()
+		while (!file_name.empty() && !dir.current_is_dir()):
+			print("File name: ", file_name)  # Debugging release builds
+			if file_name.ends_with(".png"):
+				files.push_back(path + file_name)
+			file_name = dir.get_next()
+	return files
+
+func getExternalTexture(path):
+	var img = Image.new()
+	img.load(path)
+	var texture = ImageTexture.new()
+	texture.create_from_image(img)
+	return texture
+	
+func loadRuntimeAnimations(path):
+	var sprites = getRuntimeSpriteFiles(path)
+	print("Runtime sprites:", sprites)
+	# Add the runtime-loaded sprites to our pre-existing library
+	var frames = metanode.instance().get_node("Animation").frames
+	for spritePath in sprites:
+		var res = load(spritePath)
+		if !res: res = getExternalTexture(spritePath)
+		if res:
+			var type = spritePath.get_file().get_basename()
+			frames.remove_animation(type)
+			frames.add_animation(type)
+			frames.set_animation_speed(type, 24)
+			var xStep = 4
+			var yStep = 4
+			var width = res.get_size().x / xStep
+			var height = res.get_size().y / yStep
+			var frameId = 0
+			for y in range(0, yStep):
+				for x in range(0, xStep):
+					var texture : AtlasTexture = AtlasTexture.new()
+					texture.atlas = res
+					texture.region = Rect2(width * x, height * y, width, height)
+					texture.margin = Rect2(0, 0, 0, 0)
+					frames.add_frame(type, texture, frameId)
+					frameId += 1
+	return frames
 
 # For now, it just creates a sender instance each call,
 # so isn't designed for continuous/heavy use...
@@ -83,13 +132,19 @@ func setShaderUniform(node, uName, uValue):
 func createAnim(args, sender):
 	var nodeName = args[0]
 	var animName = args[1]
+	if !runtimeLoadedFrames.has_animation(animName):
+		reportError("Anim type not found: '%s'" % animName, sender)
+		return
 	var newNode = animsNode.get_node(nodeName)
 	if newNode == null:
 		print("creating node '%s'" % [nodeName])
 		newNode = metanode.instance()
 		newNode.name = nodeName
 		newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
+		# Switch to the animation library that includes runtime-loaded data
+		newNode.get_node("Animation").frames = runtimeLoadedFrames
 		animsNode.add_child(newNode)
+
 	newNode.get_node("Animation").play(animName)
 	print("node: ", newNode.name)
 	print("anim: ", newNode.get_node("Animation").get_animation())
@@ -116,7 +171,7 @@ func listAnimTypes(args, sender):
 		reportError("listAnimTypes expects no arguments", sender)
 		return
 	var names = []
-	for a in metanode.instance().get_node("Animation").frames.get_animation_names():
+	for a in runtimeLoadedFrames.get_animation_names():
 		names.push_back(a)
 	print(names)
 	sendMessage(sender, "/types/reply", names)
