@@ -122,6 +122,9 @@ var wildcards = {
 var wildcardsfree = {
 	test.("wildcards free", {n.sendMsg("/free", "om*");})
 };
+var color = {
+	test.("change color", {n.sendMsg("/color", "om*", 1,1,1);})
+};
 var select = {
 	test.("none selected", {n.sendMsg("/selected")});
 	test.("select one", {
@@ -213,13 +216,14 @@ t = Task {
 	// transport.();
 	// 2.0.wait;
 	// free.();
-	// wildcards.();
+	wildcards.();
+	color.();
 	// select.();
 	// 1.0.wait;
 	// group.();
 	// 2.wait;
 	// say.();
-	manysay.();
+	// manysay.();
 	4.wait;
 	wildcardsfree.();
 };
