@@ -12,7 +12,7 @@ func _ready():
 	animsNode = main.get_node("Anims")
 	metanode = preload("res://MetaNode.tscn")
 	speechBubbleNode = preload("res://SpeechBubble.tscn")
-	runtimeLoadedFrames = loadRuntimeAnimations("res://runtime_data/")
+	runtimeLoadedFrames = loadRuntimeAnimations("res://animations/")
 
 ############################################################
 # Helpers
@@ -25,7 +25,7 @@ func getRuntimeSpriteFiles(path):
 		var file_name = dir.get_next()
 		while (!file_name.empty() && !dir.current_is_dir()):
 			print("File name: ", file_name)  # Debugging release builds
-			if file_name.ends_with(".png"):
+			if file_name.ends_with(".png") || file_name.ends_with(".jpg"):
 				files.push_back(path + file_name)
 			file_name = dir.get_next()
 	return files
@@ -49,7 +49,6 @@ func getSpriteFileInfo(name):
 		dict.yStep = result.get_string(3).to_int()
 		dict.fps = result.get_string(4).to_int()
 		print(dict)
-		print(result.get_string(1), result.get_string(2), result.get_string(3), result.get_string(4))
 	else:
 		dict.name = name
 		dict.xStep = 4
