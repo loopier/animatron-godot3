@@ -54,13 +54,27 @@ Address | Args | Description
 
 # Custom sprite sheets
 
-You may place PNG files in the `runtime_data/` directory under the Animatron
-folder. These will be loaded as sprite sheets at launch and made available as
-additional animations in the library of types. There is a naming convention to
-specify the sprite layout and frame rate. Here is an example:
+You may place PNG sprite sheet files in the `runtime_data/` directory under the Animatron folder. These will be loaded as sprite sheets at launch and made available 
+as additional animations in the library of types. There is a naming convention to
+specify the sprite layout and frame rate:
 
-`my-name_6x4_12fps.png` would load as an animation type called `my-name` using
-a 6x4 sprite layout, playing at 12 frames per second. For files that don't
+`NAME_COLSxROWS_FPSfps.png`
+
+where:
+- *NAME* - is the name of the animation, by which it will be identified in commands.
+- *COLS* - number of columns of the spritesheet
+- *ROWS* - number of rows of the spritesheet
+- *FPS* - animation's framerate
+
+*IMPORTANT*: the separators between *NAME* and *COLS* and between *ROWS* and *FPS* **must be underline** scores (`_`), not hyphens (`-`).
+
+Here is an example:
+
+`my-animation_6x4_12fps.png` would load as an animation type called `my-animation` using a 6x4 sprite layout, playing at 12 frames per second.  Then it would be created using an OSC message like this:
+
+`/create, "aname", "my-animation"`
+
+For files that don't
 follow this (*name_dims_rate.png*) naming convention, the entire filename will
 be used as the type name in Animatron, and they will be assumed to contain 4x4
 sprites and play at 24 fps.

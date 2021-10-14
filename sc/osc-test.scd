@@ -194,7 +194,21 @@ var manysay = {
 		};
 	});
 };
-
+var listruntimedata = {
+	test.("load file at runtime", {
+		n.sendMsg("/types");
+	});
+};
+var loadruntime = {
+	test.("load file at runtime", {
+		100.do{|x|
+			n.sendMsg("/create", "om"++x, "om-idle-"++["e","n","w","s","nw","ne","sw","se"].choose);
+			n.sendMsg("/position", "om"++x, rrand(0.1,0.9), rrand(0.2,0.8));
+			n.sendMsg("/speed", "om"++x, rrand(0.5,2.0));
+			0.1.wait;
+		};
+	});
+};
 // syntax for a new test:
 // var testname = {
 //     test.("a description", {
@@ -216,20 +230,23 @@ t = Task {
 	// transport.();
 	// 2.0.wait;
 	// free.();
-	wildcards.();
-	color.();
+	// wildcards.();
+	// color.();
 	// select.();
 	// 1.0.wait;
 	// group.();
 	// 2.wait;
 	// say.();
 	// manysay.();
+	listruntimedata.();
+	loadruntime.();
 	4.wait;
 	wildcardsfree.();
 };
 t.start;
 )
 
+n.sendMsg("/types");
 
 (
 ////////////////////////////////////////////////////////////
