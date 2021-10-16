@@ -9,4 +9,4 @@ script = ExtResource( 13 )
 [node name="OscInterface" type="Node" parent="."]
 script = ExtResource( 1 )
 
-[node name="Anims" type="Node2D" parent="."]
+[node name="Anims" type="YSort" parent="."]

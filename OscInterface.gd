@@ -34,7 +34,8 @@ func getExternalTexture(path):
 	var img = Image.new()
 	img.load(path)
 	var texture = ImageTexture.new()
-	texture.create_from_image(img)
+	# We don't want interpolation or repeats here
+	texture.create_from_image(img, Texture.FLAG_MIPMAPS)
 	return texture
 
 func getSpriteFileInfo(name):
@@ -163,10 +164,18 @@ func createAnim(args, sender):
 		newNode.get_node("Animation").frames = runtimeLoadedFrames
 		animsNode.add_child(newNode)
 
-	newNode.get_node("Animation").play(animName)
+	var animNode = newNode.get_node("Animation")
+	animNode.play(animName)
+	# Set the offset of the child sprite so the MetaNode centre is near
+	# its bottom (the "feet"). In future, this could be set differently
+	# for each anim as metadata, but for now this is okay.
+	var anim = animNode.get_animation()
+	var texSize = animNode.frames.get_frame(animName, 0).get_size()
+	animNode.position = Vector2(0, texSize.y * -0.4)
+	
 	print("node: ", newNode.name)
-	print("anim: ", newNode.get_node("Animation").get_animation())
-	reportStatus("Created node '%s' with '%s'" % [newNode.name, newNode.get_node("Animation").get_animation()], sender)
+	print("anim: ", anim)
+	reportStatus("Created node '%s' with '%s'" % [newNode.name, anim], sender)
 
 func freeAnim(inArgs, sender):
 	var args = getOptionalSelectionArgs(inArgs, "freeAnim", 0, sender)
