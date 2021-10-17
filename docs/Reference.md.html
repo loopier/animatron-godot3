@@ -12,33 +12,34 @@ Animatron.
     is a **string**, `i` is an **integer**, `f` is a **float**.
 
 !!! Note
-    Commands with an optional initial `[anim]` argument will apply to
-    the current set of *selected* anims when this argument is skipped.
-    If the `[anim]` argument is sent, then it will look for anim
+    Commands with an optional initial `[actor]` argument will apply to
+    the current set of *selected* actors when this argument is skipped.
+    If the `[actor]` argument is sent, then it will look for actor
     targets matching that name. Note that `*` (match zero or more
     characters) and `?` (match exactly one character) may be used as
-    anim name wildcards.
+    actor name wildcards.
 
 Address | Args | Description
 --------|------|------------
-`/create` | `anim:s type:s` | Create a new anim with a given animation type. If the named anim already exists, change its animation type to the one specified. The initial position of a new anim will be random.
-`/free` | `[anim:s]` | Delete the anim (remove its instance).
-`/list` | | Get list of current anim instances. Returned in the form of a `/list/reply` OSC message.
-`/types` | | Get list of available animation types. Returned in the form of a `/types/reply` OSC message.
-`/play` | `[anim:s]` | Play the anim from the current frame.
-`/stop` | `[anim:s]` | Stop playing the anim.
-`/frame` | `[anim:s] frame:i` | Jump to the given frame number (with wrapping).
-`/position` | `[anim:s] x:f y:f` | Set the anim to the x,y coordinates (specified as fractions of the viewport from 0-1).
-`/speed` | `[anim:s] rate:f` | Set the playback speed (1 is normal speed).
-`/fliph` | `[anim:s]` | Flip the anim horizontally.
-`/flipv` | `[anim:s]` | Flip the anim vertically.
-`/color` | `[anim:s] red:f green:f blue:f` | Add an RGB colour to the anim. Set to black (0,0,0) to restore original colour.
-`/say` | `[anim:s] text:s [dur:f]` | Have the anim "say" something via a speech bubble, with an optional duration (defaults to three seconds).
-`/group` | `group:s [anim:s]` | Add the anim to a named group. If run without `anim` it will return the list of anims in the group.
-`/ungroup` | `group:s anim:s` | Remove the anim from a named group.
-`/select` | `[anim:s]` | Add the anim to the seletect set. If run without `anim` it will return the list of selected anims.
-`/deselect` | `[anim:s]` | Remove the anim from the selected set. If run without `anim` it will deselect all (equivalent to `/deselect "*"`).
-`/selected` | | Get the list of selected anims.
+`/create` | `actor:s anim:s` | Create a new actor with a given (loaded) animation. If the named actor already exists, change its animation to the one specified. The initial position of a new actor will be random.
+`/free` | `[actor:s]` | Delete the actor (remove its instance).
+`/list` or `/list/actors` | | Get list of current actor instances. Returned in the form of a `/list/actors/reply` OSC message.
+`/list/anims` | | Get list of available (loaded) animations. Returned in the form of a `/list/anims/reply` OSC message.
+`/list/assets` | | Get list of available (unloaded) assets on disk. Returned in the form of a `/list/assets/reply` OSC message.
+`/play` | `[actor:s]` | Play the actor's animation from the current frame.
+`/stop` | `[actor:s]` | Stop playing the actor's animation.
+`/frame` | `[actor:s] frame:i` | Jump to the given frame number (with wrapping).
+`/position` | `[actor:s] x:f y:f` | Set the actor to the x,y coordinates (specified as fractions of the viewport from 0-1).
+`/speed` | `[actor:s] rate:f` | Set the playback speed (1 is normal speed).
+`/fliph` | `[actor:s]` | Flip the actor horizontally.
+`/flipv` | `[actor:s]` | Flip the actor vertically.
+`/color` | `[actor:s] red:f green:f blue:f` | Add an RGB colour to the actor. Set to black (0,0,0) to restore its original colour.
+`/say` | `[actor:s] text:s [dur:f]` | Have the actor "say" something via a speech bubble, with an optional duration (defaults to three seconds).
+`/group` | `group:s [actor:s]` | Add the actor to a named group. If run without `actor` it will return the list of actors in the group.
+`/ungroup` | `group:s actor:s` | Remove the actor from a named group.
+`/select` | `[actor:s]` | Add the actor to the selected set. If run without `actor` it will return the list of selected actors.
+`/deselect` | `[actor:s]` | Remove the actor from the selected set. If run without `actor` it will deselect all (equivalent to `/deselect "*"`).
+`/selected` | | Get the list of selected actors.
 
 # OSC Replies
 
@@ -49,16 +50,17 @@ Address | Args | Description
 --------|------|------------
 `/error/reply` | `error:s` | Return an error message to the client.
 `/status/reply` | `status:s` | Return a status message to the client.
-`/list/reply` | `[anim:s] ...` | Return the list of instanced anims to the client (one name per argument).
-`/types/reply` | `[type:s] ...` | Return the list of available animation types to the client (one name per argument).
+`/list/actors/reply` | `[actor:s] ...` | Return the list of instanced actors to the client (one name per argument).
+`/list/anims/reply` | `[anim:s] ...` | Return the list of available (loaded) animations to the client (one name per argument).
+`/list/assets/reply` | `[asset:s] ...` | Return the list of available (unloaded) assets to the client (one name per argument). Assets must be loaded as anims in order to create actor instances.
 
 # Custom sprite sheets
 
 You must place PNG or JPEG sprite sheet files in the `animations/`
-directory under the Animatron folder. These will be loaded as sprite
-sheets at launch and made available as additional animations in the
-library of types. There is a naming convention to specify the sprite
-layout and frame rate:
+directory under the Animatron folder. These are considered "assets",
+and will be loaded as sprite sheets at launch and made available as a
+library of animations.  There is a naming convention to specify the
+sprite layout and frame rate:
 
 `NAME_COLSxROWS_FPSfps.png`
 
@@ -74,14 +76,15 @@ where:
 
 Here is an example:
 
-`my-animation_6x4_12fps.png` would load as an animation type called
-`my-animation` using a 6x4 sprite layout, playing at 12 frames per second.
-Then it would be created using an OSC message like this:
+`my-animation_6x4_12fps.png` would load as an animation called
+`my-animation` using a 6x4 sprite layout, playing at 12 frames per
+second.  Then an actor could be created from it using an OSC message
+like this:
 
 `/create, "aname", "my-animation"`
              
 For files that don't follow this (*name_dims_rate.png*) naming
-convention, the entire filename will be used as the type name in
+convention, the entire filename will be used as the animation name in
 Animatron, and they will be assumed to contain 4x4 sprites and play at
 24 fps.
 

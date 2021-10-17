@@ -2,12 +2,15 @@
 ////////////////////////////////////////////////////////////
 // Setup
 ////////////////////////////////////////////////////////////
-OSCdef(\listReply, { arg msg;
-	"Anims: %".format(msg[1..]).postln;
-}, "/list/reply");
-OSCdef(\typesReply, { arg msg;
-	"Animation types:\n\t%".format(join(msg[1..], "\n\t")).postln;
-}, "/types/reply");
+OSCdef(\listActorsReply, { arg msg;
+	"Actors: %".format(msg[1..]).postln;
+}, "/list/actors/reply");
+OSCdef(\listAnimsReply, { arg msg;
+	"Available animations:\n\t%".format(join(msg[1..], "\n\t")).postln;
+}, "/list/anims/reply");
+OSCdef(\listAssetsReply, { arg msg;
+	"Available assets:\n\t%".format(join(msg[1..], "\n\t")).postln;
+}, "/list/assets/reply");
 OSCdef(\errorReply, { arg msg;
 	"Error: %".format(msg[1]).postln;
 }, "/error/reply");
@@ -38,11 +41,8 @@ var test = { |description, msg, waittime=0.5|
 	waittime.wait;
 };
 var create = {
-	test.("list of types", {
-		n.sendMsg("/types");
-	});
 	test.("empty list", {
-		n.sendMsg("/list");
+		n.sendMsg("/list"); // or /list/actors
 	});
 	test.("create one instance with animation", {
 		n.sendMsg("/create", "omo", "om-walk-SW");
@@ -195,8 +195,11 @@ var manysay = {
 	});
 };
 var listruntimedata = {
-	test.("load file at runtime", {
-		n.sendMsg("/types");
+	test.("files/assets available to load at runtime", {
+		n.sendMsg("/list/assets");
+	});
+	test.("anims loaded at runtime", {
+		n.sendMsg("/list/anims");
 	});
 };
 var loadruntime = {
@@ -246,19 +249,19 @@ t = Task {
 t.start;
 )
 
-n.sendMsg("/types");
+n.sendMsg("/list/anims");
 
 (
 ////////////////////////////////////////////////////////////
 // Alternative OSC interface testing (run OSCdef setup first)
 ////////////////////////////////////////////////////////////
 Tdef(\test, {
-	n.sendMsg("/types");
+	n.sendMsg("/list/anims");
 	n.sendMsg("/invalid", "frog");
 	n.sendMsg("/free", "*");
 	n.sendMsg("/list");
-	n.sendMsg("/create", "omo", "om-walk-SW");
-	n.sendMsg("/create", "oma", "om-walk-NW");
+	n.sendMsg("/create", "omo", "om-walk-sw");
+	n.sendMsg("/create", "oma", "om-walk-nw");
 	n.sendMsg("/select", "om*");
 	n.sendMsg("/select");
 	n.sendMsg("/deselect", "omo");
@@ -277,7 +280,7 @@ Tdef(\test, {
 	n.sendMsg("/fliph", "omo");
 	n.sendMsg("/flipv");
 	n.sendMsg("/flipv", "omo");
-	n.sendMsg("/create", "omi", "om-walk-S");
+	n.sendMsg("/create", "omi", "om-walk-s");
 	n.sendMsg("/position", "omi", 0.5, 0.5);
 	n.sendMsg("/group", "inverted", "om*");
 	n.sendMsg("/group", "inverted");

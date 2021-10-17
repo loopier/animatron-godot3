@@ -20,8 +20,10 @@ func processOscMsg(address, args, msg):
 	var cmds = {
 		"/create": funcref($OscInterface, "createAnim"),
 		"/free": funcref($OscInterface, "freeAnim"),
-		"/list": funcref($OscInterface, "listAnims"),
-		"/types": funcref($OscInterface, "listAnimTypes"),
+		"/list": funcref($OscInterface, "listActors"), # shortcut for /list/actors
+		"/list/actors": funcref($OscInterface, "listActors"),
+		"/list/anims": funcref($OscInterface, "listAnims"),
+		"/list/assets": funcref($OscInterface, "listAssets"),
 		"/play": funcref($OscInterface, "playAnim"),
 		"/stop": funcref($OscInterface, "stopAnim"),
 		"/frame": funcref($OscInterface, "setAnimFrame"),
@@ -44,7 +46,7 @@ func processOscMsg(address, args, msg):
 	else:
 		$OscInterface.reportError("OSC command not found: " + address, sender)
 
-func _process(delta):
+func _process(_delta):
 	# check if there are pending messages
 	while( oscrcv.has_message() ):
 		# retrieval of the messages as a dictionary

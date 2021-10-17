@@ -171,7 +171,7 @@ func createAnim(args, sender):
 	# for each anim as metadata, but for now this is okay.
 	var anim = animNode.get_animation()
 	var texSize = animNode.frames.get_frame(animName, 0).get_size()
-	animNode.position = Vector2(0, texSize.y * -0.4)
+	animNode.position = Vector2(0, texSize.y * -0.45)
 	
 	print("node: ", newNode.name)
 	print("anim: ", anim)
@@ -183,25 +183,39 @@ func freeAnim(inArgs, sender):
 		animsNode.remove_child(node)
 	reportStatus("Freed: " + String([] if !args else getNames(args.nodes)), sender)
 
-func listAnims(args, sender):
+# List the instantiated actors
+func listActors(args, sender):
 	if !args.empty():
-		reportError("listAnims expects no arguments", sender)
+		reportError("listActors expects no arguments", sender)
 		return
 	var pairs = {}
 	for a in animsNode.get_children():
 		pairs[a.name] = a.get_node("Animation").get_animation()
 	print(pairs)
-	sendMessage(sender, "/list/reply", pairs)
+	sendMessage(sender, "/list/actors/reply", pairs)
 
-func listAnimTypes(args, sender):
+# List the loaded and available animations (or images)
+func listAnims(args, sender):
 	if !args.empty():
-		reportError("listAnimTypes expects no arguments", sender)
+		reportError("listAnims expects no arguments", sender)
 		return
 	var names = []
 	for a in runtimeLoadedFrames.get_animation_names():
 		names.push_back(a)
 	print(names)
-	sendMessage(sender, "/types/reply", names)
+	sendMessage(sender, "/list/anims/reply", names)
+
+# List the assets/files on disk
+func listAssets(args, sender):
+	# TODO
+	if !args.empty():
+		reportError("listAssets expects no arguments", sender)
+		return
+	var names = ["example", "assets", "(TODO)"]
+#	for a in runtimeLoadedFrames.get_animation_names():
+#		names.push_back(a)
+	print(names)
+	sendMessage(sender, "/list/assets/reply", names)
 
 func playAnim(inArgs, sender):
 	var args = getOptionalSelectionArgs(inArgs, "playAnim", 0, sender)
