@@ -24,7 +24,7 @@ n = NetAddr("localhost", 56101);
 Tdef(\a, {
 	100.do{|x|
 		// "om"++x.postln;
-	n.sendMsg("/create", "om"++x, "om-walk-SW");
+	n.sendMsg("/create", "om"++x, "om-walk-sw");
 	n.sendMsg("/speed", "om"++x, rrand(0.7,2.0));
 		0.1.wait;
 }
@@ -173,8 +173,8 @@ var say = {
 		// n.sendMsg("/say", "omo", "something else\nin two lines");
 		n.sendMsg("/say", "omo", "something else in two lines");
 		4.wait;
-		// n.sendMsg("/say", "omo", "something\nvertcial\nin many\nlines");
-		n.sendMsg("/say", "omo", "something vertcial in many lines");
+		// n.sendMsg("/say", "omo", "something\nvertical\nin many\nlines");
+		n.sendMsg("/say", "omo", "something vertical in many lines");
 		4.wait;
 		// n.sendMsg("/say", "omo", "something during\na given time", 4);
 		n.sendMsg("/say", "omo", "something during a given time", 4);
@@ -266,19 +266,19 @@ Tdef(\test, {
 	n.sendMsg("/select");
 	n.sendMsg("/deselect", "omo");
 	n.sendMsg("/selected");
-	n.sendMsg("/stop");
+	n.sendMsg("/stop!");
 	n.sendMsg("/stop", "omo");
-	n.sendMsg("/frame", 3);
+	n.sendMsg("/frame!", 3);
 	n.sendMsg("/frame", "omo", 3);
-	n.sendMsg("/play");
+	n.sendMsg("/play!");
 	n.sendMsg("/play", "om?");
-	n.sendMsg("/position", 0.25, 0.25);
+	n.sendMsg("/position!", 0.25, 0.25);
 	n.sendMsg("/position", "omo", 0.75, 0.5);
-	n.sendMsg("/speed", 0.5);
+	n.sendMsg("/speed!", 0.5);
 	n.sendMsg("/speed", "omo", 1.5);
-	n.sendMsg("/fliph");
+	n.sendMsg("/fliph!");
 	n.sendMsg("/fliph", "omo");
-	n.sendMsg("/flipv");
+	n.sendMsg("/flipv!");
 	n.sendMsg("/flipv", "omo");
 	n.sendMsg("/create", "omi", "om-walk-s");
 	n.sendMsg("/position", "omi", 0.5, 0.5);
@@ -286,11 +286,11 @@ Tdef(\test, {
 	n.sendMsg("/group", "inverted");
 	n.sendMsg("/ungroup", "inverted", "omi");
 	n.sendMsg("/group", "inverted");
-	n.sendMsg("/color", 0.8, 0.5, 0);
+	n.sendMsg("/color!", 0.8, 0.5, 0);
 	n.sendMsg("/color", "omi", 0, 0.5, 0.8);
 	n.sendMsg("/deselect", "*");
 	n.sendMsg("/list");
-	n.sendMsg("/free");
+	n.sendMsg("/free!");
 	n.sendMsg("/create", "fox", "fox-walk");
 	n.sendMsg("/create", "frog", "frog-jump");
 	n.sendMsg("/group", "others", "f*");
@@ -298,18 +298,18 @@ Tdef(\test, {
 	n.sendMsg("/speed", "others", 4);
 	n.sendMsg("/select", "others");
 	n.sendMsg("/list");
-	n.sendMsg("/free");
+	n.sendMsg("/free!");
 	n.sendMsg("/list");
 	n.sendMsg("/say", "omo", "something");
 	n.sendMsg("/say", "omi", "something else", 8);
 	n.sendMsg("/select", "oma");
-	n.sendMsg("/say", "I'm oma", 4);
+	n.sendMsg("/say!", "I'm oma", 4);
 	n.sendMsg("/deselect");
 }).play
 
 // The expected output is:
 /*
-Animation types:
+Available animations:
 	default
 	fox-walk
 	...
@@ -319,11 +319,11 @@ Error: OSC command not found: /invalid
 Error: No matches found for: *
 Status: Freed: []
 Anims: [  ]
-Status: Created node 'omo' with 'om-walk-SW'
-Status: Created node 'oma' with 'om-walk-NW'
+Status: Created node 'omo' with 'om-walk-sw'
+Status: Created node 'oma' with 'om-walk-nw'
 Status: selected: [omo, oma]
 Status: selected: [oma]
-Status: Created node 'omi' with 'om-walk-S'
+Status: Created node 'omi' with 'om-walk-s'
 Status: 'inverted' members: [omo, oma, omi]
 Status: 'inverted' members: [omo, oma]
 Anims: [ omo, oma, omi ]
@@ -334,7 +334,6 @@ Status: 'others' members: [fox, frog]
 Anims: [ omo, oma, omi, fox, frog ]
 Status: Freed: [fox, frog]
 Anims: [ omo, oma, omi ]
-Error: No matches found for: I'm oma
 */
 
 // And you should see a slow orange upside-down om at

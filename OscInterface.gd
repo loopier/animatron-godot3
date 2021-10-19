@@ -120,6 +120,10 @@ func getNames(objList):
 	return names
 
 func matchNodes(nameWildcard, sender):
+	if nameWildcard == "!":
+		# Match the current selected set
+		return get_tree().get_nodes_in_group(selectionGroup)
+
 	var matches = []
 	for a in animsNode.get_children():
 		if a.name.match(nameWildcard):
@@ -131,13 +135,16 @@ func matchNodes(nameWildcard, sender):
 		print("Matched: ", getNames(matches))
 	return matches
 
-func getOptionalSelectionArgs(inArgs, methodName, expectedArgs, sender):
-	if inArgs.size() == expectedArgs:
-			return { nodes = get_tree().get_nodes_in_group(selectionGroup), args = inArgs }
-	elif inArgs.size() == expectedArgs + 1:
-			return { nodes = matchNodes(inArgs[0], sender), args = [] if inArgs.size() < 2 else inArgs.slice(1, -1) }
+# expectedArgs refers to the number of expected arguments
+# *not* including the first (target) argument. It can be an
+# integer or an array of two values (min/max number of allowed
+# arguments).
+func getActorsAndArgs(inArgs, methodName, expectedArgs, sender):
+	if typeof(expectedArgs) == TYPE_INT: expectedArgs = [expectedArgs]
+	if inArgs.size() > expectedArgs.front() && inArgs.size() <= expectedArgs.back() + 1:
+		return { actors = matchNodes(inArgs[0], sender), args = inArgs.slice(1, -1) }
 	else:
-		reportError(methodName + ": unexpected number of arguments: " + String(inArgs.size()) + " instead of " + String(expectedArgs), sender)
+		reportError(methodName + ": unexpected number of arguments: " + String(inArgs.size()) + " instead of target plus " + String(expectedArgs), sender)
 		return
 
 func setShaderUniform(node, uName, uValue):
@@ -145,7 +152,7 @@ func setShaderUniform(node, uName, uValue):
 	image.material.set_shader_param(uName, uValue)
 
 ############################################################
-# OSC commands
+# OSC "other" commands
 ############################################################
 
 func createAnim(args, sender):
@@ -176,12 +183,6 @@ func createAnim(args, sender):
 	print("node: ", newNode.name)
 	print("anim: ", anim)
 	reportStatus("Created node '%s' with '%s'" % [newNode.name, anim], sender)
-
-func freeAnim(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "freeAnim", 0, sender)
-	if args: for node in args.nodes:
-		animsNode.remove_child(node)
-	reportStatus("Freed: " + String([] if !args else getNames(args.nodes)), sender)
 
 # List the instantiated actors
 func listActors(args, sender):
@@ -216,72 +217,6 @@ func listAssets(args, sender):
 #		names.push_back(a)
 	print(names)
 	sendMessage(sender, "/list/assets/reply", names)
-
-func playAnim(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "playAnim", 0, sender)
-	if args: for node in args.nodes:
-		var animName = node.get_node("Animation").get_animation()
-		node.get_node("Animation").play(animName)
-
-func stopAnim(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "stopAnim", 0, sender)
-	if args: for node in args.nodes:
-		node.get_node("Animation").stop()
-
-func setAnimFrame(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "setAnimFrame", 1, sender)
-	if args: for node in args.nodes:
-		node.get_node("Animation").set_frame(args.args[0])
-
-func setAnimPosition(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "setAnimPosition", 2, sender)
-	if args:
-		var viewSize = Vector2(
-			ProjectSettings.get_setting("display/window/size/width"),
-			ProjectSettings.get_setting("display/window/size/height")
-		)
-		for node in args.nodes:
-			node.set_position(viewSize * Vector2(args.args[0], args.args[1]))
-
-func setAnimSpeed(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "setAnimSpeed", 1, sender)
-	if args: for node in args.nodes:
-		node.get_node("Animation").set_speed_scale(args.args[0])
-
-func flipAnimH(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "flipAnimH", 0, sender)
-	if args: for node in args.nodes:
-		var anim = node.get_node("Animation")
-		anim.set_flip_h(not(anim.is_flipped_h()))
-
-func flipAnimV(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "flipAnimV", 0, sender)
-	if args: for node in args.nodes:
-		var anim = node.get_node("Animation")
-		anim.set_flip_v(not(anim.is_flipped_v()))
-
-func colorAnim(inArgs, sender):
-	var args = getOptionalSelectionArgs(inArgs, "colorAnim", 3, sender)
-	if args:
-		var rgb = Vector3(args.args[0], args.args[1], args.args[2])
-		for node in args.nodes:
-			setShaderUniform(node, "uAddColor", rgb)
-
-func sayAnim(inArgs, sender):
-	if !inArgs.empty():
-		var nodes = matchNodes(inArgs[0], sender)
-		var args = inArgs.slice(1, -1)
-		if nodes.empty():
-			nodes = get_tree().get_nodes_in_group(selectionGroup)
-			args = inArgs
-		for node in nodes:
-			var msg = String(args[0])
-			var bubble = speechBubbleNode.instance()
-			node.add_child(bubble)
-			if len(args) == 2:
-				bubble.setText(msg, args[1])
-			else:
-				bubble.setText(msg)
 
 func groupAnim(args, sender):
 	var groupName = args[0]
@@ -319,3 +254,77 @@ func listSelectedAnims(args, sender):
 	var nodes = get_tree().get_nodes_in_group(selectionGroup)
 	reportStatus("selected: " + String(getNames(nodes)), sender)
 
+
+############################################################
+# OSC Actor commands
+#   The first argument for all these commands is the target actor(s).
+#   It may be "!" (selection), an actor instance name or a wildcard string.
+############################################################
+
+func freeAnim(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "freeAnim", 0, sender)
+	if args: for node in args.actors:
+		animsNode.remove_child(node)
+	reportStatus("Freed: " + String([] if !args else getNames(args.actors)), sender)
+
+func playAnim(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "playAnim", 0, sender)
+	if args: for node in args.actors:
+		var animName = node.get_node("Animation").get_animation()
+		node.get_node("Animation").play(animName)
+
+func stopAnim(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "stopAnim", 0, sender)
+	if args: for node in args.actors:
+		node.get_node("Animation").stop()
+
+func setAnimFrame(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setAnimFrame", 1, sender)
+	if args: for node in args.actors:
+		node.get_node("Animation").set_frame(args.args[0])
+
+func setAnimPosition(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setAnimPosition", 2, sender)
+	if args:
+		var viewSize = Vector2(
+			ProjectSettings.get_setting("display/window/size/width"),
+			ProjectSettings.get_setting("display/window/size/height")
+		)
+		for node in args.actors:
+			node.set_position(viewSize * Vector2(args.args[0], args.args[1]))
+
+func setAnimSpeed(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setAnimSpeed", 1, sender)
+	if args: for node in args.actors:
+		node.get_node("Animation").set_speed_scale(args.args[0])
+
+func flipAnimH(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "flipAnimH", 0, sender)
+	if args: for node in args.actors:
+		var anim = node.get_node("Animation")
+		anim.set_flip_h(not(anim.is_flipped_h()))
+
+func flipAnimV(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "flipAnimV", 0, sender)
+	if args: for node in args.actors:
+		var anim = node.get_node("Animation")
+		anim.set_flip_v(not(anim.is_flipped_v()))
+
+func colorAnim(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "colorAnim", 3, sender)
+	if args:
+		var rgb = Vector3(args.args[0], args.args[1], args.args[2])
+		for node in args.actors:
+			setShaderUniform(node, "uAddColor", rgb)
+
+func sayAnim(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "sayAnim", [1, 2], sender)
+	if aa:
+		for node in aa.actors:
+			var msg = String(aa.args[0])
+			var bubble = speechBubbleNode.instance()
+			node.add_child(bubble)
+			if len(aa.args) == 2:
+				bubble.setText(msg, aa.args[1])
+			else:
+				bubble.setText(msg)

@@ -17,13 +17,11 @@ func _ready():
 	oscrcv.start()
 			
 func processOscMsg(address, args, msg):
-	var cmds = {
-		"/create": funcref($OscInterface, "createAnim"),
+	# Actor commands:
+	#   The first argument for all these commands is the target actor(s).
+	#   It may be "!" (selection), an actor instance name or a wildcard string.
+	var actorCmds = {
 		"/free": funcref($OscInterface, "freeAnim"),
-		"/list": funcref($OscInterface, "listActors"), # shortcut for /list/actors
-		"/list/actors": funcref($OscInterface, "listActors"),
-		"/list/anims": funcref($OscInterface, "listAnims"),
-		"/list/assets": funcref($OscInterface, "listAssets"),
 		"/play": funcref($OscInterface, "playAnim"),
 		"/stop": funcref($OscInterface, "stopAnim"),
 		"/frame": funcref($OscInterface, "setAnimFrame"),
@@ -33,6 +31,14 @@ func processOscMsg(address, args, msg):
 		"/flipv": funcref($OscInterface, "flipAnimV"),
 		"/color": funcref($OscInterface, "colorAnim"),
 		"/say": funcref($OscInterface, "sayAnim"),
+	}
+	
+	var otherCmds = {
+		"/create": funcref($OscInterface, "createAnim"),
+		"/list": funcref($OscInterface, "listActors"), # shortcut for /list/actors
+		"/list/actors": funcref($OscInterface, "listActors"),
+		"/list/anims": funcref($OscInterface, "listAnims"),
+		"/list/assets": funcref($OscInterface, "listAssets"),
 		"/group": funcref($OscInterface, "groupAnim"),
 		"/ungroup": funcref($OscInterface, "ungroupAnim"),
 		"/select": funcref($OscInterface, "selectAnim"),
@@ -41,8 +47,16 @@ func processOscMsg(address, args, msg):
 	}
 
 	var sender = [msg["ip"], msg["port"]]
-	if cmds.has(address):
-		cmds[address].call_func(args, sender)
+
+	var applyToSelection = address.ends_with("!")
+	if applyToSelection:
+		address = address.trim_suffix("!")
+		args.insert(0, "!")
+
+	if actorCmds.has(address):
+		actorCmds[address].call_func(args, sender)
+	elif otherCmds.has(address):
+		otherCmds[address].call_func(args, sender)
 	else:
 		$OscInterface.reportError("OSC command not found: " + address, sender)
 
