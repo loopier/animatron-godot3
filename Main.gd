@@ -34,6 +34,7 @@ func processOscMsg(address, args, msg):
 	}
 	
 	var otherCmds = {
+		"/load": funcref($OscInterface, "loadAsset"),
 		"/create": funcref($OscInterface, "createActor"),
 		"/list": funcref($OscInterface, "listActors"), # shortcut for /list/actors
 		"/list/actors": funcref($OscInterface, "listActors"),

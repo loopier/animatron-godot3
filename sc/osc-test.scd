@@ -256,6 +256,8 @@ n.sendMsg("/list/anims");
 // Alternative OSC interface testing (run OSCdef setup first)
 ////////////////////////////////////////////////////////////
 Tdef(\test, {
+	n.sendMsg("/list/assets");
+	["om-walk-sw", "om-walk-nw", "om-walk-s", "fox-walk", "frog-jump"].do{ |name| n.sendMsg("/load", name) };
 	n.sendMsg("/list/anims");
 	n.sendMsg("/invalid", "frog");
 	n.sendMsg("/free", "*");
@@ -309,12 +311,23 @@ Tdef(\test, {
 
 // The expected output is:
 /*
-Available animations:
+Available assets:
 	default
 	fox-walk
 	...
-	om-walk-W
-	runner-run
+	om-walk-w
+	pickaxe
+Status: loaded assets: [res://animations/om-walk-sw.png]
+Status: loaded assets: [res://animations/om-walk-nw.png]
+Status: loaded assets: [res://animations/om-walk-s.png]
+Status: loaded assets: [res://animations/fox-walk_6x1_8fps.png]
+Status: loaded assets: [res://animations/frog-jump_4x2_8fps.png]
+Available animations:
+	fox-walk
+	frog-jump
+	om-walk-nw
+	om-walk-s
+	om-walk-sw
 Error: OSC command not found: /invalid
 Error: No matches found for: *
 Status: Freed: []

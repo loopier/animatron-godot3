@@ -43,6 +43,7 @@ Address | Args <img width=400px/> | Description
 
 Address | Args <img width=250px/> | Description
 --------|------|------------
+`/load` | `asset:s` | Load an (animation) asset from disk. It will create an `anim` with the same name as the asset. Wildcards are supported, so several animations can be loaded at once. The list of assets available to load can be found by calling `/list/assets`.
 `/create` | `actor:s anim:s` | Create a new actor with a given (loaded) animation. If the named actor already exists, change its animation to the one specified. The initial position of a new actor will be random.
 `/list` or `/list/actors` | | Get list of current actor instances. Returned in the form of a `/list/actors/reply` OSC message.
 `/list/anims` | | Get list of available (loaded) animations. Returned in the form of a `/list/anims/reply` OSC message.

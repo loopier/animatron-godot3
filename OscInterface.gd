@@ -4,25 +4,41 @@ onready var main = get_parent()
 onready var actorsNode = main.get_node("Actors")
 onready var metanode = preload("res://MetaNode.tscn")
 onready var speechBubbleNode = preload("res://SpeechBubble.tscn")
-var runtimeLoadedFrames
+var animFramesLibrary
+var assetFilenameRegex
+const animationAssetPath = "res://animations/"
 const selectionGroup = "selected"
+const loadAllAssetsAtStartup = false
 
 func _ready():
-	runtimeLoadedFrames = loadRuntimeAnimations("res://animations/")
+	assetFilenameRegex = RegEx.new()
+	assetFilenameRegex.compile("(.+)_(\\d+)x(\\d+)_(\\d+)fps")
+
+	animFramesLibrary = metanode.instance().get_node("Animation").frames
+	if loadAllAssetsAtStartup:
+		loadRuntimeAnimations(getAssetFilesMatching(animationAssetPath, "*"))
 
 ############################################################
 # Helpers
 ############################################################
-func getRuntimeSpriteFiles(path):
+func getAssetBaseName(fileName):
+	var baseName = fileName.get_basename()
+	var split = baseName.split("_", false, 1)
+	if !split.empty(): baseName = split[0]
+	return baseName
+
+func getAssetFilesMatching(path, nameWildcard):
 	var dir = Directory.new()
 	var files = []
 	if dir.open(path) == OK:
 		dir.list_dir_begin(true, true)
 		var file_name = dir.get_next()
 		while (!file_name.empty() && !dir.current_is_dir()):
-			print("File name: ", file_name)  # Debugging release builds
 			if file_name.ends_with(".png") || file_name.ends_with(".jpg"):
-				files.push_back(path + file_name)
+				var baseFile = getAssetBaseName(file_name)
+				if baseFile.match(nameWildcard):
+					print("File name: ", file_name)  # Debugging release builds
+					files.push_back(path + file_name)
 			file_name = dir.get_next()
 	return files
 
@@ -36,9 +52,7 @@ func getExternalTexture(path):
 
 func getSpriteFileInfo(name):
 	var dict = {}
-	var regex = RegEx.new()
-	regex.compile("(.+)_(\\d+)x(\\d+)_(\\d+)fps")
-	var result = regex.search(name)
+	var result = assetFilenameRegex.search(name)
 	if result:
 		print(result.get_string()) # Would print n-0123
 		dict.name = result.get_string(1)
@@ -53,20 +67,18 @@ func getSpriteFileInfo(name):
 		dict.fps = 24
 	return dict
 	
-func loadRuntimeAnimations(path):
-	var sprites = getRuntimeSpriteFiles(path)
+func loadRuntimeAnimations(sprites):
 	print("Runtime sprites:", sprites)
 	# Add the runtime-loaded sprites to our pre-existing library
-	var frames = metanode.instance().get_node("Animation").frames
 	for spritePath in sprites:
 		var res
 		# res = load(spritePath)
 		if !res: res = getExternalTexture(spritePath)
 		if res:
 			var info = getSpriteFileInfo(spritePath.get_file().get_basename())
-			frames.remove_animation(info.name)
-			frames.add_animation(info.name)
-			frames.set_animation_speed(info.name, info.fps)
+			animFramesLibrary.remove_animation(info.name)
+			animFramesLibrary.add_animation(info.name)
+			animFramesLibrary.set_animation_speed(info.name, info.fps)
 			var width = res.get_size().x / info.xStep
 			var height = res.get_size().y / info.yStep
 			var frameId = 0
@@ -76,9 +88,8 @@ func loadRuntimeAnimations(path):
 					texture.atlas = res
 					texture.region = Rect2(width * x, height * y, width, height)
 					texture.margin = Rect2(0, 0, 0, 0)
-					frames.add_frame(info.name, texture, frameId)
+					animFramesLibrary.add_frame(info.name, texture, frameId)
 					frameId += 1
-	return frames
 
 # For now, it just creates a sender instance each call,
 # so isn't designed for continuous/heavy use...
@@ -151,10 +162,27 @@ func setShaderUniform(node, uName, uValue):
 # OSC "other" commands
 ############################################################
 
+func loadAsset(args, sender):
+	if args.size() != 1:
+		reportError("loadAsset expects one argument", sender)
+		return
+	var assetName = args[0]
+	var assets = getAssetFilesMatching(animationAssetPath, assetName)
+	var loadAssets = []
+	for path in assets:
+		var info = getSpriteFileInfo(path.get_file().get_basename())
+		if info.name.match(assetName):
+			loadAssets.push_back(path)
+	loadRuntimeAnimations(loadAssets)
+	reportStatus("loaded assets: " + String(loadAssets), sender)
+	
 func createActor(args, sender):
+	if args.size() != 2:
+		reportError("createActor expects two arguments", sender)
+		return
 	var nodeName = args[0]
 	var animName = args[1]
-	if !runtimeLoadedFrames.has_animation(animName):
+	if !animFramesLibrary.has_animation(animName):
 		reportError("Anim not found: '%s'" % animName, sender)
 		return
 	var newNode = actorsNode.get_node(nodeName)
@@ -164,7 +192,7 @@ func createActor(args, sender):
 		newNode.name = nodeName
 		newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
 		# Switch to the animation library that includes runtime-loaded data
-		newNode.get_node("Animation").frames = runtimeLoadedFrames
+		newNode.get_node("Animation").frames = animFramesLibrary
 		actorsNode.add_child(newNode)
 
 	var animNode = newNode.get_node("Animation")
@@ -197,20 +225,21 @@ func listAnims(args, sender):
 		reportError("listAnims expects no arguments", sender)
 		return
 	var names = []
-	for a in runtimeLoadedFrames.get_animation_names():
+	for a in animFramesLibrary.get_animation_names():
 		names.push_back(a)
 	print(names)
 	sendMessage(sender, "/list/anims/reply", names)
 
 # List the assets/files on disk
 func listAssets(args, sender):
-	# TODO
 	if !args.empty():
 		reportError("listAssets expects no arguments", sender)
 		return
-	var names = ["example", "assets", "(TODO)"]
-#	for a in runtimeLoadedFrames.get_animation_names():
-#		names.push_back(a)
+	var assets = getAssetFilesMatching(animationAssetPath, "*")
+	var names = []
+	for path in assets:
+		var info = getSpriteFileInfo(path.get_file().get_basename())
+		names.push_back(info.name)
 	print(names)
 	sendMessage(sender, "/list/assets/reply", names)
 
