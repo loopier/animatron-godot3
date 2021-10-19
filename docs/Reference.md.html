@@ -26,13 +26,13 @@ Animatron.
     and `?` (match exactly one character) may be used as actor name
     wildcards.
 
-Address | Args <img width=350px/> | Description
+Address | Args <img width=400px/> | Description
 --------|------|------------
 `/free` <br/> `/free!` | `actor:s` <br/> - | Delete the actor (remove its instance).
 `/play` <br/> `/play!` | `actor:s` <br/> - | Play the actor's animation from the current frame.
 `/stop` <br/> `/stop!` | `actor:s` <br/> - | Stop playing the actor's animation.
 `/frame` <br/> `/frame!` | `actor:s frame:i` <br/> `frame:i` | Jump to the given frame number (with wrapping).
-`/position` <br/> `/position!` | `actor:s x:f y:f` <br/> `x:f y:f` | Set the actor to the x,y coordinates (specified as fractions of the viewport from 0-1).
+`/position` <br/> `/position!` | `actor:s x:f y:f [dur:f]` <br/> `x:f y:f [dur:f]` | Set the actor to the x,y coordinates (specified as fractions of the viewport from 0-1). If `dur` is set, interpolate the movement over that number of seconds, otherwise move instantaneously.
 `/speed` <br/> `/speed!` | `actor:s rate:f` <br/> `rate:f` | Set the playback speed (1 is normal speed).
 `/fliph` <br/> `/fliph!` | `actor:s` <br/> - | Flip the actor horizontally.
 `/flipv` <br/> `/flipv!` | `actor:s` <br/> - | Flip the actor vertically.

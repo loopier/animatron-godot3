@@ -273,7 +273,7 @@ Tdef(\test, {
 	n.sendMsg("/play!");
 	n.sendMsg("/play", "om?");
 	n.sendMsg("/position!", 0.25, 0.25);
-	n.sendMsg("/position", "omo", 0.75, 0.5);
+	n.sendMsg("/position", "omo", 0.75, 0.5, 2);
 	n.sendMsg("/speed!", 0.5);
 	n.sendMsg("/speed", "omo", 1.5);
 	n.sendMsg("/fliph!");

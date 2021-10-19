@@ -33,3 +33,5 @@ material = SubResource( 2 )
 frames = SubResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="Tween" type="Tween" parent="."]

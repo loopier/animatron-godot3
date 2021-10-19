@@ -284,14 +284,21 @@ func setAnimFrame(inArgs, sender):
 		node.get_node("Animation").set_frame(args.args[0])
 
 func setAnimPosition(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "setAnimPosition", 2, sender)
+	var args = getActorsAndArgs(inArgs, "setAnimPosition", [2, 3], sender)
 	if args:
 		var viewSize = Vector2(
 			ProjectSettings.get_setting("display/window/size/width"),
 			ProjectSettings.get_setting("display/window/size/height")
 		)
+		var dur = 0 if args.args.size() == 2 else args.args[2]
 		for node in args.actors:
-			node.set_position(viewSize * Vector2(args.args[0], args.args[1]))
+			var tween = node.get_node("Tween")
+			tween.interpolate_property(node, "position",
+				node.position,
+				viewSize * Vector2(args.args[0], args.args[1]),
+				dur,
+				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
 
 func setAnimSpeed(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setAnimSpeed", 1, sender)
