@@ -1,17 +1,13 @@
 extends Node
 
-var main
-var animsNode
-var metanode
-var speechBubbleNode
+onready var main = get_parent()
+onready var actorsNode = main.get_node("Actors")
+onready var metanode = preload("res://MetaNode.tscn")
+onready var speechBubbleNode = preload("res://SpeechBubble.tscn")
 var runtimeLoadedFrames
 const selectionGroup = "selected"
 
 func _ready():
-	main = get_parent()
-	animsNode = main.get_node("Anims")
-	metanode = preload("res://MetaNode.tscn")
-	speechBubbleNode = preload("res://SpeechBubble.tscn")
 	runtimeLoadedFrames = loadRuntimeAnimations("res://animations/")
 
 ############################################################
@@ -107,7 +103,7 @@ func reportStatus(statusString, target):
 	sendMessage(target, "/status/reply", [statusString])
 
 func getNode(nodeName, sender):
-	var node = animsNode.find_node(nodeName, true, false)
+	var node = actorsNode.find_node(nodeName, true, false)
 	if node:
 		return node
 	else:
@@ -125,7 +121,7 @@ func matchNodes(nameWildcard, sender):
 		return get_tree().get_nodes_in_group(selectionGroup)
 
 	var matches = []
-	for a in animsNode.get_children():
+	for a in actorsNode.get_children():
 		if a.name.match(nameWildcard):
 			matches.push_back(a)
 	if matches.empty(): matches = get_tree().get_nodes_in_group(nameWildcard)
@@ -155,13 +151,13 @@ func setShaderUniform(node, uName, uValue):
 # OSC "other" commands
 ############################################################
 
-func createAnim(args, sender):
+func createActor(args, sender):
 	var nodeName = args[0]
 	var animName = args[1]
 	if !runtimeLoadedFrames.has_animation(animName):
-		reportError("Anim type not found: '%s'" % animName, sender)
+		reportError("Anim not found: '%s'" % animName, sender)
 		return
-	var newNode = animsNode.get_node(nodeName)
+	var newNode = actorsNode.get_node(nodeName)
 	if newNode == null:
 		print("creating node '%s'" % [nodeName])
 		newNode = metanode.instance()
@@ -169,7 +165,7 @@ func createAnim(args, sender):
 		newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
 		# Switch to the animation library that includes runtime-loaded data
 		newNode.get_node("Animation").frames = runtimeLoadedFrames
-		animsNode.add_child(newNode)
+		actorsNode.add_child(newNode)
 
 	var animNode = newNode.get_node("Animation")
 	animNode.play(animName)
@@ -180,7 +176,7 @@ func createAnim(args, sender):
 	var texSize = animNode.frames.get_frame(animName, 0).get_size()
 	animNode.position = Vector2(0, texSize.y * -0.45)
 	
-	print("node: ", newNode.name)
+	print("actor: ", newNode.name)
 	print("anim: ", anim)
 	reportStatus("Created node '%s' with '%s'" % [newNode.name, anim], sender)
 
@@ -190,7 +186,7 @@ func listActors(args, sender):
 		reportError("listActors expects no arguments", sender)
 		return
 	var pairs = {}
-	for a in animsNode.get_children():
+	for a in actorsNode.get_children():
 		pairs[a.name] = a.get_node("Animation").get_animation()
 	print(pairs)
 	sendMessage(sender, "/list/actors/reply", pairs)
@@ -218,7 +214,7 @@ func listAssets(args, sender):
 	print(names)
 	sendMessage(sender, "/list/assets/reply", names)
 
-func groupAnim(args, sender):
+func groupActor(args, sender):
 	var groupName = args[0]
 	if args.size() == 1:
 		# With no other arguments, just list the members
@@ -228,28 +224,28 @@ func groupAnim(args, sender):
 		for node in matchNodes(args[1], sender):
 			node.add_to_group(groupName)
 	
-func ungroupAnim(args, sender):
+func ungroupActor(args, sender):
 	var groupName = args[0]
 	for node in matchNodes(args[1], sender):
 		node.remove_from_group(groupName)
 	
-func selectAnim(args, sender):
+func selectActor(args, sender):
 	if args.empty():
-		listSelectedAnims(args, sender)
+		listSelectedActors(args, sender)
 	else:
 		for node in matchNodes(args[0], sender):
 			node.add_to_group(selectionGroup)
 			setShaderUniform(node, "uSelected", true)
 
-func deselectAnim(args, sender):
+func deselectActor(args, sender):
 	if args.empty(): args = ["*"];
 	for node in matchNodes(args[0], sender):
 		node.remove_from_group(selectionGroup)
 		setShaderUniform(node, "uSelected", false)
 
-func listSelectedAnims(args, sender):
+func listSelectedActors(args, sender):
 	if !args.empty():
-		reportError("listSelectedAnims expects no arguments", sender)
+		reportError("listSelectedActors expects no arguments", sender)
 		return
 	var nodes = get_tree().get_nodes_in_group(selectionGroup)
 	reportStatus("selected: " + String(getNames(nodes)), sender)
@@ -261,30 +257,30 @@ func listSelectedAnims(args, sender):
 #   It may be "!" (selection), an actor instance name or a wildcard string.
 ############################################################
 
-func freeAnim(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "freeAnim", 0, sender)
+func freeActor(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "freeActor", 0, sender)
 	if args: for node in args.actors:
-		animsNode.remove_child(node)
+		actorsNode.remove_child(node)
 	reportStatus("Freed: " + String([] if !args else getNames(args.actors)), sender)
 
-func playAnim(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "playAnim", 0, sender)
+func playActor(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "playActor", 0, sender)
 	if args: for node in args.actors:
 		var animName = node.get_node("Animation").get_animation()
 		node.get_node("Animation").play(animName)
 
-func stopAnim(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "stopAnim", 0, sender)
+func stopActor(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "stopActor", 0, sender)
 	if args: for node in args.actors:
 		node.get_node("Animation").stop()
 
-func setAnimFrame(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "setAnimFrame", 1, sender)
+func setActorFrame(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setActorFrame", 1, sender)
 	if args: for node in args.actors:
 		node.get_node("Animation").set_frame(args.args[0])
 
-func setAnimPosition(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "setAnimPosition", [2, 3], sender)
+func setActorPosition(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setActorPosition", [2, 3], sender)
 	if args:
 		var viewSize = Vector2(
 			ProjectSettings.get_setting("display/window/size/width"),
@@ -300,32 +296,32 @@ func setAnimPosition(inArgs, sender):
 				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 			tween.start()
 
-func setAnimSpeed(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "setAnimSpeed", 1, sender)
+func setActorSpeed(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setActorSpeed", 1, sender)
 	if args: for node in args.actors:
 		node.get_node("Animation").set_speed_scale(args.args[0])
 
-func flipAnimH(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "flipAnimH", 0, sender)
+func flipActorH(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "flipActorH", 0, sender)
 	if args: for node in args.actors:
 		var anim = node.get_node("Animation")
 		anim.set_flip_h(not(anim.is_flipped_h()))
 
-func flipAnimV(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "flipAnimV", 0, sender)
+func flipActorV(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "flipActorV", 0, sender)
 	if args: for node in args.actors:
 		var anim = node.get_node("Animation")
 		anim.set_flip_v(not(anim.is_flipped_v()))
 
-func colorAnim(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "colorAnim", 3, sender)
+func colorActor(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "colorActor", 3, sender)
 	if args:
 		var rgb = Vector3(args.args[0], args.args[1], args.args[2])
 		for node in args.actors:
 			setShaderUniform(node, "uAddColor", rgb)
 
-func sayAnim(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "sayAnim", [1, 2], sender)
+func sayActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "sayActor", [1, 2], sender)
 	if aa:
 		for node in aa.actors:
 			var msg = String(aa.args[0])
