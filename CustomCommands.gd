@@ -36,3 +36,9 @@ func loadCommandFile(path):
 
 	for k in commands:
 		print("Command: ", k, "\n", commands[k])
+
+func hasCommand(address):
+	return commands.has(address)
+
+func getCommand(address):
+	return commands[address]

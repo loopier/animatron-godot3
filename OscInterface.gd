@@ -185,8 +185,11 @@ func createActor(args, sender):
 	if !animFramesLibrary.has_animation(animName):
 		reportError("Anim not found: '%s'" % animName, sender)
 		return
-	var newNode = actorsNode.get_node(nodeName)
-	if newNode == null:
+	var newNode
+	if actorsNode.has_node(nodeName):
+		print("replacing node '%s'" % [nodeName])
+		newNode = actorsNode.get_node(nodeName)
+	else:
 		print("creating node '%s'" % [nodeName])
 		newNode = metanode.instance()
 		newNode.name = nodeName
@@ -203,9 +206,6 @@ func createActor(args, sender):
 	var anim = animNode.get_animation()
 	var texSize = animNode.frames.get_frame(animName, 0).get_size()
 	animNode.position = Vector2(0, texSize.y * -0.45)
-	
-	print("actor: ", newNode.name)
-	print("anim: ", anim)
 	reportStatus("Created node '%s' with '%s'" % [newNode.name, anim], sender)
 
 # List the instantiated actors
@@ -256,7 +256,8 @@ func groupActor(args, sender):
 func ungroupActor(args, sender):
 	var groupName = args[0]
 	for node in matchNodes(args[1], sender):
-		node.remove_from_group(groupName)
+		if node.is_in_group(groupName):
+			node.remove_from_group(groupName)
 	
 func selectActor(args, sender):
 	if args.empty():
@@ -269,7 +270,8 @@ func selectActor(args, sender):
 func deselectActor(args, sender):
 	if args.empty(): args = ["*"];
 	for node in matchNodes(args[0], sender):
-		node.remove_from_group(selectionGroup)
+		if node.is_in_group(selectionGroup):
+			node.remove_from_group(selectionGroup)
 		setShaderUniform(node, "uSelected", false)
 
 func listSelectedActors(args, sender):

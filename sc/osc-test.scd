@@ -354,3 +354,9 @@ Anims: [ omo, oma, omi ]
 // centre, and a fast black upside-down om at the right.
 // They'll have some speech bubbles that last a short while.
 )
+
+// If you have a commands/init.csv file installed that defines
+// /createsel and /startup, you can run these custom commands
+// (like macros).
+n.sendMsg("/createsel", "frog", "frog-jump")
+n.sendMsg("/startup");

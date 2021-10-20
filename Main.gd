@@ -1,6 +1,34 @@
 extends Node2D
 
 var oscrcv
+# Actor commands:
+#   The first argument for all these commands is the target actor(s).
+#   It may be "!" (selection), an actor instance name or a wildcard string.
+onready var actorCmds = {
+	"/free": funcref($OscInterface, "freeActor"),
+	"/play": funcref($OscInterface, "playActor"),
+	"/stop": funcref($OscInterface, "stopActor"),
+	"/frame": funcref($OscInterface, "setActorFrame"),
+	"/position": funcref($OscInterface, "setActorPosition"),
+	"/speed": funcref($OscInterface, "setActorSpeed"),
+	"/fliph": funcref($OscInterface, "flipActorH"),
+	"/flipv": funcref($OscInterface, "flipActorV"),
+	"/color": funcref($OscInterface, "colorActor"),
+	"/say": funcref($OscInterface, "sayActor"),
+}
+onready var otherCmds = {
+	"/load": funcref($OscInterface, "loadAsset"),
+	"/create": funcref($OscInterface, "createActor"),
+	"/list": funcref($OscInterface, "listActors"), # shortcut for /list/actors
+	"/list/actors": funcref($OscInterface, "listActors"),
+	"/list/anims": funcref($OscInterface, "listAnims"),
+	"/list/assets": funcref($OscInterface, "listAssets"),
+	"/group": funcref($OscInterface, "groupActor"),
+	"/ungroup": funcref($OscInterface, "ungroupActor"),
+	"/select": funcref($OscInterface, "selectActor"),
+	"/deselect": funcref($OscInterface, "deselectActor"),
+	"/selected": funcref($OscInterface, "listSelectedActors"),
+}
 
 func _ready():
 	randomize()
@@ -17,40 +45,9 @@ func _ready():
 	oscrcv.start()
 	
 	$CustomCommands.loadCommandFile("res://commands/init.csv")
-			
-func processOscMsg(address, args, msg):
-	# Actor commands:
-	#   The first argument for all these commands is the target actor(s).
-	#   It may be "!" (selection), an actor instance name or a wildcard string.
-	var actorCmds = {
-		"/free": funcref($OscInterface, "freeActor"),
-		"/play": funcref($OscInterface, "playActor"),
-		"/stop": funcref($OscInterface, "stopActor"),
-		"/frame": funcref($OscInterface, "setActorFrame"),
-		"/position": funcref($OscInterface, "setActorPosition"),
-		"/speed": funcref($OscInterface, "setActorSpeed"),
-		"/fliph": funcref($OscInterface, "flipActorH"),
-		"/flipv": funcref($OscInterface, "flipActorV"),
-		"/color": funcref($OscInterface, "colorActor"),
-		"/say": funcref($OscInterface, "sayActor"),
-	}
-	
-	var otherCmds = {
-		"/load": funcref($OscInterface, "loadAsset"),
-		"/create": funcref($OscInterface, "createActor"),
-		"/list": funcref($OscInterface, "listActors"), # shortcut for /list/actors
-		"/list/actors": funcref($OscInterface, "listActors"),
-		"/list/anims": funcref($OscInterface, "listAnims"),
-		"/list/assets": funcref($OscInterface, "listAssets"),
-		"/group": funcref($OscInterface, "groupActor"),
-		"/ungroup": funcref($OscInterface, "ungroupActor"),
-		"/select": funcref($OscInterface, "selectActor"),
-		"/deselect": funcref($OscInterface, "deselectActor"),
-		"/selected": funcref($OscInterface, "listSelectedActors"),
-	}
 
-	var sender = [msg["ip"], msg["port"]]
-
+func evalOscCommand(address, args, sender):
+	print("+++ evalOscCommand(", address, ", ", String(args), ")")
 	var applyToSelection = address.ends_with("!")
 	if applyToSelection:
 		address = address.trim_suffix("!")
@@ -60,8 +57,22 @@ func processOscMsg(address, args, msg):
 		actorCmds[address].call_func(args, sender)
 	elif otherCmds.has(address):
 		otherCmds[address].call_func(args, sender)
+	elif $CustomCommands.hasCommand(address):
+		var cmd = $CustomCommands.getCommand(address)
+		for subCmd in cmd.cmds:
+			var subAddr = subCmd[0]
+			var subArgs = subCmd.slice(1, -1)
+			for i in range(0, subArgs.size()):
+				if subArgs[i].begins_with("$"):
+					var idx = cmd.args.find(subArgs[i].substr(1))
+					if idx >= 0: subArgs[i] = args[idx]
+			evalOscCommand(subAddr, subArgs, sender)
 	else:
 		$OscInterface.reportError("OSC command not found: " + address, sender)
+
+func processOscMsg(address, args, msg):
+	var sender = [msg["ip"], msg["port"]]
+	evalOscCommand(address, args, sender)
 
 func _process(_delta):
 	# check if there are pending messages
