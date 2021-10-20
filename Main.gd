@@ -15,6 +15,8 @@ func _ready():
 	oscrcv.setup( 56101 )
 	# [mandatory] starting the reception of messages
 	oscrcv.start()
+	
+	$CustomCommands.loadCommandFile("res://commands/init.csv")
 			
 func processOscMsg(address, args, msg):
 	# Actor commands:
