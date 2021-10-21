@@ -358,5 +358,11 @@ Anims: [ omo, oma, omi ]
 // If you have a commands/init.csv file installed that defines
 // /createsel and /startup, you can run these custom commands
 // (like macros).
-n.sendMsg("/createsel", "frog", "frog-jump")
 n.sendMsg("/startup");
+n.sendMsg("/createsel", "frog", "frog-jump")
+n.sendMsg("/deselect")
+
+n.sendMsg("/defcmd", "/hello", "/list/assets", "/group bob")
+n.sendMsg("/hello")
+n.sendMsg("/defcmd", "/test arg1 b", "/create $arg1 $b")
+n.sendMsg("/test", "fred", "steve")

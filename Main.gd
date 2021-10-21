@@ -28,6 +28,7 @@ onready var otherCmds = {
 	"/select": funcref($OscInterface, "selectActor"),
 	"/deselect": funcref($OscInterface, "deselectActor"),
 	"/selected": funcref($OscInterface, "listSelectedActors"),
+	"/defcmd": funcref($OscInterface, "defCommand"),
 }
 
 func _ready():
@@ -59,10 +60,14 @@ func evalOscCommand(address, args, sender):
 		otherCmds[address].call_func(args, sender)
 	elif $CustomCommands.hasCommand(address):
 		var cmd = $CustomCommands.getCommand(address)
+		if args.size() != cmd.args.size():
+			$OscInterface.reportError("Custom command '%s' expects %d arguments"
+					% [address, cmd.args.size()], sender)
+			return
 		for subCmd in cmd.cmds:
 			var subAddr = subCmd[0]
-			var subArgs = subCmd.slice(1, -1)
-			for i in range(0, subArgs.size()):
+			var subArgs = Array(subCmd).slice(1, -1) if subCmd.size() > 1 else []
+			for i in range(subArgs.size()):
 				if subArgs[i].begins_with("$"):
 					var idx = cmd.args.find(subArgs[i].substr(1))
 					if idx >= 0: subArgs[i] = args[idx]

@@ -1,9 +1,13 @@
+class_name CustomCommands
 extends Node
 
 var commands = {}
 
 func _ready():
 	pass
+
+func defineCommand(defCommand : String, defArgs : Array, commandList : Array):
+	commands[defCommand] = { args = defArgs, cmds = commandList }
 
 func loadCommandFile(path):
 	var file = File.new()
@@ -21,7 +25,7 @@ func loadCommandFile(path):
 		if !file.eof_reached() && !filteredLine.empty():
 			if filteredLine[0] == "def" && filteredLine.size() > 1:
 				if defCommand && !commandList.empty():
-					commands[defCommand] = { args = defArgs, cmds = commandList }
+					defineCommand(defCommand, defArgs, commandList)
 				defCommand = filteredLine[1]
 				defArgs = filteredLine.slice(2, -1)
 				commandList = []
@@ -32,7 +36,7 @@ func loadCommandFile(path):
 		lineNum += 1
 	file.close()
 	if defCommand && !commandList.empty():
-		commands[defCommand] = { args = defArgs, cmds = commandList }
+		defineCommand(defCommand, defArgs, commandList)
 
 	for k in commands:
 		print("Command: ", k, "\n", commands[k])

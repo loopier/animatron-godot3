@@ -2,6 +2,7 @@ extends Node
 
 onready var main = get_parent()
 onready var actorsNode = main.get_node("Actors")
+onready var customCmds : CustomCommands = main.get_node("CustomCommands")
 onready var metanode = preload("res://MetaNode.tscn")
 onready var speechBubbleNode = preload("res://SpeechBubble.tscn")
 var animFramesLibrary
@@ -281,6 +282,17 @@ func listSelectedActors(args, sender):
 	var nodes = get_tree().get_nodes_in_group(selectionGroup)
 	reportStatus("selected: " + String(getNames(nodes)), sender)
 
+func defCommand(args, sender):
+	if args.size() < 2:
+		reportError("defCommand expects at least two arguments", sender)
+		return
+	var defSplit = args[0].split(" ", false)
+	var defName = defSplit[0]
+	var defArgs = Array(defSplit).slice(1, -1) if defSplit.size() > 1 else []
+	var defCmds = []
+	for subCmd in args.slice(1, -1):
+		defCmds.push_back(subCmd.split(" ", false))
+	customCmds.defineCommand(defName, defArgs, defCmds)
 
 ############################################################
 # OSC Actor commands
