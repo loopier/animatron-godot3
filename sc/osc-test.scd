@@ -358,9 +358,18 @@ Anims: [ omo, oma, omi ]
 // If you have a commands/init.csv file installed that defines
 // /createsel and /startup, you can run these custom commands
 // (like macros).
+n.sendMsg("/wait", 2)
 n.sendMsg("/startup");
 n.sendMsg("/createsel", "frog", "frog-jump")
 n.sendMsg("/deselect")
+
+n.sendMsg("/defcmd", "/waitasset", "/wait 0.5", "/list/assets")
+n.sendMsg("/defcmd", "/waitanim", "/wait 1.5", "/list/anims")
+n.sendMsg("/defcmd", "/waitlist", "/waitasset", "/waitanim")
+n.sendMsg("/waitlist")
+
+n.sendMsg("/defcmd", "/waitlist", "/wait 2", "/list/assets", "/wait 2", "/list/anims")
+n.sendMsg("/waitlist")
 
 n.sendMsg("/defcmd", "/hello", "/list/assets", "/group bob")
 n.sendMsg("/hello")

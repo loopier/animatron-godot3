@@ -29,6 +29,7 @@ onready var otherCmds = {
 	"/deselect": funcref($OscInterface, "deselectActor"),
 	"/selected": funcref($OscInterface, "listSelectedActors"),
 	"/defcmd": funcref($OscInterface, "defCommand"),
+	# "/wait" command is handled specially 
 }
 
 func _ready():
@@ -47,7 +48,24 @@ func _ready():
 	
 	$CustomCommands.loadCommandFile("res://commands/init.csv")
 
-func evalOscCommand(address, args, sender):
+func evalCommandList(commands : Array, sender):
+	while !commands.empty():
+		var cmd = commands.pop_front()
+		var addr = cmd[0]
+		var args = cmd.slice(1, -1) if cmd.size() > 1 else []
+		if addr == "/wait":
+			var waitTime = $OscInterface.wait(args, sender)
+			if waitTime:
+				print("Starting wait of %f seconds..." % [waitTime])
+				yield(get_tree().create_timer(waitTime), "timeout")
+				print("...done waiting %f seconds" % [waitTime])
+		else:
+			var subCmds = evalOscCommand(addr, args, sender)
+			if typeof(subCmds) == TYPE_ARRAY:
+					commands = subCmds + commands
+
+
+func evalOscCommand(address : String, args, sender):
 	print("+++ evalOscCommand(", address, ", ", String(args), ")")
 	var applyToSelection = address.ends_with("!")
 	if applyToSelection:
@@ -64,6 +82,7 @@ func evalOscCommand(address, args, sender):
 			$OscInterface.reportError("Custom command '%s' expects %d arguments"
 					% [address, cmd.args.size()], sender)
 			return
+		var subCmds = []
 		for subCmd in cmd.cmds:
 			var subAddr = subCmd[0]
 			var subArgs = Array(subCmd).slice(1, -1) if subCmd.size() > 1 else []
@@ -71,13 +90,16 @@ func evalOscCommand(address, args, sender):
 				if subArgs[i].begins_with("$"):
 					var idx = cmd.args.find(subArgs[i].substr(1))
 					if idx >= 0: subArgs[i] = args[idx]
-			evalOscCommand(subAddr, subArgs, sender)
+			subCmds.push_back([subAddr] + subArgs)
+			# Evaluation happens later, in the caller
+		return subCmds
 	else:
 		$OscInterface.reportError("OSC command not found: " + address, sender)
 
-func processOscMsg(address, args, msg):
+
+func processOscMsg(address : String, args : Array, msg):
 	var sender = [msg["ip"], msg["port"]]
-	evalOscCommand(address, args, sender)
+	evalCommandList([[address] + args], sender)
 
 func _process(_delta):
 	# check if there are pending messages

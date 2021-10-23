@@ -294,6 +294,15 @@ func defCommand(args, sender):
 		defCmds.push_back(subCmd.split(" ", false))
 	customCmds.defineCommand(defName, defArgs, defCmds)
 
+
+func wait(args, sender):
+	if args.size() != 1:
+		reportError("wait expects one argument", sender)
+		return
+	var waitTime = args[0] as float
+	return waitTime
+
+
 ############################################################
 # OSC Actor commands
 #   The first argument for all these commands is the target actor(s).
