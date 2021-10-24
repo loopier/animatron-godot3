@@ -3,15 +3,17 @@ extends Node
 
 var commands = {}
 
-func _ready():
-	pass
 
 func defineCommand(defCommand : String, defArgs : Array, commandList : Array):
 	commands[defCommand] = { args = defArgs, cmds = commandList }
 
+
 func loadCommandFile(path):
 	var file = File.new()
 	file.open(path, File.READ)
+	if not file.is_open():
+		print("Unable to open command defs file: " + path)
+		return false
 	var lineNum = 1
 	var defCommand
 	var defArgs = []
@@ -40,9 +42,12 @@ func loadCommandFile(path):
 
 	for k in commands:
 		print("Command: ", k, "\n", commands[k])
+	return true
+
 
 func hasCommand(address):
 	return commands.has(address)
+
 
 func getCommand(address):
 	return commands[address]

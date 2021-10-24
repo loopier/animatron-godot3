@@ -19,6 +19,7 @@ func _ready():
 	if loadAllAssetsAtStartup:
 		loadRuntimeAnimations(getAssetFilesMatching(animationAssetPath, "*"))
 
+
 ############################################################
 # Helpers
 ############################################################
@@ -27,6 +28,7 @@ func getAssetBaseName(fileName):
 	var split = baseName.split("_", false, 1)
 	if !split.empty(): baseName = split[0]
 	return baseName
+
 
 func getAssetFilesMatching(path, nameWildcard):
 	var dir = Directory.new()
@@ -43,6 +45,7 @@ func getAssetFilesMatching(path, nameWildcard):
 			file_name = dir.get_next()
 	return files
 
+
 func getExternalTexture(path):
 	var img = Image.new()
 	img.load(path)
@@ -50,6 +53,7 @@ func getExternalTexture(path):
 	# We don't want interpolation or repeats here
 	texture.create_from_image(img, Texture.FLAG_MIPMAPS)
 	return texture
+
 
 func getSpriteFileInfo(name):
 	var dict = {}
@@ -68,6 +72,7 @@ func getSpriteFileInfo(name):
 		dict.fps = 24
 	return dict
 	
+
 func loadRuntimeAnimations(sprites):
 	print("Runtime sprites:", sprites)
 	# Add the runtime-loaded sprites to our pre-existing library
@@ -92,6 +97,7 @@ func loadRuntimeAnimations(sprites):
 					animFramesLibrary.add_frame(info.name, texture, frameId)
 					frameId += 1
 
+
 # For now, it just creates a sender instance each call,
 # so isn't designed for continuous/heavy use...
 func sendMessage(target, oscAddress, oscArgs):
@@ -106,13 +112,16 @@ func sendMessage(target, oscAddress, oscArgs):
 	oscsnd.send()
 	oscsnd.stop()
 
+
 func reportError(errString, target):
 	push_error(errString)
 	sendMessage(target, "/error/reply", [errString])
 
+
 func reportStatus(statusString, target):
 	print(statusString)
 	sendMessage(target, "/status/reply", [statusString])
+
 
 func getNode(nodeName, sender):
 	var node = actorsNode.find_node(nodeName, true, false)
@@ -122,10 +131,12 @@ func getNode(nodeName, sender):
 		reportError("Node not found: " + nodeName, sender)
 		return false
 
+
 func getNames(objList):
 	var names = []
 	for o in objList: names.push_back(o.name)
 	return names
+
 
 func matchNodes(nameWildcard, sender):
 	if nameWildcard == "!":
@@ -143,6 +154,7 @@ func matchNodes(nameWildcard, sender):
 		print("Matched: ", getNames(matches))
 	return matches
 
+
 # expectedArgs refers to the number of expected arguments
 # *not* including the first (target) argument. It can be an
 # integer or an array of two values (min/max number of allowed
@@ -155,14 +167,15 @@ func getActorsAndArgs(inArgs, methodName, expectedArgs, sender):
 		reportError(methodName + ": unexpected number of arguments: " + String(inArgs.size()) + " instead of target plus " + String(expectedArgs), sender)
 		return
 
+
 func setShaderUniform(node, uName, uValue):
 	var image = node.get_node("Animation")
 	image.material.set_shader_param(uName, uValue)
 
+
 ############################################################
 # OSC "other" commands
 ############################################################
-
 func loadAsset(args, sender):
 	if args.size() != 1:
 		reportError("loadAsset expects one argument", sender)
@@ -177,6 +190,7 @@ func loadAsset(args, sender):
 	loadRuntimeAnimations(loadAssets)
 	reportStatus("loaded assets: " + String(loadAssets), sender)
 	
+
 func createActor(args, sender):
 	if args.size() != 2:
 		reportError("createActor expects two arguments", sender)
@@ -209,6 +223,7 @@ func createActor(args, sender):
 	animNode.position = Vector2(0, texSize.y * -0.45)
 	reportStatus("Created node '%s' with '%s'" % [newNode.name, anim], sender)
 
+
 # List the instantiated actors
 func listActors(args, sender):
 	if !args.empty():
@@ -220,6 +235,7 @@ func listActors(args, sender):
 	print(pairs)
 	sendMessage(sender, "/list/actors/reply", pairs)
 
+
 # List the loaded and available animations (or images)
 func listAnims(args, sender):
 	if !args.empty():
@@ -230,6 +246,7 @@ func listAnims(args, sender):
 		names.push_back(a)
 	print(names)
 	sendMessage(sender, "/list/anims/reply", names)
+
 
 # List the assets/files on disk
 func listAssets(args, sender):
@@ -244,6 +261,7 @@ func listAssets(args, sender):
 	print(names)
 	sendMessage(sender, "/list/assets/reply", names)
 
+
 func groupActor(args, sender):
 	var groupName = args[0]
 	if args.size() == 1:
@@ -254,12 +272,14 @@ func groupActor(args, sender):
 		for node in matchNodes(args[1], sender):
 			node.add_to_group(groupName)
 	
+
 func ungroupActor(args, sender):
 	var groupName = args[0]
 	for node in matchNodes(args[1], sender):
 		if node.is_in_group(groupName):
 			node.remove_from_group(groupName)
 	
+
 func selectActor(args, sender):
 	if args.empty():
 		listSelectedActors(args, sender)
@@ -268,6 +288,7 @@ func selectActor(args, sender):
 			node.add_to_group(selectionGroup)
 			setShaderUniform(node, "uSelected", true)
 
+
 func deselectActor(args, sender):
 	if args.empty(): args = ["*"];
 	for node in matchNodes(args[0], sender):
@@ -275,12 +296,14 @@ func deselectActor(args, sender):
 			node.remove_from_group(selectionGroup)
 		setShaderUniform(node, "uSelected", false)
 
+
 func listSelectedActors(args, sender):
 	if !args.empty():
 		reportError("listSelectedActors expects no arguments", sender)
 		return
 	var nodes = get_tree().get_nodes_in_group(selectionGroup)
 	reportStatus("selected: " + String(getNames(nodes)), sender)
+
 
 func defCommand(args, sender):
 	if args.size() < 2:
@@ -293,6 +316,15 @@ func defCommand(args, sender):
 	for subCmd in args.slice(1, -1):
 		defCmds.push_back(subCmd.split(" ", false))
 	customCmds.defineCommand(defName, defArgs, defCmds)
+
+
+func loadDefsFile(args, sender):
+	if args.size() != 1:
+		reportError("loadDefsFile expects one argument", sender)
+		return
+	var defsFile = "res://commands/" + args[0]
+	if not customCmds.loadCommandFile(defsFile):
+		reportError("Couldn't open defs file: '%s'" % [defsFile], sender)
 
 
 func wait(args, sender):
@@ -308,12 +340,12 @@ func wait(args, sender):
 #   The first argument for all these commands is the target actor(s).
 #   It may be "!" (selection), an actor instance name or a wildcard string.
 ############################################################
-
 func freeActor(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "freeActor", 0, sender)
 	if args: for node in args.actors:
 		actorsNode.remove_child(node)
 	reportStatus("Freed: " + String([] if !args else getNames(args.actors)), sender)
+
 
 func playActor(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "playActor", 0, sender)
@@ -321,15 +353,18 @@ func playActor(inArgs, sender):
 		var animName = node.get_node("Animation").get_animation()
 		node.get_node("Animation").play(animName)
 
+
 func stopActor(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "stopActor", 0, sender)
 	if args: for node in args.actors:
 		node.get_node("Animation").stop()
 
+
 func setActorFrame(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorFrame", 1, sender)
 	if args: for node in args.actors:
 		node.get_node("Animation").set_frame(args.args[0])
+
 
 func setActorPosition(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorPosition", [2, 3], sender)
@@ -348,10 +383,12 @@ func setActorPosition(inArgs, sender):
 				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 			tween.start()
 
+
 func setActorSpeed(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorSpeed", 1, sender)
 	if args: for node in args.actors:
 		node.get_node("Animation").set_speed_scale(args.args[0])
+
 
 func flipActorH(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "flipActorH", 0, sender)
@@ -359,11 +396,13 @@ func flipActorH(inArgs, sender):
 		var anim = node.get_node("Animation")
 		anim.set_flip_h(not(anim.is_flipped_h()))
 
+
 func flipActorV(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "flipActorV", 0, sender)
 	if args: for node in args.actors:
 		var anim = node.get_node("Animation")
 		anim.set_flip_v(not(anim.is_flipped_v()))
+
 
 func colorActor(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "colorActor", 3, sender)
@@ -371,6 +410,7 @@ func colorActor(inArgs, sender):
 		var rgb = Vector3(args.args[0], args.args[1], args.args[2])
 		for node in args.actors:
 			setShaderUniform(node, "uAddColor", rgb)
+
 
 func sayActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "sayActor", [1, 2], sender)

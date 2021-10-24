@@ -11,6 +11,7 @@ func _ready():
 	visible = false
 #	setText("ALO Blah\nBLAH alO")
 
+
 func setText(text, wait = 3):
 	visible = true
 	$Timer.wait_time = wait
@@ -24,12 +25,14 @@ func setText(text, wait = 3):
 	# $Tween.interpolate_property(textBg, "modulate", textBg.color, Color(0,0,0,0), fadetime)
 	$Tween.start()
 
+
 # distribute text on even lines
 func formatText():
 	print("TODO: format text in even lines")
 	print("TODO: multiline")
 	var words = textNode.text.count(" ") + 1
 	# print("words: ", words)
+
 
 func resizeBubble():
 	formatText()

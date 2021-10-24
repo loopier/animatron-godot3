@@ -53,7 +53,9 @@ Address | Args <img width=250px/> | Description
 `/select` | `[actor:s]` | Add the actor to the selected set. If run without `actor` it will return the list of selected actors.
 `/deselect` | `[actor:s]` | Remove the actor from the selected set. If run without `actor` it will deselect all (equivalent to `/deselect "*"` or `/deselect "!"`).
 `/selected` | | Get the list of selected actors.
-
+`/def` | `cmdName [subCommand] ...` | Define a custom OSC command that is a list of other OSC commands. This may be recursive, so each `subCommand` may reference one of the built-in commands, or another custom-defined command. Another way to define custom commands is via the file `commands/init.csv`. The `cmdName` string (first argument) may include argument names, which may be referenced as `subCommand` arguments using `$name`. Example: `/def "/addsel actor anim" "/create $actor $anim" "/select $actor"`.
+`/load/defs` | `filename` | Load a custom command definitions file, which should have the format [described below](#def-files).
+`/wait` | `duration` | Wait for `duration` seconds before executing the next command. Only relevant within a list of commands being executed together at once, such as inside a custom `def`ined command list.
 
 # OSC Replies
 
@@ -101,6 +103,53 @@ For files that don't follow this (*name_dims_rate.png*) naming
 convention, the entire filename will be used as the animation name in
 Animatron, and they will be assumed to contain 4x4 sprites and play at
 24 fps.
+
+# <a name="def-files" />OSC custom command files
+
+You may define a set of custom OSC commands (similar to functions or
+macros that perform a list of other commands) using the `/def` OSC
+command itself, or by loading text files containing custom command
+definitions. At startup, the file `commands/init.csv` is parsed with
+an initial set of definitions. You may also load command definition
+files at runtime using the `/load/defs` command (its argument should
+be a file relative to the `commands/` directory).
+
+These files should contain lines with `def /commandName` or `def
+/commandName arg1 [arg2] ...`, followed by a list of OSC commands, one
+per line, with the commands/addresses and their arguments separated by
+spaces).  Quotes are not needed around arguments, unless the arguments
+are strings that should contain spaces.
+
+Custom OSC commands can refer to other custom commands recursively,
+and no validation is done at load time, so they may be referenced
+before they are defined.
+
+Here is an example `init.csv` file:
+
+```
+def /startup
+    /load om-walk-*
+    /wait 2
+    /create walker om-walk-s
+    /color walker 0.7 0.2 0.1
+    /wait 1
+    /crowd
+    /wait 3
+    /say walker "Hi everybody!"
+
+def /createsel actor anim
+    /create $actor $anim
+    /select $actor
+
+def /crowd
+    /deselect
+    /createsel om1 om-walk-w
+    /createsel om2 om-walk-w
+    /createsel om3 om-walk-w
+    /createsel om4 om-walk-w
+    /createsel om5 om-walk-w
+    /group crowd om?
+```
 
 <style class="fallback">body{visibility:hidden}</style><script>markdeepOptions={tocStyle:'none'};</script>
 <!-- Markdeep: --><script src="markdeep/markdeep.min.js?" charset="utf-8"></script>

@@ -29,6 +29,7 @@ onready var otherCmds = {
 	"/deselect": funcref($OscInterface, "deselectActor"),
 	"/selected": funcref($OscInterface, "listSelectedActors"),
 	"/def": funcref($OscInterface, "defCommand"),
+	"/load/defs": funcref($OscInterface, "loadDefsFile"),
 	# "/wait" command is handled specially 
 }
 
@@ -47,6 +48,7 @@ func _ready():
 	oscrcv.start()
 	
 	$CustomCommands.loadCommandFile("res://commands/init.csv")
+
 
 func evalCommandList(commands : Array, sender):
 	while !commands.empty():
@@ -101,6 +103,7 @@ func processOscMsg(address : String, args : Array, msg):
 	var sender = [msg["ip"], msg["port"]]
 	evalCommandList([[address] + args], sender)
 
+
 func _process(_delta):
 	# check if there are pending messages
 	while( oscrcv.has_message() ):
@@ -118,7 +121,8 @@ func _process(_delta):
 				print( "\t", i, " = ", args[i] )
 
 		processOscMsg(address, args, msg)
-	
+
+
 func _exit_tree ( ):
 	# disable the receiver, highly recommended!
 	oscrcv.stop()

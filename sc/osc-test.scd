@@ -363,15 +363,35 @@ n.sendMsg("/startup");
 n.sendMsg("/createsel", "frog", "frog-jump")
 n.sendMsg("/deselect")
 
-n.sendMsg("/defcmd", "/waitasset", "/wait 0.5", "/list/assets")
-n.sendMsg("/defcmd", "/waitanim", "/wait 1.5", "/list/anims")
-n.sendMsg("/defcmd", "/waitlist", "/waitasset", "/waitanim")
+n.sendMsg("/def", "/waitasset", "/wait 1", "/list/assets")
+n.sendMsg("/def", "/waitanim", "/wait 2", "/list/anims")
+n.sendMsg("/def", "/waitlist", "/waitasset", "/waitanim")
+n.sendMsg("/waitasset")
 n.sendMsg("/waitlist")
 
-n.sendMsg("/defcmd", "/waitlist", "/wait 2", "/list/assets", "/wait 2", "/list/anims")
+n.sendMsg("/def", "/waitlist", "/wait 2", "/list/assets", "/wait 2", "/list/anims")
 n.sendMsg("/waitlist")
 
-n.sendMsg("/defcmd", "/hello", "/list/assets", "/group bob")
+n.sendMsg("/def", "/hello", "/list/assets", "/group bob")
 n.sendMsg("/hello")
-n.sendMsg("/defcmd", "/test arg1 b", "/create $arg1 $b")
+n.sendMsg("/def", "/test arg1 b", "/create $arg1 $b")
 n.sendMsg("/test", "fred", "steve")
+
+n.sendMsg("/list/anims")
+(
+n.sendMsg("/def", "/square actor",
+	"/create $actor om-walk-e",
+	"/position $actor 0.9 0.25 2",
+	"/wait 4",
+	"/create $actor om-walk-s",
+	"/position $actor 0.8 0.9 2",
+	"/wait 3",
+	"/create $actor om-walk-w",
+	"/position $actor 0.2 0.9 1",
+	"/wait 2",
+	"/create $actor om-walk-n",
+	"/position $actor 0.1 0.25 1")
+)
+n.sendMsg("/square", "om5")
+n.sendMsg("/load/defs", "test.csv")
+n.sendMsg("/startup")
