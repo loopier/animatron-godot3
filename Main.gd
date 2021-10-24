@@ -28,7 +28,7 @@ onready var otherCmds = {
 	"/select": funcref($OscInterface, "selectActor"),
 	"/deselect": funcref($OscInterface, "deselectActor"),
 	"/selected": funcref($OscInterface, "listSelectedActors"),
-	"/defcmd": funcref($OscInterface, "defCommand"),
+	"/def": funcref($OscInterface, "defCommand"),
 	# "/wait" command is handled specially 
 }
 

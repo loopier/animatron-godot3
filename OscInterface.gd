@@ -343,8 +343,8 @@ func setActorPosition(inArgs, sender):
 			var tween = node.get_node("Tween")
 			tween.interpolate_property(node, "position",
 				node.position,
-				viewSize * Vector2(args.args[0], args.args[1]),
-				dur,
+				viewSize * Vector2(float(args.args[0]), float(args.args[1])),
+				float(dur),
 				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 			tween.start()
 
