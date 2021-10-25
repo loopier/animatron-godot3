@@ -257,11 +257,12 @@ n.sendMsg("/list/anims");
 ////////////////////////////////////////////////////////////
 Tdef(\test, {
 	n.sendMsg("/list/assets");
-	["om-walk-sw", "om-walk-nw", "om-walk-s", "fox-walk", "frog-jump"].do{ |name| n.sendMsg("/load", name) };
+	["run", "om-walk-sw", "om-walk-nw", "om-walk-s", "fox-walk", "frog-jump"].do{ |name| n.sendMsg("/load", name) };
 	n.sendMsg("/list/anims");
 	n.sendMsg("/invalid", "frog");
 	n.sendMsg("/free", "*");
 	n.sendMsg("/list");
+	n.sendMsg("/create", "runner", "run");
 	n.sendMsg("/create", "omo", "om-walk-sw");
 	n.sendMsg("/create", "oma", "om-walk-nw");
 	n.sendMsg("/select", "om*");

@@ -6,18 +6,22 @@ onready var customCmds : CustomCommands = main.get_node("CustomCommands")
 onready var metanode = preload("res://MetaNode.tscn")
 onready var speechBubbleNode = preload("res://SpeechBubble.tscn")
 var animFramesLibrary
-var assetFilenameRegex
+var spriteFilenameRegex
+var sequenceFilenameRegex
 const animationAssetPath = "res://animations/"
 const selectionGroup = "selected"
 const loadAllAssetsAtStartup = false
 
 func _ready():
-	assetFilenameRegex = RegEx.new()
-	assetFilenameRegex.compile("(.+)_(\\d+)x(\\d+)_(\\d+)fps")
+	spriteFilenameRegex = RegEx.new()
+	spriteFilenameRegex.compile("(.+)_(\\d+)x(\\d+)_(\\d+)fps")
+	sequenceFilenameRegex = RegEx.new()
+	sequenceFilenameRegex.compile("(.+)_(\\d+)fps")
 
 	animFramesLibrary = metanode.instance().get_node("Animation").frames
 	if loadAllAssetsAtStartup:
-		loadRuntimeAnimations(getAssetFilesMatching(animationAssetPath, "*"))
+		loadSprites(getAssetFilesMatching(animationAssetPath, "*"))
+		#loadSequences(...)
 
 
 ############################################################
@@ -30,19 +34,39 @@ func getAssetBaseName(fileName):
 	return baseName
 
 
+func getAnimSequenceFrames(path):
+	var dir = Directory.new()
+	var frames = []
+	if dir.open(path) == OK:
+		dir.list_dir_begin(true, true)
+		var filename = dir.get_next()
+		while !filename.empty() and !dir.current_is_dir():
+			if filename.ends_with(".png") or filename.ends_with(".jpg"):
+				frames.push_back(filename)
+			filename = dir.get_next()
+	return frames
+
+
 func getAssetFilesMatching(path, nameWildcard):
 	var dir = Directory.new()
 	var files = []
 	if dir.open(path) == OK:
 		dir.list_dir_begin(true, true)
-		var file_name = dir.get_next()
-		while (!file_name.empty() && !dir.current_is_dir()):
-			if file_name.ends_with(".png") || file_name.ends_with(".jpg"):
-				var baseFile = getAssetBaseName(file_name)
+		var filename = dir.get_next()
+		while !filename.empty():
+			if dir.current_is_dir():
+				var baseFile = getAssetBaseName(filename)
 				if baseFile.match(nameWildcard):
-					print("File name: ", file_name)  # Debugging release builds
-					files.push_back(path + file_name)
-			file_name = dir.get_next()
+					var seqFrames = getAnimSequenceFrames(path + filename);
+					if !seqFrames.empty():
+						print("Sequence (%d frames) file name: %s" % [seqFrames.size(), filename])
+						files.push_back(path + filename)
+			elif filename.ends_with(".png") or filename.ends_with(".jpg"):
+				var baseFile = getAssetBaseName(filename)
+				if baseFile.match(nameWildcard):
+					print("File name: ", filename)
+					files.push_back(path + filename)
+			filename = dir.get_next()
 	return files
 
 
@@ -57,9 +81,8 @@ func getExternalTexture(path):
 
 func getSpriteFileInfo(name):
 	var dict = {}
-	var result = assetFilenameRegex.search(name)
+	var result = spriteFilenameRegex.search(name)
 	if result:
-		print(result.get_string()) # Would print n-0123
 		dict.name = result.get_string(1)
 		dict.xStep = result.get_string(2).to_int()
 		dict.yStep = result.get_string(3).to_int()
@@ -71,9 +94,22 @@ func getSpriteFileInfo(name):
 		dict.yStep = 4
 		dict.fps = 24
 	return dict
-	
 
-func loadRuntimeAnimations(sprites):
+
+func getSeqFileInfo(name):
+	var dict = {}
+	var result = sequenceFilenameRegex.search(name)
+	if result:
+		dict.name = result.get_string(1)
+		dict.fps = result.get_string(2).to_int()
+		print(dict)
+	else:
+		dict.name = name
+		dict.fps = 24
+	return dict
+
+
+func loadSprites(sprites):
 	print("Runtime sprites:", sprites)
 	# Add the runtime-loaded sprites to our pre-existing library
 	for spritePath in sprites:
@@ -96,6 +132,24 @@ func loadRuntimeAnimations(sprites):
 					texture.margin = Rect2(0, 0, 0, 0)
 					animFramesLibrary.add_frame(info.name, texture, frameId)
 					frameId += 1
+
+
+func loadSequences(sequences):
+	print("Runtime sequences:", sequences)
+	# Add the runtime-loaded image sequences to our pre-existing library
+	for seqPath in sequences:
+		var info = getSeqFileInfo(seqPath.get_file().get_basename())
+		animFramesLibrary.remove_animation(info.name)
+		animFramesLibrary.add_animation(info.name)
+		animFramesLibrary.set_animation_speed(info.name, info.fps)
+		var frameId = 0
+		for img in getAnimSequenceFrames(seqPath):
+			var texture = getExternalTexture(seqPath + "/" + img)
+			if texture:
+				var width = texture.get_size().x
+				var height = texture.get_size().y
+				animFramesLibrary.add_frame(info.name, texture, frameId)
+				frameId += 1
 
 
 # For now, it just creates a sender instance each call,
@@ -161,7 +215,7 @@ func matchNodes(nameWildcard, sender):
 # arguments).
 func getActorsAndArgs(inArgs, methodName, expectedArgs, sender):
 	if typeof(expectedArgs) == TYPE_INT: expectedArgs = [expectedArgs]
-	if inArgs.size() > expectedArgs.front() && inArgs.size() <= expectedArgs.back() + 1:
+	if inArgs.size() > expectedArgs.front() and inArgs.size() <= expectedArgs.back() + 1:
 		return { actors = matchNodes(inArgs[0], sender), args = inArgs.slice(1, -1) }
 	else:
 		reportError(methodName + ": unexpected number of arguments: " + String(inArgs.size()) + " instead of target plus " + String(expectedArgs), sender)
@@ -182,13 +236,21 @@ func loadAsset(args, sender):
 		return
 	var assetName = args[0]
 	var assets = getAssetFilesMatching(animationAssetPath, assetName)
-	var loadAssets = []
+	var spriteSheets = []
+	var sequences = []
+	var dir = Directory.new()
 	for path in assets:
-		var info = getSpriteFileInfo(path.get_file().get_basename())
-		if info.name.match(assetName):
-			loadAssets.push_back(path)
-	loadRuntimeAnimations(loadAssets)
-	reportStatus("loaded assets: " + String(loadAssets), sender)
+		if dir.dir_exists(path):
+			# It's an image sequence sub-directory
+			sequences.push_back(path)
+		else:
+			# It's a sprite sheet (single image)
+			var info = getSpriteFileInfo(path.get_file().get_basename())
+			if info.name.match(assetName):
+				spriteSheets.push_back(path)
+	loadSprites(spriteSheets)
+	loadSequences(sequences)
+	reportStatus("loaded assets: " + String(spriteSheets) + String(sequences), sender)
 	
 
 func createActor(args, sender):
