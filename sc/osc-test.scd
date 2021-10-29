@@ -318,21 +318,26 @@ Available assets:
 	...
 	om-walk-w
 	pickaxe
-Status: loaded assets: [res://animations/om-walk-sw.png]
-Status: loaded assets: [res://animations/om-walk-nw.png]
-Status: loaded assets: [res://animations/om-walk-s.png]
-Status: loaded assets: [res://animations/fox-walk_6x1_8fps.png]
-Status: loaded assets: [res://animations/frog-jump_4x2_8fps.png]
+    march
+    run
+Status: loaded sequences: [res://animations/run_12fps]
+Status: loaded sprites: [res://animations/om-walk-sw.png]
+Status: loaded sprites: [res://animations/om-walk-nw.png]
+Status: loaded sprites: [res://animations/om-walk-s.png]
+Status: loaded sprites: [res://animations/fox-walk_6x1_8fps.png]
+Status: loaded sprites: [res://animations/frog-jump_4x2_8fps.png]
 Available animations:
 	fox-walk
 	frog-jump
 	om-walk-nw
 	om-walk-s
 	om-walk-sw
+    run
 Error: OSC command not found: /invalid
 Error: No matches found for: *
 Status: Freed: []
 Anims: [  ]
+Status: Created node 'runner' with 'run'
 Status: Created node 'omo' with 'om-walk-sw'
 Status: Created node 'oma' with 'om-walk-nw'
 Status: selected: [omo, oma]
@@ -340,14 +345,14 @@ Status: selected: [oma]
 Status: Created node 'omi' with 'om-walk-s'
 Status: 'inverted' members: [omo, oma, omi]
 Status: 'inverted' members: [omo, oma]
-Anims: [ omo, oma, omi ]
+Anims: [ runner, omo, oma, omi ]
 Status: Freed: []
 Status: Created node 'fox' with 'fox-walk'
 Status: Created node 'frog' with 'frog-jump'
 Status: 'others' members: [fox, frog]
-Anims: [ omo, oma, omi, fox, frog ]
+Anims: [ runner, omo, oma, omi, fox, frog ]
 Status: Freed: [fox, frog]
-Anims: [ omo, oma, omi ]
+Anims: [ runner, omo, oma, omi ]
 */
 
 // And you should see a slow orange upside-down om at
@@ -396,3 +401,8 @@ n.sendMsg("/def", "/square actor",
 n.sendMsg("/square", "om5")
 n.sendMsg("/load/defs", "test.csv")
 n.sendMsg("/startup")
+
+n.sendMsg("/list/assets");
+n.sendMsg("/load", "march");
+n.sendMsg("/create", "m10", "march")
+n.sendMsg("/position", "m10", 0.25, 0.5, 4)

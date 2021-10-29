@@ -20,8 +20,9 @@ func _ready():
 
 	animFramesLibrary = metanode.instance().get_node("Animation").frames
 	if loadAllAssetsAtStartup:
-		loadSprites(getAssetFilesMatching(animationAssetPath, "*"))
-		#loadSequences(...)
+		var assets = getAssetFilesMatching(animationAssetPath, "*")
+		loadSprites(assets.sprites)
+		loadSequences(assets.seqs)
 
 
 ############################################################
@@ -49,7 +50,7 @@ func getAnimSequenceFrames(path):
 
 func getAssetFilesMatching(path, nameWildcard):
 	var dir = Directory.new()
-	var files = []
+	var files = { sprites = [], seqs = [] }
 	if dir.open(path) == OK:
 		dir.list_dir_begin(true, true)
 		var filename = dir.get_next()
@@ -60,12 +61,12 @@ func getAssetFilesMatching(path, nameWildcard):
 					var seqFrames = getAnimSequenceFrames(path + filename);
 					if !seqFrames.empty():
 						print("Sequence (%d frames) file name: %s" % [seqFrames.size(), filename])
-						files.push_back(path + filename)
+						files.seqs.push_back(path + filename)
 			elif filename.ends_with(".png") or filename.ends_with(".jpg"):
 				var baseFile = getAssetBaseName(filename)
 				if baseFile.match(nameWildcard):
 					print("File name: ", filename)
-					files.push_back(path + filename)
+					files.sprites.push_back(path + filename)
 			filename = dir.get_next()
 	return files
 
@@ -236,21 +237,12 @@ func loadAsset(args, sender):
 		return
 	var assetName = args[0]
 	var assets = getAssetFilesMatching(animationAssetPath, assetName)
-	var spriteSheets = []
-	var sequences = []
-	var dir = Directory.new()
-	for path in assets:
-		if dir.dir_exists(path):
-			# It's an image sequence sub-directory
-			sequences.push_back(path)
-		else:
-			# It's a sprite sheet (single image)
-			var info = getSpriteFileInfo(path.get_file().get_basename())
-			if info.name.match(assetName):
-				spriteSheets.push_back(path)
-	loadSprites(spriteSheets)
-	loadSequences(sequences)
-	reportStatus("loaded assets: " + String(spriteSheets) + String(sequences), sender)
+	if not assets.sprites.empty():
+		loadSprites(assets.sprites)
+		reportStatus("loaded sprites: " + String(assets.sprites), sender)
+	if not assets.seqs.empty():
+		loadSequences(assets.seqs)
+		reportStatus("loaded sequences: " + String(assets.seqs), sender)
 	
 
 func createActor(args, sender):
@@ -317,9 +309,9 @@ func listAssets(args, sender):
 		return
 	var assets = getAssetFilesMatching(animationAssetPath, "*")
 	var names = []
-	for path in assets:
-		var info = getSpriteFileInfo(path.get_file().get_basename())
-		names.push_back(info.name)
+	for path in assets.sprites + assets.seqs:
+		var name = getAssetBaseName(path.get_file())
+		names.push_back(name)
 	print(names)
 	sendMessage(sender, "/list/assets/reply", names)
 
