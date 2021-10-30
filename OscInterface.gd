@@ -14,7 +14,7 @@ const loadAllAssetsAtStartup = false
 
 func _ready():
 	spriteFilenameRegex = RegEx.new()
-	spriteFilenameRegex.compile("(.+)_(\\d+)x(\\d+)_(\\d+)fps")
+	spriteFilenameRegex.compile("(.+?)(?:_(\\d+)dir)?_(\\d+)x(\\d+)_(\\d+)fps")
 	sequenceFilenameRegex = RegEx.new()
 	sequenceFilenameRegex.compile("(.+)_(\\d+)fps")
 
@@ -85,9 +85,10 @@ func getSpriteFileInfo(name):
 	var result = spriteFilenameRegex.search(name)
 	if result:
 		dict.name = result.get_string(1)
-		dict.xStep = result.get_string(2).to_int()
-		dict.yStep = result.get_string(3).to_int()
-		dict.fps = result.get_string(4).to_int()
+		dict.directions = 1 if result.get_string(2).empty() else result.get_string(2).to_int()
+		dict.xStep = result.get_string(3).to_int()
+		dict.yStep = result.get_string(4).to_int()
+		dict.fps = result.get_string(5).to_int()
 		print(dict)
 	else:
 		dict.name = name
@@ -110,6 +111,33 @@ func getSeqFileInfo(name):
 	return dict
 
 
+# Add directions or actions from a spritesheet that may contain several
+# NOTE: Currently assumes there are equal numbers of sprites per sub-action,
+#       and does not support offsets or anything more flexible.
+func addSubSprites(animFramesLibrary, atlas, suffixes, info):
+	var totalFrames : int = info.xStep * info.yStep
+	var subFrames : int = totalFrames / info.directions
+	assert(suffixes.size() == info.directions)
+	var width = atlas.get_size().x / info.xStep
+	var height = atlas.get_size().y / info.yStep
+	for suffix in suffixes:
+		var animName = info.name + suffix
+		animFramesLibrary.remove_animation(animName)
+		animFramesLibrary.add_animation(animName)
+		animFramesLibrary.set_animation_speed(animName, info.fps)
+	var frameId = 0
+	for y in range(0, info.yStep):
+		for x in range(0, info.xStep):
+			var texture : AtlasTexture = AtlasTexture.new()
+			texture.atlas = atlas
+			texture.region = Rect2(width * x, height * y, width, height)
+			texture.margin = Rect2(0, 0, 0, 0)
+			var subAnim = frameId / subFrames
+			var animName = info.name + suffixes[subAnim]
+			animFramesLibrary.add_frame(animName, texture, frameId % subFrames)
+			frameId += 1
+
+	
 func loadSprites(sprites):
 	print("Runtime sprites:", sprites)
 	# Add the runtime-loaded sprites to our pre-existing library
@@ -119,20 +147,11 @@ func loadSprites(sprites):
 		if !res: res = getExternalTexture(spritePath)
 		if res:
 			var info = getSpriteFileInfo(spritePath.get_file().get_basename())
-			animFramesLibrary.remove_animation(info.name)
-			animFramesLibrary.add_animation(info.name)
-			animFramesLibrary.set_animation_speed(info.name, info.fps)
-			var width = res.get_size().x / info.xStep
-			var height = res.get_size().y / info.yStep
-			var frameId = 0
-			for y in range(0, info.yStep):
-				for x in range(0, info.xStep):
-					var texture : AtlasTexture = AtlasTexture.new()
-					texture.atlas = res
-					texture.region = Rect2(width * x, height * y, width, height)
-					texture.margin = Rect2(0, 0, 0, 0)
-					animFramesLibrary.add_frame(info.name, texture, frameId)
-					frameId += 1
+			if info.directions == 8:
+				var dirSuffixes = ["-s", "-se", "-e", "-ne", "-n", "-nw", "-w", "-sw"]
+				addSubSprites(animFramesLibrary, res, dirSuffixes, info)
+			else:
+				addSubSprites(animFramesLibrary, res, [""], info)
 
 
 func loadSequences(sequences):

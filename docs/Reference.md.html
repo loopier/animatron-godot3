@@ -81,24 +81,29 @@ and will be loaded as sprite sheets at launch and made available as a
 library of animations.  There is a naming convention to specify the
 sprite layout and frame rate:
 
-`NAME_COLSxROWS_FPSfps.png`
+`NAME[_DIRSdir]_COLSxROWS_FPSfps.png`
 
 where:
 - *NAME* - is the name of the animation, by which it will be identified in commands.
+- *DIRS* - (optional) is the number of directions in the spritesheet. We currently only support `_8dir` (or `_1dir`, in which case this field can be omitted in the filename).
 - *COLS* - number of columns of the spritesheet
 - *ROWS* - number of rows of the spritesheet
 - *FPS* - animation's framerate
 
 !!! Tip
-    The separators between *NAME* and *COLS* and between *ROWS* and *FPS*
-    **must be underlines** (`_`), not hyphens (`-`).
+    The separators between *NAME* and *DIRS* or *COLS* and between *ROWS* and *FPS*
+    **must be underlines** (`_`), not hyphens (`-`). Use hyphens if you want dividers
+    in the animation name; underscores are reserved to delimit "metadata".
 
 Here is an example:
 
 `my-animation_6x4_12fps.png` would load as an animation called
 `my-animation` using a 6x4 sprite layout, playing at 12 frames per
-second.  Then an actor could be created from it using an OSC message
-like this:
+second. `my-animation_8dir_12x16_24fps.png` would load as an 8-way
+(S, SE, E, NE, ...) set of animations, where the spritesheet
+contains 12 columns and 16 rows (two rows per compass direction),
+and would play at 24 frames per second. In either case, an actor
+could then be created from it using an OSC message like this:
 
 `/create, "aname", "my-animation"`
              
