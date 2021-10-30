@@ -35,6 +35,7 @@ Address | Args <img width=475px/> | Description
 `/position` <br/> `/position!` | `actor:s x:f y:f [dur:f]` <br/> `x:f y:f [dur:f]` | Set the actor to the x,y coordinates (specified as fractions of the viewport from 0-1). If `dur` is set, interpolate the movement over that number of seconds, otherwise change instantaneously.
 `/rotate` <br/> `/rotate!` | `actor:s rot:f [dur:f]` <br/> `rot:f [dur:f]` | Set the actor's rotation to `rot` degrees. If `dur` is set, interpolate the rotation over that number of seconds, otherwise change instantaneously.
 `/scale` <br/> `/scale!` | `actor:s sx:f sy:f [dur:f]` <br/> `sx:f sy:f [dur:f]` | Set the actor's scale. If `dur` is set, interpolate the scale over that number of seconds, otherwise change instantaneously.
+`/fade` <br/> `/fade!` | `actor:s opacity:f [dur:f]` <br/> `opacity:f [dur:f]` | Fade the actor (set its opacity, where 1 is fully opaque/visible and 0 is transparent/invisible). If `dur` is set, interpolate the fade over that number of seconds, otherwise change instantaneously.
 `/speed` <br/> `/speed!` | `actor:s rate:f` <br/> `rate:f` | Set the playback speed (1 is normal speed).
 `/fliph` <br/> `/fliph!` | `actor:s` <br/> - | Flip the actor horizontally.
 `/flipv` <br/> `/flipv!` | `actor:s` <br/> - | Flip the actor vertically.

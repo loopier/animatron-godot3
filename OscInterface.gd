@@ -467,6 +467,21 @@ func setActorScale(inArgs, sender):
 			tween.start()
 
 
+func setActorFade(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setActorFade", [1, 2], sender)
+	if args:
+		var dur = 0 if args.args.size() == 1 else args.args[1]
+		for node in args.actors:
+			var tween = node.get_node("Tween")
+			var target := Color(1, 1, 1, float(args.args[0]))
+			tween.interpolate_property(node, "modulate",
+				node.modulate,
+				target,
+				float(dur),
+				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
+
+
 func setActorSpeed(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorSpeed", 1, sender)
 	if args: for node in args.actors:

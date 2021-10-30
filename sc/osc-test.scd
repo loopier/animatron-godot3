@@ -404,8 +404,9 @@ n.sendMsg("/startup")
 
 n.sendMsg("/list/assets");
 n.sendMsg("/load", "march");
-n.sendMsg("/create", "m5", "march")
+n.sendMsg("/create", "m1", "march")
 n.sendMsg("/select", "m?")
 (1..5).do{|i| n.sendMsg("/position", "m" ++ i, i.linlin(1,5,0,1), 1, 4) }
 n.sendMsg("/rotate!", 0, 12)
 n.sendMsg("/scale!", 0.25, 4, 1)
+n.sendMsg("/fade!", 0, 4)

@@ -12,6 +12,7 @@ onready var actorCmds = {
 	"/position": funcref($OscInterface, "setActorPosition"),
 	"/rotate": funcref($OscInterface, "setActorRotation"),
 	"/scale": funcref($OscInterface, "setActorScale"),
+	"/fade": funcref($OscInterface, "setActorFade"),
 	"/speed": funcref($OscInterface, "setActorSpeed"),
 	"/fliph": funcref($OscInterface, "flipActorH"),
 	"/flipv": funcref($OscInterface, "flipActorV"),
