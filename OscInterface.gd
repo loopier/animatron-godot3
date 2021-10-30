@@ -194,6 +194,7 @@ func getNames(objList):
 
 
 func matchNodes(nameWildcard, sender):
+	nameWildcard = nameWildcard as String;
 	if nameWildcard == "!":
 		# Match the current selected set
 		return get_tree().get_nodes_in_group(selectionGroup)
@@ -204,7 +205,7 @@ func matchNodes(nameWildcard, sender):
 			matches.push_back(a)
 	if matches.empty(): matches = get_tree().get_nodes_in_group(nameWildcard)
 	if matches.empty():
-		reportError("No matches found for: " + String(nameWildcard), sender)
+		reportError("No matches found for: " + nameWildcard, sender)
 	else:
 		print("Matched: ", getNames(matches))
 	return matches
@@ -433,6 +434,34 @@ func setActorPosition(inArgs, sender):
 			tween.interpolate_property(node, "position",
 				node.position,
 				viewSize * Vector2(float(args.args[0]), float(args.args[1])),
+				float(dur),
+				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
+
+
+func setActorRotation(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setActorRotation", [1, 2], sender)
+	if args:
+		var dur = 0 if args.args.size() == 1 else args.args[1]
+		for node in args.actors:
+			var tween = node.get_node("Tween")
+			tween.interpolate_property(node, "rotation_degrees",
+				node.rotation_degrees,
+				float(args.args[0]),
+				float(dur),
+				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+			tween.start()
+
+
+func setActorScale(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setActorScale", [2, 3], sender)
+	if args:
+		var dur = 0 if args.args.size() == 2 else args.args[2]
+		for node in args.actors:
+			var tween = node.get_node("Tween")
+			tween.interpolate_property(node, "scale",
+				node.scale,
+				Vector2(float(args.args[0]), float(args.args[1])),
 				float(dur),
 				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 			tween.start()
