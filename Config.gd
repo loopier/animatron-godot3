@@ -1,29 +1,35 @@
 class_name Config
 extends Node
 
-const configFile = "config.ocl"
+onready var cmds = get_parent().find_node("CustomCommands")
+onready var osc = get_parent().find_node("OscInterface")
+const configFile = "config.osc"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	# OS.set_window_position((OS.get_screen_size(screen) * 0.5) - (defaultWindowSize * 0.5))
-	print(OS.get_user_data_dir())
+	print("Data dir: ", OS.get_user_data_dir())
 	pass # Replace with function body.
 
-func loadConfig(path, target):
+func loadConfig(args, sender):
 	print("TODO")
-	print("Load config: ", OS.get_user_data_dir(), "/", path[0])
+	print("Load config: ", OS.get_user_data_dir(), "/", args[0])
 
-func moveWindowToScreen(screen, target):
+	print(cmds)
+	if args.size() != 1:
+		osc.reportError("loadConfig expects one argument", sender)
+		return
+
+	var configFile = "res://config/" + args[0]
+	if not cmds.loadCommandFile(configFile):
+		osc.reportError("Couldn't open config file: '%s'" % [configFile], sender)
+
+func moveWindowToScreen(screen, sender):
 	OS.set_current_screen(screen[0])
-	# OS.set_window_position(OS.get_window_position())
 
-func setWindowPosition(pos, target):
+func setWindowPosition(pos, sender):
 	print("window position: ", pos)
 	OS.set_window_position(Vector2(pos[0], pos[1]))
 
 func centerWindow(args, sender):
 	OS.set_window_position((OS.get_screen_size(OS.get_current_screen()) * 0.5) - (OS.get_window_size() * 0.5))
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
