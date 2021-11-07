@@ -20,10 +20,13 @@ OSCdef(\statusReply, { arg msg;
 n = NetAddr("localhost", 56101);
 )
 
+n.sendMsg("/list/assets")
 n.sendMsg("/load/config", "res://config/config.osc");
 n.sendMsg("/config");
+n.sendMsg("/assets/path"); // report the current path
 n.sendMsg("/assets/path", "myanimations/");
 n.sendMsg("/assets/path", "animations/");
+n.sendMsg("/assets/path", "res://animations/"); // should do same as previous line
 n.sendMsg("/window/screen", 1);
 n.sendMsg("/window/position", 1500, 200);
 n.sendMsg("/window/center"); // works only on display 1 (?)

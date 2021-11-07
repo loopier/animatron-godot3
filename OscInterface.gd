@@ -20,7 +20,7 @@ func _ready():
 
 	animFramesLibrary = metanode.instance().get_node("Animation").frames
 	if loadAllAssetsAtStartup:
-		var assets = getAssetFilesMatching(config.getAnimationAssetPath(null), "*")
+		var assets = getAssetFilesMatching(config.animationAssetPath, "*")
 		loadSprites(assets.sprites)
 		loadSequences(assets.seqs)
 
@@ -190,12 +190,14 @@ func sendMessage(target, oscAddress, oscArgs):
 
 func reportError(errString, target):
 	push_error(errString)
-	sendMessage(target, "/error/reply", [errString])
+	if target:
+		sendMessage(target, "/error/reply", [errString])
 
 
 func reportStatus(statusString, target):
 	print(statusString)
-	sendMessage(target, "/status/reply", [statusString])
+	if target:
+		sendMessage(target, "/status/reply", [statusString])
 
 
 func getNode(nodeName, sender):
@@ -257,7 +259,7 @@ func loadAsset(args, sender):
 		reportError("loadAsset expects one argument", sender)
 		return
 	var assetName = args[0]
-	var assets = getAssetFilesMatching(config.getAnimationAssetPath(null), assetName)
+	var assets = getAssetFilesMatching(config.animationAssetPath, assetName)
 	if not assets.sprites.empty():
 		loadSprites(assets.sprites)
 		reportStatus("loaded sprites: " + String(assets.sprites), sender)
@@ -328,7 +330,7 @@ func listAssets(args, sender):
 	if !args.empty():
 		reportError("listAssets expects no arguments", sender)
 		return
-	var assets = getAssetFilesMatching(config.getAnimationAssetPath(null), "*")
+	var assets = getAssetFilesMatching(config.animationAssetPath, "*")
 	var names = []
 	for path in assets.sprites + assets.seqs:
 		var name = getAssetBaseName(path.get_file())
