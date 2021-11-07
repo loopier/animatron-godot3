@@ -1,2 +1,3 @@
-/window/screen 1
-/window/fullscreen
+def /config
+    /window/screen 1
+    /window/fullscreen

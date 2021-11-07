@@ -21,6 +21,7 @@ n = NetAddr("localhost", 56101);
 )
 
 n.sendMsg("/load/config", "config.osc");
+n.sendMsg("/config");
 n.sendMsg("/window/screen", 1);
 n.sendMsg("/window/pos", 2100, 200);
 n.sendMsg("/window/center");

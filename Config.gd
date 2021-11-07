@@ -24,7 +24,7 @@ func loadConfig(args, sender):
 		osc.reportError("Couldn't open config file: '%s'" % [configFile], sender)
 
 func moveWindowToScreen(screen, sender):
-	OS.set_current_screen(screen[0])
+	OS.set_current_screen(int(screen[0]))
 
 func setWindowPosition(pos, sender):
 	print("window position: ", pos)
