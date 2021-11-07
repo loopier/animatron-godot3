@@ -34,6 +34,12 @@ onready var otherCmds = {
 	"/def": funcref($OscInterface, "defCommand"),
 	"/load/defs": funcref($OscInterface, "loadDefsFile"),
 	# "/wait" command is handled specially 
+
+	# config commands
+	"/load/config": funcref($Config, "loadConfig"),
+	"/window/screen": funcref($Config, "moveWindowToScreen"),
+	"/window/pos": funcref($Config, "setWindowPosition"),
+	"/window/center": funcref($Config, "centerWindow"),
 }
 
 func _ready():
