@@ -18,6 +18,8 @@ onready var actorCmds = {
 	"/flipv": funcref($OscInterface, "flipActorV"),
 	"/color": funcref($OscInterface, "colorActor"),
 	"/say": funcref($OscInterface, "sayActor"),
+	"/behind": funcref($OscInterface, "behindActor"),
+	"/front": funcref($OscInterface, "frontActor"),
 }
 onready var otherCmds = {
 	"/load": funcref($OscInterface, "loadAsset"),

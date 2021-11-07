@@ -17,4 +17,4 @@ script = ExtResource( 2 )
 [node name="Config" type="Node" parent="."]
 script = ExtResource( 3 )
 
-[node name="Actors" type="YSort" parent="."]
+[node name="Actors" type="Node2D" parent="."]

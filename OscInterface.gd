@@ -543,3 +543,19 @@ func sayActor(inArgs, sender):
 				bubble.setText(msg, aa.args[1])
 			else:
 				bubble.setText(msg)
+
+
+func behindActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "behindActor", 1, sender)
+	if aa:
+		for node in aa.actors:
+			var reference = String(aa.args[0])
+			print("Move %s behind %s" % [node.name, reference])
+
+
+func frontActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "frontActor", 1, sender)
+	if aa:
+		for node in aa.actors:
+			var reference = String(aa.args[0])
+			print("Move %s in front of %s" % [node.name, reference])
