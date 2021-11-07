@@ -3,16 +3,14 @@ extends Node
 
 onready var cmds = get_parent().find_node("CustomCommands")
 onready var osc = get_parent().find_node("OscInterface")
-const configFile = "config.osc"
+const defaultConfigFile = "config.osc"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("Data dir: ", OS.get_user_data_dir())
+	# print("Data dir: ", OS.get_user_data_dir())
 	pass # Replace with function body.
 
 func loadConfig(args, sender):
-	print("TODO")
-	print("Load config: ", OS.get_user_data_dir(), "/", args[0])
 
 	print(cmds)
 	if args.size() != 1:
@@ -33,3 +31,5 @@ func setWindowPosition(pos, sender):
 func centerWindow(args, sender):
 	OS.set_window_position((OS.get_screen_size(OS.get_current_screen()) * 0.5) - (OS.get_window_size() * 0.5))
 
+func fullscreen(args, sender):
+	OS.set_window_fullscreen(bool(args[0]))

@@ -38,8 +38,9 @@ onready var otherCmds = {
 	# config commands
 	"/load/config": funcref($Config, "loadConfig"),
 	"/window/screen": funcref($Config, "moveWindowToScreen"),
-	"/window/pos": funcref($Config, "setWindowPosition"),
+	"/window/position": funcref($Config, "setWindowPosition"),
 	"/window/center": funcref($Config, "centerWindow"),
+	"/window/fullscreen": funcref($Config, "fullscreen"),
 }
 
 func _ready():
