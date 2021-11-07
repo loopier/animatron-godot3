@@ -60,6 +60,9 @@ func _ready():
 	oscrcv.start()
 	
 	$CustomCommands.loadCommandFile("res://commands/init.csv")
+	# Load default config file (if it exists) and call config command
+	$Config.loadConfig([$Config.defaultConfigFile], null)
+	evalCommandList([["/config"]], null)
 
 
 func evalCommandList(commands : Array, sender):

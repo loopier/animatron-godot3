@@ -11,10 +11,6 @@ var animationAssetPath = "res://animations/" setget animPathSet
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("Data dir: ", OS.get_user_data_dir())
-	# We don't yet know the "sender" because we've not received any OSC messages
-	#loadConfig([defaultConfigFile], null)
-	# We can't do this because the parent may not yet be configured
-	#get_parent().evalOscCommand("/config", [], null)
 
 
 func loadConfig(args, sender):
