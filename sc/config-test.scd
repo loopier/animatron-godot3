@@ -20,7 +20,7 @@ OSCdef(\statusReply, { arg msg;
 n = NetAddr("localhost", 56101);
 )
 
-n.sendMsg("/load/config", "config.osc");
+n.sendMsg("/load/config", "res://config/config.osc");
 n.sendMsg("/config");
 n.sendMsg("/assets/path", "myanimations/");
 n.sendMsg("/assets/path", "animations/");
