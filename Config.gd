@@ -3,7 +3,8 @@ extends Node
 
 onready var cmds = get_parent().find_node("CustomCommands")
 onready var osc = get_parent().find_node("OscInterface")
-const defaultConfigFile = "config.osc"
+var defaultConfigFile = "config.osc"
+var animationAssetPath = "res://animations/"
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -33,3 +34,11 @@ func centerWindow(args, sender):
 
 func fullscreen(args, sender):
 	OS.set_window_fullscreen(bool(args[0]))
+
+func setAnimationAssetPath(args, sender):
+	animationAssetPath = "res://" + args[0]
+	osc.reportStatus("Asset path: " + animationAssetPath, sender)
+
+func getAnimationAssetPath():
+	# osc.reportStatus(animationAssetPath, sender)
+	return animationAssetPath

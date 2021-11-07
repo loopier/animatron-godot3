@@ -37,6 +37,8 @@ onready var otherCmds = {
 
 	# config commands
 	"/load/config": funcref($Config, "loadConfig"),
+	"/assets/path": funcref($Config, "setAnimationAssetPath"),
+	# app window
 	"/window/screen": funcref($Config, "moveWindowToScreen"),
 	"/window/position": funcref($Config, "setWindowPosition"),
 	"/window/center": funcref($Config, "centerWindow"),

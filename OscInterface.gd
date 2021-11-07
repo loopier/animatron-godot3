@@ -3,12 +3,12 @@ extends Node
 onready var main = get_parent()
 onready var actorsNode = main.get_node("Actors")
 onready var customCmds : CustomCommands = main.get_node("CustomCommands")
+onready var config : Config = main.get_node("Config")
 onready var metanode = preload("res://MetaNode.tscn")
 onready var speechBubbleNode = preload("res://SpeechBubble.tscn")
 var animFramesLibrary
 var spriteFilenameRegex
 var sequenceFilenameRegex
-const animationAssetPath = "res://animations/"
 const selectionGroup = "selected"
 const loadAllAssetsAtStartup = false
 
@@ -20,7 +20,7 @@ func _ready():
 
 	animFramesLibrary = metanode.instance().get_node("Animation").frames
 	if loadAllAssetsAtStartup:
-		var assets = getAssetFilesMatching(animationAssetPath, "*")
+		var assets = getAssetFilesMatching(config.getAnimationAssetPath(), "*")
 		loadSprites(assets.sprites)
 		loadSequences(assets.seqs)
 
@@ -257,7 +257,7 @@ func loadAsset(args, sender):
 		reportError("loadAsset expects one argument", sender)
 		return
 	var assetName = args[0]
-	var assets = getAssetFilesMatching(animationAssetPath, assetName)
+	var assets = getAssetFilesMatching(config.getAnimationAssetPath(), assetName)
 	if not assets.sprites.empty():
 		loadSprites(assets.sprites)
 		reportStatus("loaded sprites: " + String(assets.sprites), sender)
@@ -328,7 +328,7 @@ func listAssets(args, sender):
 	if !args.empty():
 		reportError("listAssets expects no arguments", sender)
 		return
-	var assets = getAssetFilesMatching(animationAssetPath, "*")
+	var assets = getAssetFilesMatching(config.getAnimationAssetPath(), "*")
 	var names = []
 	for path in assets.sprites + assets.seqs:
 		var name = getAssetBaseName(path.get_file())
