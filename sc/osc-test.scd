@@ -416,3 +416,9 @@ n.sendMsg("/load", "pickaxe")
 n.sendMsg("/list/anims")
 n.sendMsg("/create", "om", "om-jump-up-nw")
 n.sendMsg("/create", "om", "pickaxe")
+
+// If you have a 1024x600 image, you should name it bg-black_1x1_1fps.png
+// and can set it as the background (covering the whole view) like this:
+n.sendMsg("/load", "bg-black")
+n.sendMsg("/create", "bg", "bg-black")
+n.sendMsg("/position", "bg", 0.5,0.95)
