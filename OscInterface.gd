@@ -548,14 +548,28 @@ func sayActor(inArgs, sender):
 func behindActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "behindActor", 1, sender)
 	if aa:
-		for node in aa.actors:
-			var reference = String(aa.args[0])
-			print("Move %s behind %s" % [node.name, reference])
+		var references = matchNodes(aa.args[0], sender)
+		var minIndex = actorsNode.get_child_count()
+		for ref in references:
+			minIndex = min(ref.get_index(), minIndex)
+		# Here we want to reverse iterate, to keep the ordering
+		for index in range(aa.actors.size()-1, -1, -1):
+			var node = aa.actors[index]
+			if node.get_index() > minIndex:
+				var reference = String(aa.args[0])
+				print("Move %s behind %s" % [node.name, reference])
+				actorsNode.move_child(node, minIndex)
 
 
 func frontActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "frontActor", 1, sender)
 	if aa:
+		var references = matchNodes(aa.args[0], sender)
+		var maxIndex = 0
+		for ref in references:
+			maxIndex = max(ref.get_index(), maxIndex)
 		for node in aa.actors:
-			var reference = String(aa.args[0])
-			print("Move %s in front of %s" % [node.name, reference])
+			if node.get_index() < maxIndex:
+				var reference = String(aa.args[0])
+				print("Move %s in front of %s" % [node.name, reference])
+				actorsNode.move_child(node, maxIndex)

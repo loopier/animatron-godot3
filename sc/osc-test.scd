@@ -427,5 +427,33 @@ n.sendMsg("/position", "axe", 0.5, 0.5)
 n.sendMsg("/position", "om", 0.5, 0.5)
 n.sendMsg("/free", "bg")
 n.sendMsg("/list")
-n.sendMsg("/behind", "axe", "om")
-n.sendMsg("/front", "axe", "om")
+
+(
+n.sendMsg("/load", "pickaxe");
+n.sendMsg("/create", "bigger", "pickaxe");
+n.sendMsg("/create", "axe1", "pickaxe");
+n.sendMsg("/create", "axe2", "pickaxe");
+n.sendMsg("/create", "axe3", "pickaxe");
+n.sendMsg("/scale", "bigger", 2, 2);
+n.sendMsg("/position", "bigger", 0.4, 1);
+n.sendMsg("/position", "axe1", 0.5, 0.5);
+n.sendMsg("/position", "axe2", 0.55, 0.55);
+n.sendMsg("/position", "axe3", 0.525, 0.6);
+n.sendMsg("/color", "axe1", 0.7, 0, 0);
+n.sendMsg("/color", "axe2", 0, 0.7, 0);
+n.sendMsg("/color", "axe3", 0, 0, 0.7);
+)
+
+n.sendMsg("/list");
+n.sendMsg("/behind", "bigger", "axe*");
+n.sendMsg("/behind", "axe*", "bigger");
+n.sendMsg("/front", "bigger", "axe*");
+n.sendMsg("/front", "axe*", "bigger");
+
+n.sendMsg("/select", "axe1");
+n.sendMsg("/select", "axe2");
+
+n.sendMsg("/behind!", "axe3");
+n.sendMsg("/front!", "axe3");
+n.sendMsg("/behind!", "bigger");
+n.sendMsg("/front!", "bigger");

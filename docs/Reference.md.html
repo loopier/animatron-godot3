@@ -42,6 +42,8 @@ Address | Args <img width=475px/> | Description
 `/flipv` <br/> `/flipv!` | `actor:s` <br/> - | Flip the actor vertically.
 `/color` <br/> `/color!` | `actor:s r:f g:f b:f` <br/> `r:f g:f b:f` | Add an RGB colour to the actor. Red, green and blue should be in the 0-1 range (can be negative to subtract colour). Set to black (0,0,0) to restore its original colour.
 `/say` <br/> `/say!` | `actor:s text:s [dur:f]` <br/> `text:s [dur:f]` | Have the actor "say" something via a speech bubble, with an optional duration (defaults to three seconds).
+`/behind` <br/> `/behind!` | `actor:s ref:s` <br/> `ref:s` | Change the draw order for an actor to be behind a reference actor. To move to the background, use `/behind actor *`.
+`/front` <br/> `/front!` | `actor:s ref:s` <br/> `ref:s` | Change the draw order for an actor to be in front of a reference actor. To move to the foreground, use `/front actor *`.
 
 ## Other commands
 
