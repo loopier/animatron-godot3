@@ -60,6 +60,16 @@ Address | Args <img width=250px/> | Description
 `/load/defs` | `filename` | Load a custom command definitions file, which should have the format [described below](#def-files).
 `/wait` | `duration` | Wait for `duration` seconds before executing the next command. Only relevant within a list of commands being executed together at once, such as inside a custom `def`ined command list.
 
+## Configuration commands
+Address | Args <img width=250px/> | Description
+--------|------|------------
+`/load/config`| `filename:s`| Load a config file following the `def` syntax (**WARNING** This might change in the futre).  After loading the file, the method defined with `def` needs to be explicitly called.
+`/assets/path`| `[path:s]`| Sets the path to the assets root directory.  If no argument is provided, it returns the current value of the path.
+`/window/screen`| `screenIndex:i`| Move the window between displays (0 = main display)
+`/window/position`| `x:i y:i`| Move window to the specified position given in pixels
+`/window/center`|| Center window in main display
+`/window/fullscreen`| `[0|1]:b`| Set fullscreen mode
+
 # OSC Replies
 
 These are the OSC messages that can be sent from Animatron to a client
