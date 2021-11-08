@@ -32,6 +32,18 @@ func setWindowPosition(pos, sender):
 	OS.set_window_position(Vector2(pos[0], pos[1]))
 
 
+func setWindowSize(args, sender):
+	print("window size: ", args)
+	var size = Vector2(args[0], args[1])
+	var vp = get_viewport()
+	var aspect = vp.size.x / vp.size.y
+	if size.y < 0:
+		size.y = size.x / aspect
+	elif size.x < 0:
+		size.x = size.y * aspect
+	OS.set_window_size(size)
+
+
 func centerWindow(args, sender):
 	OS.set_window_position((OS.get_screen_size(OS.get_current_screen()) * 0.5) - (OS.get_window_size() * 0.5))
 

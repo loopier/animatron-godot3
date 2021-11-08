@@ -43,6 +43,7 @@ onready var otherCmds = {
 	# app window
 	"/window/screen": funcref($Config, "moveWindowToScreen"),
 	"/window/position": funcref($Config, "setWindowPosition"),
+	"/window/size": funcref($Config, "setWindowSize"),
 	"/window/center": funcref($Config, "centerWindow"),
 	"/window/fullscreen": funcref($Config, "fullscreen"),
 }

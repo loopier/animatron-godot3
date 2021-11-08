@@ -32,3 +32,4 @@ n.sendMsg("/window/position", 1500, 200);
 n.sendMsg("/window/center"); // works only on display 1 (?)
 n.sendMsg("/window/fullscreen", 1);
 n.sendMsg("/window/fullscreen", 0);
+n.sendMsg("/window/size", 640, -1);
