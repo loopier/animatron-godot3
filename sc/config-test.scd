@@ -33,3 +33,8 @@ n.sendMsg("/window/center"); // works only on display 1 (?)
 n.sendMsg("/window/fullscreen", 1);
 n.sendMsg("/window/fullscreen", 0);
 n.sendMsg("/window/size", 640, -1);
+n.sendMsg("/window/top");
+n.sendMsg("/window/top", false);
+n.sendMsg("/window/top", true);
+n.sendMsg("/window/top", 0);
+n.sendMsg("/window/top", 1);
