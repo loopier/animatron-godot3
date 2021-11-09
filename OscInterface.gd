@@ -246,6 +246,19 @@ func getActorsAndArgs(inArgs, methodName, expectedArgs, sender):
 		return
 
 
+func setPropertyWithDur(node : Object, propertyName : String, newValue, dur : float):
+	if dur > 0:
+		var tween = node.get_node("Tween")
+		tween.interpolate_property(node, propertyName,
+			node.get(propertyName),
+			newValue,
+			float(dur),
+			Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+		tween.start()
+	else:
+		node.set(propertyName, newValue)
+
+
 func setShaderUniform(node, uName, uValue):
 	var image = node.get_node("Animation")
 	image.material.set_shader_param(uName, uValue)
@@ -450,58 +463,37 @@ func setActorPosition(inArgs, sender):
 			ProjectSettings.get_setting("display/window/size/width"),
 			ProjectSettings.get_setting("display/window/size/height")
 		)
-		var dur = 0 if args.args.size() == 2 else args.args[2]
+		var dur : float = 0 if args.args.size() == 2 else args.args[2]
 		for node in args.actors:
-			var tween = node.get_node("Tween")
-			tween.interpolate_property(node, "position",
-				node.position,
-				viewSize * Vector2(float(args.args[0]), float(args.args[1])),
-				float(dur),
-				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-			tween.start()
+			var newPos : Vector2 = viewSize * Vector2(float(args.args[0]), float(args.args[1]))
+			setPropertyWithDur(node, "position", newPos, dur)
 
 
 func setActorRotation(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorRotation", [1, 2], sender)
 	if args:
-		var dur = 0 if args.args.size() == 1 else args.args[1]
+		var dur : float = 0 if args.args.size() == 1 else args.args[1]
+		var rot := float(args.args[0])
 		for node in args.actors:
-			var tween = node.get_node("Tween")
-			tween.interpolate_property(node, "rotation_degrees",
-				node.rotation_degrees,
-				float(args.args[0]),
-				float(dur),
-				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-			tween.start()
+			setPropertyWithDur(node, "rotation_degrees", rot, dur)
 
 
 func setActorScale(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorScale", [2, 3], sender)
 	if args:
-		var dur = 0 if args.args.size() == 2 else args.args[2]
+		var dur : float = 0 if args.args.size() == 2 else args.args[2]
+		var scl := Vector2(float(args.args[0]), float(args.args[1]))
 		for node in args.actors:
-			var tween = node.get_node("Tween")
-			tween.interpolate_property(node, "scale",
-				node.scale,
-				Vector2(float(args.args[0]), float(args.args[1])),
-				float(dur),
-				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-			tween.start()
+			setPropertyWithDur(node, "scale", scl, dur)
 
 
 func setActorFade(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorFade", [1, 2], sender)
 	if args:
-		var dur = 0 if args.args.size() == 1 else args.args[1]
+		var dur : float = 0 if args.args.size() == 1 else args.args[1]
+		var target := Color(1, 1, 1, float(args.args[0]))
 		for node in args.actors:
-			var tween = node.get_node("Tween")
-			var target := Color(1, 1, 1, float(args.args[0]))
-			tween.interpolate_property(node, "modulate",
-				node.modulate,
-				target,
-				float(dur),
-				Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
-			tween.start()
+			setPropertyWithDur(node, "modulate", target, dur)
 
 
 func setActorSpeed(inArgs, sender):

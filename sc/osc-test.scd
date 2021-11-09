@@ -417,6 +417,9 @@ n.sendMsg("/list/anims")
 n.sendMsg("/create", "om", "om-jump-up-nw")
 n.sendMsg("/create", "axe", "pickaxe")
 
+n.sendMsg("/def", "/go", "/free *", "/create axe pickaxe", "/position axe 0.25 0.5", "/scale axe 2 2")
+n.sendMsg("/go") // call repeatedly quickly and check for flicker (fixed tweening with 0 duration)
+
 // If you have a 1024x600 image, you should name it bg-black_1x1_1fps.png
 // and can set it as the background (covering the whole view) like this:
 n.sendMsg("/load", "bg-black")
