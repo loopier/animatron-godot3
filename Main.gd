@@ -46,6 +46,7 @@ onready var otherCmds = {
 	"/window/size": funcref($Config, "setWindowSize"),
 	"/window/center": funcref($Config, "centerWindow"),
 	"/window/fullscreen": funcref($Config, "fullscreen"),
+	"/window/top": funcref($Config, "windowAlwaysOnTop"),
 }
 
 func _ready():

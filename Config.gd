@@ -52,6 +52,9 @@ func fullscreen(args, sender):
 	var fs = true if args.empty() else bool(args[0])
 	OS.set_window_fullscreen(fs)
 
+func windowAlwaysOnTop(args, sender):
+	var ot = true if args.empty() else bool(args[0])
+	OS.set_window_always_on_top(ot)
 
 # This method sets the path, but also reports it back if run without args
 func setAnimationAssetPath(args, sender):

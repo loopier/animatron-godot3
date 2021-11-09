@@ -1,3 +1,4 @@
 def /config
     /window/screen 1
-    /window/fullscreen
+    /window/center 0
+    /window/top 1
