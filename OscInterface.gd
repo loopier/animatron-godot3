@@ -93,9 +93,9 @@ func getSpriteFileInfo(name):
 	else:
 		dict.name = name
 		dict.directions = 1
-		dict.xStep = 4
-		dict.yStep = 4
-		dict.fps = 24
+		dict.xStep = 1
+		dict.yStep = 1
+		dict.fps = 0
 	return dict
 
 
