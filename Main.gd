@@ -40,6 +40,7 @@ onready var otherCmds = {
 	# config commands
 	"/load/config": funcref($Config, "loadConfig"),
 	"/assets/path": funcref($Config, "setAnimationAssetPath"),
+	"/app/remote": funcref($Config, "setAppRemote"),
 	# app window
 	"/window/screen": funcref($Config, "moveWindowToScreen"),
 	"/window/position": funcref($Config, "setWindowPosition"),
@@ -118,8 +119,7 @@ func evalOscCommand(address : String, args, sender):
 		$OscInterface.reportError("OSC command not found: " + address, sender)
 
 
-func processOscMsg(address : String, args : Array, msg):
-	var sender = [msg["ip"], msg["port"]]
+func processOscMsg(address : String, args : Array, sender):
 	evalCommandList([[address] + args], sender)
 
 
@@ -128,6 +128,10 @@ func _process(_delta):
 	while( oscrcv.has_message() ):
 		# retrieval of the messages as a dictionary
 		var msg = oscrcv.get_next()
+		var sender = [msg["ip"], msg["port"]]
+		if not $Config.allowRemoteClients and sender[0] != "127.0.0.1":
+			print("Skipping non-local OSC message from ", sender)
+			continue
 		var address = msg["address"]
 		var args = msg["args"]
 		# printing the values, check console
@@ -139,7 +143,7 @@ func _process(_delta):
 			for i in range( 0, msg["arg_num"] ):
 				print( "\t", i, " = ", args[i] )
 
-		processOscMsg(address, args, msg)
+		processOscMsg(address, args, sender)
 
 
 func _exit_tree ( ):

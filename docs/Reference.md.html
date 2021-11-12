@@ -66,14 +66,15 @@ Address | Args <img width="1000px"/> | Description
 ## Configuration commands
 Address | Args <img width=100px/> | Description
 --------|------|------------
-`/load/config`| `filename:s`| Load a config file following the `def` syntax (**WARNING** This might change in the futre).  After loading the file, the method defined with `def` needs to be explicitly called.
-`/assets/path`| `[path:s]`| Sets the path to the assets root directory.  If no argument is provided, it returns the current value of the path.
-`/window/screen`| `screenIndex:i`| Move the window between displays (0 = main display).
-`/window/position`| `x:i y:i`| Move window to the specified position given in pixels.
-`/window/size`| `sx:i sy:i`| Set window to the specified size in pixels. -1 may be specified for either `sx` or `sy`, in which case it will be computed using the project viewport aspect ratio.
-`/window/center`| | Center window in main display.
-`/window/fullscreen`| `[enable:b]`| Set fullscreen mode (defaults to true).
-`/window/top`| `[enable:b]`| Set window to be always on top of other windows (defaults to true).
+`/load/config` | `filename:s` | Load a config file following the `def` syntax (**WARNING** This might change in the futre).  After loading the file, the method defined with `def` needs to be explicitly called.
+`/assets/path` | `[path:s]` | Sets the path to the assets root directory.  If no argument is provided, it returns the current value of the path.
+`/app/remote` | `[allow:b]` | Allow (or prevent) executing OSC commands from remote (non-localhost) clients.
+`/window/screen` | `screenIndex:i` | Move the window between displays (0 = main display).
+`/window/position` | `x:i y:i` | Move window to the specified position given in pixels.
+`/window/size` | `sx:i sy:i` | Set window to the specified size in pixels. -1 may be specified for either `sx` or `sy`, in which case it will be computed using the project viewport aspect ratio.
+`/window/center` | | Center window in main display.
+`/window/fullscreen` | `[enable:b]` | Set fullscreen mode (defaults to true).
+`/window/top` | `[enable:b]` | Set window to be always on top of other windows (defaults to true).
 
 # OSC Replies
 

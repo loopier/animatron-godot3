@@ -6,13 +6,33 @@ onready var osc = get_parent().find_node("OscInterface")
 var defaultConfigDir = "res://config/"
 var defaultConfigFile = defaultConfigDir + "config.osc"
 var animationAssetPath = "res://animations/" setget animPathSet
-
+var allowRemoteClients = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	print("Data dir: ", OS.get_user_data_dir())
 
 
+############################################################
+# Helpers
+############################################################
+func getBool(arg) -> bool:
+	if typeof(arg) == TYPE_STRING:
+		return arg.to_lower() == "true" or bool(int(arg))
+	else:
+		return bool(arg)
+
+
+func animPathSet(path):
+	if path.begins_with("/") or path.begins_with("res://"):
+		animationAssetPath = path
+	else:
+		animationAssetPath = "res://" + path
+
+
+############################################################
+# OSC config commands
+############################################################
 func loadConfig(args, sender):
 	print(cmds)
 	if args.size() != 1:
@@ -67,9 +87,6 @@ func setAnimationAssetPath(args, sender):
 	osc.reportStatus(msg + animationAssetPath, sender)
 
 
-func animPathSet(path):
-	if path.begins_with("/") or path.begins_with("res://"):
-		animationAssetPath = path
-	else:
-		animationAssetPath = "res://" + path
+func setAppRemote(args, sender):
+	allowRemoteClients = true if args.empty() else getBool(args[0])
 
