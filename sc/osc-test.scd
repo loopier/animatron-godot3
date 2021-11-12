@@ -2,22 +2,7 @@
 ////////////////////////////////////////////////////////////
 // Setup
 ////////////////////////////////////////////////////////////
-OSCdef(\listActorsReply, { arg msg;
-	"Actors: %".format(msg[1..]).postln;
-}, "/list/actors/reply");
-OSCdef(\listAnimsReply, { arg msg;
-	"Available animations:\n\t%".format(join(msg[1..], "\n\t")).postln;
-}, "/list/anims/reply");
-OSCdef(\listAssetsReply, { arg msg;
-	"Available assets:\n\t%".format(join(msg[1..], "\n\t")).postln;
-}, "/list/assets/reply");
-OSCdef(\errorReply, { arg msg;
-	"Error: %".format(msg[1]).postln;
-}, "/error/reply");
-OSCdef(\statusReply, { arg msg;
-	"Status: %".format(msg[1]).postln;
-}, "/status/reply");
-n = NetAddr("localhost", 56101);
+"setup.scd".loadRelative.first;
 )
 
 (
@@ -447,16 +432,16 @@ n.sendMsg("/color", "axe2", 0, 0.7, 0);
 n.sendMsg("/color", "axe3", 0, 0, 0.7);
 )
 
-n.sendMsg("/list");
-n.sendMsg("/behind", "bigger", "axe*");
-n.sendMsg("/behind", "axe*", "bigger");
-n.sendMsg("/front", "bigger", "axe*");
-n.sendMsg("/front", "axe*", "bigger");
+x.("/list");
+x.("/behind bigger axe*");
+x.("/behind axe* bigger");
+x.("/front bigger axe*");
+x.("/front axe* bigger");
 
-n.sendMsg("/select", "axe1");
-n.sendMsg("/select", "axe2");
+x.("/select axe1");
+x.("/select axe2");
 
-n.sendMsg("/behind!", "axe3");
-n.sendMsg("/front!", "axe3");
-n.sendMsg("/behind!", "bigger");
-n.sendMsg("/front!", "bigger");
+x.("/behind! axe3");
+x.("/front! axe3");
+x.("/behind! bigger");
+x.("/front! bigger");
