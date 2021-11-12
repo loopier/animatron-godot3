@@ -18,10 +18,16 @@ _global_script_classes=[ {
 "class": "CustomCommands",
 "language": "GDScript",
 "path": "res://CustomCommands.gd"
+}, {
+"base": "Node",
+"class": "Midi",
+"language": "GDScript",
+"path": "res://Midi.gd"
 } ]
 _global_script_class_icons={
 "Config": "",
-"CustomCommands": ""
+"CustomCommands": "",
+"Midi": ""
 }
 
 [application]
