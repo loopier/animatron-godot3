@@ -65,16 +65,19 @@ func setWindowSize(args, sender):
 
 
 func centerWindow(args, sender):
+	if not args.empty():
+		osc.reportError("centerWindow expects no arguments", sender)
+		return
 	OS.set_window_position((OS.get_screen_size(OS.get_current_screen()) * 0.5) - (OS.get_window_size() * 0.5))
 
 
 func fullscreen(args, sender):
-	var fs = true if args.empty() else bool(args[0])
+	var fs = true if args.empty() else getBool(args[0])
 	OS.set_window_fullscreen(fs)
 
 
 func windowAlwaysOnTop(args, sender):
-	var ot = true if args.empty() else bool(args[0])
+	var ot = true if args.empty() else getBool(args[0])
 	OS.set_window_always_on_top(ot)
 
 

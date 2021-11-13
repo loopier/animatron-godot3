@@ -453,7 +453,7 @@ func stopActor(inArgs, sender):
 func setActorFrame(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorFrame", 1, sender)
 	if args: for node in args.actors:
-		node.get_node("Animation").set_frame(args.args[0])
+		node.get_node("Animation").set_frame(int(args.args[0]))
 
 
 func setActorPosition(inArgs, sender):
@@ -535,6 +535,18 @@ func sayActor(inArgs, sender):
 				bubble.setText(msg, aa.args[1])
 			else:
 				bubble.setText(msg)
+
+
+func actionActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "sayActor", [1, 100], sender)
+	if aa:
+		for node in aa.actors:
+			var actionName = String(aa.args[0])
+			var actionArgs = aa.args.slice(1, -1)
+			var action = load("res://actions/%s.gd" % actionName).new(actionArgs)
+			if action:
+				node.add_child(action)
+				reportStatus("added action '%s' with args %s" % [actionName, actionArgs], sender)
 
 
 func behindActor(inArgs, sender):
