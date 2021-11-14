@@ -65,7 +65,7 @@ func _ready():
 	# [mandatory] starting the reception of messages
 	oscrcv.start()
 	
-	$CustomCommands.loadCommandFile("res://commands/init.csv")
+	$CustomCommands.loadCommandFile("res://commands/init.osc")
 	# Load default config file (if it exists) and call config command
 	$Config.loadConfig([$Config.defaultConfigFile], null)
 	evalCommandList([["/config"]], null)

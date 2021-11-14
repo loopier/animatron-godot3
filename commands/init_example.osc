@@ -1,0 +1,22 @@
+def /startup
+    /load om-walk-*
+    /wait 2
+    /create walker om-walk-s
+    /color walker 0.7 0.2 0.1
+    /crowd
+    /wait 3
+    /say walker "Hi everybody!"
+
+def /createsel actor anim
+    /create $actor $anim
+    /select $actor
+
+def /crowd
+    /deselect
+    /createsel om1 om-walk-w
+    /createsel om2 om-walk-w
+    /createsel om3 om-walk-w
+    /createsel om4 om-walk-w
+    /createsel om5 om-walk-w
+    /group crowd om?
+
