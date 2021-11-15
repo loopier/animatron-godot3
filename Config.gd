@@ -5,6 +5,7 @@ onready var cmds : CustomCommands = get_parent().find_node("CustomCommands")
 onready var osc = get_parent().find_node("OscInterface")
 var defaultConfigDir = "res://config/"
 var defaultConfigFile = defaultConfigDir + "config.osc"
+var defaultMidiFile = "res://commands/midi.osc"
 var animationAssetPath = "res://animations/" setget animPathSet
 var allowRemoteClients = true
 
