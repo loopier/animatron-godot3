@@ -11,6 +11,7 @@ var spriteFilenameRegex
 var sequenceFilenameRegex
 const selectionGroup = "selected"
 const loadAllAssetsAtStartup = false
+const actorAnimNodePath : String = "Offset/Animation"
 
 func _ready():
 	spriteFilenameRegex = RegEx.new()
@@ -18,7 +19,7 @@ func _ready():
 	sequenceFilenameRegex = RegEx.new()
 	sequenceFilenameRegex.compile("(.+)_(\\d+)fps")
 
-	animFramesLibrary = metanode.instance().get_node("Animation").frames
+	animFramesLibrary = metanode.instance().get_node(actorAnimNodePath).frames
 	if loadAllAssetsAtStartup:
 		var assets = getAssetFilesMatching(config.animationAssetPath, "*")
 		loadSprites(assets.sprites)
@@ -28,14 +29,14 @@ func _ready():
 ############################################################
 # Helpers
 ############################################################
-func getAssetBaseName(fileName):
+static func getAssetBaseName(fileName):
 	var baseName = fileName.get_basename()
 	var split = baseName.split("_", false, 1)
 	if !split.empty(): baseName = split[0]
 	return baseName
 
 
-func getAnimSequenceFrames(path):
+static func getAnimSequenceFrames(path):
 	var dir = Directory.new()
 	var frames = []
 	if dir.open(path) == OK:
@@ -48,7 +49,7 @@ func getAnimSequenceFrames(path):
 	return frames
 
 
-func getAssetFilesMatching(path, nameWildcard):
+static func getAssetFilesMatching(path, nameWildcard):
 	var dir = Directory.new()
 	var files = { sprites = [], seqs = [] }
 	if dir.open(path) == OK:
@@ -71,7 +72,7 @@ func getAssetFilesMatching(path, nameWildcard):
 	return files
 
 
-func getExternalTexture(path):
+static func getExternalTexture(path):
 	var img = Image.new()
 	img.load(path)
 	var texture = ImageTexture.new()
@@ -138,7 +139,7 @@ func addSubSprites(animFramesLibrary, atlas, suffixes, info):
 			animFramesLibrary.add_frame(animName, texture, frameId % subFrames)
 			frameId += 1
 
-	
+
 func loadSprites(sprites):
 	print("Runtime sprites:", sprites)
 	# Add the runtime-loaded sprites to our pre-existing library
@@ -175,7 +176,7 @@ func loadSequences(sequences):
 
 # For now, it just creates a sender instance each call,
 # so isn't designed for continuous/heavy use...
-func sendMessage(target, oscAddress, oscArgs):
+static func sendMessage(target, oscAddress, oscArgs):
 	var oscsnd = load("res://addons/gdosc/gdoscsender.gdns").new()
 	var ip = target[0]
 	var port = target[1]
@@ -188,13 +189,13 @@ func sendMessage(target, oscAddress, oscArgs):
 	oscsnd.stop()
 
 
-func reportError(errString, target):
+static func reportError(errString, target):
 	push_error(errString)
 	if target:
 		sendMessage(target, "/error/reply", [errString])
 
 
-func reportStatus(statusString, target):
+static func reportStatus(statusString, target):
 	print(statusString)
 	if target:
 		sendMessage(target, "/status/reply", [statusString])
@@ -209,7 +210,7 @@ func getNode(nodeName, sender):
 		return false
 
 
-func getNames(objList):
+static func getNames(objList):
 	var names = []
 	for o in objList: names.push_back(o.name)
 	return names
@@ -246,7 +247,7 @@ func getActorsAndArgs(inArgs, methodName, expectedArgs, sender):
 		return
 
 
-func setPropertyWithDur(node : Object, propertyName : String, newValue, dur : float):
+static func setPropertyWithDur(node : Object, propertyName : String, newValue, dur : float):
 	if dur > 0:
 		var tween = node.get_node("Tween")
 		tween.interpolate_property(node, propertyName,
@@ -259,9 +260,16 @@ func setPropertyWithDur(node : Object, propertyName : String, newValue, dur : fl
 		node.set(propertyName, newValue)
 
 
-func setShaderUniform(node, uName, uValue):
-	var image = node.get_node("Animation")
+static func setShaderUniform(node, uName, uValue):
+	var image = node.get_node(actorAnimNodePath)
 	image.material.set_shader_param(uName, uValue)
+
+
+static func removeActions(actor : Node):
+	var toRemove := []
+	for child in actor.get_children():
+		if child as Action:
+			actor.remove_child(child)
 
 
 ############################################################
@@ -300,10 +308,10 @@ func createActor(args, sender):
 		newNode.name = nodeName
 		newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
 		# Switch to the animation library that includes runtime-loaded data
-		newNode.get_node("Animation").frames = animFramesLibrary
+		newNode.get_node(actorAnimNodePath).frames = animFramesLibrary
 		actorsNode.add_child(newNode)
 
-	var animNode = newNode.get_node("Animation")
+	var animNode = newNode.get_node(actorAnimNodePath)
 	animNode.play(animName)
 	# Set the offset of the child sprite so the MetaNode centre is near
 	# its bottom (the "feet"). In future, this could be set differently
@@ -321,7 +329,7 @@ func listActors(args, sender):
 		return
 	var pairs = {}
 	for a in actorsNode.get_children():
-		pairs[a.name] = a.get_node("Animation").get_animation()
+		pairs[a.name] = a.get_node(actorAnimNodePath).get_animation()
 	print(pairs)
 	sendMessage(sender, "/list/actors/reply", pairs)
 
@@ -440,20 +448,21 @@ func freeActor(inArgs, sender):
 func playActor(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "playActor", 0, sender)
 	if args: for node in args.actors:
-		var animName = node.get_node("Animation").get_animation()
-		node.get_node("Animation").play(animName)
+		var animNode = node.get_node(actorAnimNodePath)
+		var animName = animNode.get_animation()
+		animNode.play(animName)
 
 
 func stopActor(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "stopActor", 0, sender)
 	if args: for node in args.actors:
-		node.get_node("Animation").stop()
+		node.get_node(actorAnimNodePath).stop()
 
 
 func setActorFrame(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorFrame", 1, sender)
 	if args: for node in args.actors:
-		node.get_node("Animation").set_frame(int(args.args[0]))
+		node.get_node(actorAnimNodePath).set_frame(int(args.args[0]))
 
 
 func setActorPosition(inArgs, sender):
@@ -499,20 +508,20 @@ func setActorFade(inArgs, sender):
 func setActorSpeed(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorSpeed", 1, sender)
 	if args: for node in args.actors:
-		node.get_node("Animation").set_speed_scale(args.args[0])
+		node.get_node(actorAnimNodePath).set_speed_scale(args.args[0])
 
 
 func flipActorH(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "flipActorH", 0, sender)
 	if args: for node in args.actors:
-		var anim = node.get_node("Animation")
+		var anim = node.get_node(actorAnimNodePath)
 		anim.set_flip_h(not(anim.is_flipped_h()))
 
 
 func flipActorV(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "flipActorV", 0, sender)
 	if args: for node in args.actors:
-		var anim = node.get_node("Animation")
+		var anim = node.get_node(actorAnimNodePath)
 		anim.set_flip_v(not(anim.is_flipped_v()))
 
 
@@ -532,7 +541,7 @@ func sayActor(inArgs, sender):
 			var bubble = speechBubbleNode.instance()
 			node.add_child(bubble)
 			if len(aa.args) == 2:
-				bubble.setText(msg, aa.args[1])
+				bubble.setText(msg, float(aa.args[1]))
 			else:
 				bubble.setText(msg)
 
@@ -540,13 +549,15 @@ func sayActor(inArgs, sender):
 func actionActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "sayActor", [1, 100], sender)
 	if aa:
-		for node in aa.actors:
+		for actor in aa.actors:
 			var actionName = String(aa.args[0])
 			var actionArgs = aa.args.slice(1, -1)
 			var action = load("res://actions/%s.gd" % actionName).new(actionArgs)
 			if action:
-				node.add_child(action)
-				reportStatus("added action '%s' with args %s" % [actionName, actionArgs], sender)
+				removeActions(actor)
+				actor.add_child(action)
+				action.name = actionName
+				reportStatus("added action '%s' to '%s' with args %s" % [actionName, actor.name, actionArgs], sender)
 
 
 func behindActor(inArgs, sender):

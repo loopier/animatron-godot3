@@ -55,7 +55,7 @@ func _on_RichTextLabel_resized():
 	textBg.margin_bottom = textNode.margin_bottom
 	offset.x = textBg.margin_right / (-2)
 	
-	var animNode = get_node("../Animation")
+	var animNode = get_node("../Offset/Animation")
 	if animNode:
 		var texSize = animNode.frames.get_frame(animNode.get_animation(), 0).get_size()
 		animNode.position = Vector2(0, texSize.y * -0.4)

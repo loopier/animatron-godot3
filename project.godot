@@ -25,7 +25,7 @@ _global_script_classes=[ {
 "path": "res://CustomCommands.gd"
 } ]
 _global_script_class_icons={
-"Action": "",
+"Action": "res://icons/action.svg",
 "Config": "",
 "CustomCommands": ""
 }
