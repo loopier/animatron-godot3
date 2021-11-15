@@ -247,9 +247,9 @@ func getActorsAndArgs(inArgs, methodName, expectedArgs, sender):
 		return
 
 
-static func setPropertyWithDur(node : Object, propertyName : String, newValue, dur : float):
+static func setPropertyWithDur(node, propertyName : String, newValue, dur : float, tweenPath := "Tween"):
 	if dur > 0:
-		var tween = node.get_node("Tween")
+		var tween = node.get_node(tweenPath)
 		tween.interpolate_property(node, propertyName,
 			node.get(propertyName),
 			newValue,
@@ -272,6 +272,15 @@ static func removeActions(actor : Node):
 			actor.remove_child(child)
 
 
+# The pivot should be specified in relative coordinates,
+# from 0 (left/top) to 1 (right/bottom). (0.5,0.5) is the centre (also default).
+func setAnimPivot(animNode, pivot := Vector2(0.5, 0.5), dur : float = 0):
+	var animName = animNode.animation
+	var texSize = animNode.frames.get_frame(animName, 0).get_size()
+	var pixelPivot = Vector2(0.5 - pivot.x, 0.5 - pivot.y) * texSize
+	setPropertyWithDur(animNode, "position", pixelPivot, dur, "../../Tween")
+
+
 ############################################################
 # OSC "other" commands
 ############################################################
@@ -287,7 +296,7 @@ func loadAsset(args, sender):
 	if not assets.seqs.empty():
 		loadSequences(assets.seqs)
 		reportStatus("loaded sequences: " + String(assets.seqs), sender)
-	
+
 
 func createActor(args, sender):
 	if args.size() != 2:
@@ -313,13 +322,9 @@ func createActor(args, sender):
 
 	var animNode = newNode.get_node(actorAnimNodePath)
 	animNode.play(animName)
-	# Set the offset of the child sprite so the MetaNode centre is near
-	# its bottom (the "feet"). In future, this could be set differently
-	# for each anim as metadata, but for now this is okay.
-	var anim = animNode.get_animation()
-	var texSize = animNode.frames.get_frame(animName, 0).get_size()
-	animNode.position = Vector2(0, texSize.y * -0.45)
-	reportStatus("Created node '%s' with '%s'" % [newNode.name, anim], sender)
+	# Set the offset/pivot of the child sprite to the default.
+	setAnimPivot(animNode)
+	reportStatus("Created node '%s' with '%s'" % [newNode.name, animName], sender)
 
 
 # List the instantiated actors
@@ -494,6 +499,16 @@ func setActorScale(inArgs, sender):
 		var scl := Vector2(float(args.args[0]), float(args.args[1]))
 		for node in args.actors:
 			setPropertyWithDur(node, "scale", scl, dur)
+
+
+func setActorPivot(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "setActorPivot", [2, 3], sender)
+	if aa:
+		var dur : float = 0 if aa.args.size() == 2 else aa.args[2]
+		var pivot := Vector2(float(aa.args[0]), float(aa.args[1]))
+		for node in aa.actors:
+			var animNode = node.get_node(actorAnimNodePath)
+			setAnimPivot(animNode, pivot, dur)
 
 
 func setActorFade(inArgs, sender):
