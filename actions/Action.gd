@@ -9,6 +9,6 @@ func _init():
 	pass
 	
 
-func _update_time(delta : float):
+func updateTime(delta : float):
 	curTime += delta
 

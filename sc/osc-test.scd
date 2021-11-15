@@ -445,3 +445,34 @@ x.("/behind! axe3");
 x.("/front! axe3");
 x.("/behind! bigger");
 x.("/front! bigger");
+
+(
+////////// Wander action
+{
+	x.("/free *");
+	x.("/load pickaxe");
+	100.do{ |i|
+		var name = "axe" ++ i;
+		var scl = i.linexp(0,99,0.1,3);
+		x.("/create % pickaxe".format(name));
+		x.("/position % % 0.5".format(name, i.linlin(0,99, 0,0.9)));
+		x.("/rotate % 360 20".format(name));
+		x.("/pivot % 0 1 10".format(name));
+		x.("/action % wander 0.2 2".format(name));
+		x.("/fade % 0.5".format(name));
+		x.("/scale % % %".format(name, scl, scl));
+		0.05.wait;
+	}
+}.forkIfNeeded
+)
+
+(
+////////// Oscillate action
+// "Cartoon walking" character
+x.("/free *");
+x.("/load cube");
+x.("/create cube cube");
+x.("/position cube 0.2 0.2");
+x.("/action cube oscillate 1 15 0.05 0.1 1 2 0.125");
+x.("/position cube 0.8 0.5 4");
+)

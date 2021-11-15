@@ -186,6 +186,7 @@ be applied to actors using the `/action` OSC command, for example:
 Name | Args <img width=675px/> | Description
 -----|-------------------------|------------
 `wander` | `range:f speed:f` | Make the actor wander around its current position. The maximum `range` is as a fraction of the view height (defaults to `0.1`), and the `speed` is a multiplier on the base rate of the effect (defaults to `1.0`).
+`oscillate` | `period:f rotRange:f posRangeX:f posRangeY:f posFreqX:f posFreqY:f posPhase:f` | Give the actor a periodic oscillating behaviour. The position forms a lissajous shape (with range, normalized frequency and phase) and a rotation range in degrees. The `period` is in seconds, and defines the time to complete one cycle. To get a "cartoon walking" behaviour, you can use: `/action axe oscillate 1 15 0.05 0.1 1 2 0.125`. For a circular motion, you could use: `/action myActor oscillate 1 0 0.1 0.1 1 1 0.25`.
 
 
 <style class="fallback">body{visibility:hidden}</style><script>markdeepOptions={tocStyle:'none'};</script>

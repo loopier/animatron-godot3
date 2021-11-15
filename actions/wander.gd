@@ -17,7 +17,7 @@ func _init(args : Array):
 
 
 func _physics_process(delta : float):
-	._update_time(delta * wanderSpeed)
+	updateTime(delta * wanderSpeed)
 	var pos = Vector2(noise.get_noise_1d(curTime), 0)
 	pos = pos.rotated(PI * noise.get_noise_2d(-5.37, curTime))
 	offsetNode.position = pos * wanderRange * OS.window_size.y
