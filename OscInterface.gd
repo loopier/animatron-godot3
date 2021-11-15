@@ -326,6 +326,15 @@ func createActor(args, sender):
 	setAnimPivot(animNode)
 	reportStatus("Created node '%s' with '%s'" % [newNode.name, animName], sender)
 
+func createOrDestroyActor(args, sender):
+	if args.size() != 2:
+		reportError("createActor expects two arguments", sender)
+		return
+	var nodeName = args[0]
+	if actorsNode.has_node(nodeName):
+		freeActor(args.slice(0,0), sender)
+	else:
+		createActor(args, sender)
 
 # List the instantiated actors
 func listActors(args, sender):

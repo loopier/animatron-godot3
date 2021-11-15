@@ -26,6 +26,7 @@ onready var actorCmds = {
 onready var otherCmds = {
 	"/load": funcref($OscInterface, "loadAsset"),
 	"/create": funcref($OscInterface, "createActor"),
+	"/createordestroy": funcref($OscInterface, "createOrDestroyActor"),
 	"/list": funcref($OscInterface, "listActors"), # shortcut for /list/actors
 	"/list/actors": funcref($OscInterface, "listActors"),
 	"/list/anims": funcref($OscInterface, "listAnims"),
@@ -70,7 +71,6 @@ func _ready():
 	# Load default config file (if it exists) and call config command
 	$Config.loadConfig([$Config.defaultConfigFile], null)
 	evalCommandList([["/config"]], null)
-
 
 func evalCommandList(commands : Array, sender):
 	while !commands.empty():
