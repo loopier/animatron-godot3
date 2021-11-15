@@ -25,6 +25,9 @@ func loadCommandFile(path):
 			if !elem.empty():
 				filteredLine.append(elem.strip_edges())
 		if !file.eof_reached() && !filteredLine.empty():
+			if filteredLine[0][0] == '#':
+				# Ignore comment lines that start with '#'
+				continue
 			if filteredLine[0] == "def" && filteredLine.size() > 1:
 				if defCommand && !commandList.empty():
 					defineCommand(defCommand, defArgs, commandList)

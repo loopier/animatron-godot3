@@ -28,7 +28,9 @@ animations = [  ]
 [node name="MetaNode" type="KinematicBody2D"]
 position = Vector2( 500, 300 )
 
-[node name="Animation" type="AnimatedSprite" parent="."]
+[node name="Offset" type="Node2D" parent="."]
+
+[node name="Animation" type="AnimatedSprite" parent="Offset"]
 material = SubResource( 2 )
 frames = SubResource( 3 )
 

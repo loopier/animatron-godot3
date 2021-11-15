@@ -12,12 +12,14 @@ onready var actorCmds = {
 	"/position": funcref($OscInterface, "setActorPosition"),
 	"/rotate": funcref($OscInterface, "setActorRotation"),
 	"/scale": funcref($OscInterface, "setActorScale"),
+	"/pivot": funcref($OscInterface, "setActorPivot"),
 	"/fade": funcref($OscInterface, "setActorFade"),
 	"/speed": funcref($OscInterface, "setActorSpeed"),
 	"/fliph": funcref($OscInterface, "flipActorH"),
 	"/flipv": funcref($OscInterface, "flipActorV"),
 	"/color": funcref($OscInterface, "colorActor"),
 	"/say": funcref($OscInterface, "sayActor"),
+	"/action": funcref($OscInterface, "actionActor"),
 	"/behind": funcref($OscInterface, "behindActor"),
 	"/front": funcref($OscInterface, "frontActor"),
 }
@@ -64,7 +66,7 @@ func _ready():
 	# [mandatory] starting the reception of messages
 	oscrcv.start()
 	
-	$CustomCommands.loadCommandFile("res://commands/init.csv")
+	$CustomCommands.loadCommandFile("res://commands/init.osc")
 	# Load default config file (if it exists) and call config command
 	$Config.loadConfig([$Config.defaultConfigFile], null)
 	evalCommandList([["/config"]], null)

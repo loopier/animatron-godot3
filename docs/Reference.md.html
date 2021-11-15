@@ -27,7 +27,7 @@ Animatron.
     and `?` (match exactly one character) may be used as actor name
     wildcards.
 
-Address | Args <img width=475px/> | Description
+Address | Args <img width=675px/> | Description
 --------|------|------------
 `/free` <br/> `/free!` | `actor:s` <br/> - | Delete the actor (remove its instance).
 `/play` <br/> `/play!` | `actor:s` <br/> - | Play the actor's animation from the current frame.
@@ -36,12 +36,14 @@ Address | Args <img width=475px/> | Description
 `/position` <br/> `/position!` | `actor:s x:f y:f [dur:f]` <br/> `x:f y:f [dur:f]` | Set the actor to the x,y coordinates (specified as fractions of the viewport from 0-1). If `dur` is set, interpolate the movement over that number of seconds, otherwise change instantaneously.
 `/rotate` <br/> `/rotate!` | `actor:s rot:f [dur:f]` <br/> `rot:f [dur:f]` | Set the actor's rotation to `rot` degrees. If `dur` is set, interpolate the rotation over that number of seconds, otherwise change instantaneously.
 `/scale` <br/> `/scale!` | `actor:s sx:f sy:f [dur:f]` <br/> `sx:f sy:f [dur:f]` | Set the actor's scale. If `dur` is set, interpolate the scale over that number of seconds, otherwise change instantaneously.
+`/pivot` <br/> `/pivot!` | `actor:s px:f py:f [dur:f]` <br/> `px:f py:f [dur:f]` | Set the actor's animation pivot to the specified point. `px` and `py` should be in the normalized range 0-1, with 0 being left/top of the frame and 1 being right/bottom. If `dur` is set, interpolate the pivot over that number of seconds, otherwise change instantaneously.
 `/fade` <br/> `/fade!` | `actor:s opacity:f [dur:f]` <br/> `opacity:f [dur:f]` | Fade the actor (set its opacity, where 1 is fully opaque/visible and 0 is transparent/invisible). If `dur` is set, interpolate the fade over that number of seconds, otherwise change instantaneously.
 `/speed` <br/> `/speed!` | `actor:s rate:f` <br/> `rate:f` | Set the playback speed (1 is normal speed).
 `/fliph` <br/> `/fliph!` | `actor:s` <br/> - | Flip the actor horizontally.
 `/flipv` <br/> `/flipv!` | `actor:s` <br/> - | Flip the actor vertically.
 `/color` <br/> `/color!` | `actor:s r:f g:f b:f` <br/> `r:f g:f b:f` | Add an RGB colour to the actor. Red, green and blue should be in the 0-1 range (can be negative to subtract colour). Set to black (0,0,0) to restore its original colour.
 `/say` <br/> `/say!` | `actor:s text:s [dur:f]` <br/> `text:s [dur:f]` | Have the actor "say" something via a speech bubble, with an optional duration (defaults to three seconds).
+`/action` <br/> `/action!` | `actor:s action:s [args...]` <br/> `action:s [args...]` | Apply an action (behaviour) to the actor. Actions are script classes that define custom behaviours, such as "wander". Each action type will have its own unique list of arguments.
 `/behind` <br/> `/behind!` | `actor:s ref:s` <br/> `ref:s` | Change the draw order for an actor to be behind a reference actor. To move to the background, use `/behind actor *`.
 `/front` <br/> `/front!` | `actor:s ref:s` <br/> `ref:s` | Change the draw order for an actor to be in front of a reference actor. To move to the foreground, use `/front actor *`.
 
@@ -59,7 +61,7 @@ Address | Args <img width="1000px"/> | Description
 `/select` | `[actor:s]` | Add the actor to the selected set. If run without `actor` it will return the list of selected actors.
 `/deselect` | `[actor:s]` | Remove the actor from the selected set. If run without `actor` it will deselect all (equivalent to `/deselect "*"` or `/deselect "!"`).
 `/selected` | | Get the list of selected actors.
-`/def` | `cmdName [subCommand] ...` | Define a custom OSC command that is a list of other OSC commands. This may be recursive, so each `subCommand` may reference one of the built-in commands, or another custom-defined command. Another way to define custom commands is via the file `commands/init.csv`. The `cmdName` string (first argument) may include argument names, which may be referenced as `subCommand` arguments using `$name`. Example: `/def "/addsel actor anim" "/create $actor $anim" "/select $actor"`.
+`/def` | `cmdName [subCommand] ...` | Define a custom OSC command that is a list of other OSC commands. This may be recursive, so each `subCommand` may reference one of the built-in commands, or another custom-defined command. Another way to define custom commands is via the file `commands/init.osc`. The `cmdName` string (first argument) may include argument names, which may be referenced as `subCommand` arguments using `$name`. Example: `/def "/addsel actor anim" "/create $actor $anim" "/select $actor"`.
 `/load/defs` | `filename` | Load a custom command definitions file, which should have the format [described below](#def-files).
 `/wait` | `duration` | Wait for `duration` seconds before executing the next command. Only relevant within a list of commands being executed together at once, such as inside a custom `def`ined command list.
 
@@ -133,7 +135,7 @@ Animatron, and they will be assumed to contain 4x4 sprites and play at
 You may define a set of custom OSC commands (similar to functions or
 macros that perform a list of other commands) using the `/def` OSC
 command itself, or by loading text files containing custom command
-definitions. At startup, the file `commands/init.csv` is parsed with
+definitions. At startup, the file `commands/init.osc` is parsed with
 an initial set of definitions. You may also load command definition
 files at runtime using the `/load/defs` command (its argument should
 be a file relative to the `commands/` directory).
@@ -148,7 +150,7 @@ Custom OSC commands can refer to other custom commands recursively,
 and no validation is done at load time, so they may be referenced
 before they are defined.
 
-Here is an example `init.csv` file:
+Here is an example `init.osc` file:
 
 ```
 def /startup
@@ -174,6 +176,18 @@ def /crowd
     /createsel om5 om-walk-w
     /group crowd om?
 ```
+
+# Actions (behaviours)
+
+This the the list of built-in actions and their arguments, which can
+be applied to actors using the `/action` OSC command, for example:
+`/action myActor wander 0.25 2`.
+
+Name | Args <img width=675px/> | Description
+-----|-------------------------|------------
+`wander` | `range:f speed:f` | Make the actor wander around its current position. The maximum `range` is as a fraction of the view height (defaults to `0.1`), and the `speed` is a multiplier on the base rate of the effect (defaults to `1.0`).
+`oscillate` | `period:f rotRange:f posRangeX:f posRangeY:f posFreqX:f posFreqY:f posPhase:f` | Give the actor a periodic oscillating behaviour. The position forms a lissajous shape (with range, normalized frequency and phase) and a rotation range in degrees. The `period` is in seconds, and defines the time to complete one cycle. To get a "cartoon walking" behaviour, you can use: `/action axe oscillate 1 15 0.05 0.1 1 2 0.125`. For a circular motion, you could use: `/action myActor oscillate 1 0 0.1 0.1 1 1 0.25`.
+
 
 <style class="fallback">body{visibility:hidden}</style><script>markdeepOptions={tocStyle:'none'};</script>
 <!-- Markdeep: --><script src="markdeep/markdeep.min.js?" charset="utf-8"></script>

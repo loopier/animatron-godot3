@@ -10,6 +10,11 @@ config_version=4
 
 _global_script_classes=[ {
 "base": "Node",
+"class": "Action",
+"language": "GDScript",
+"path": "res://actions/Action.gd"
+}, {
+"base": "Node",
 "class": "Config",
 "language": "GDScript",
 "path": "res://Config.gd"
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://Midi.gd"
 } ]
 _global_script_class_icons={
+"Action": "res://icons/action.svg",
 "Config": "",
 "CustomCommands": "",
 "Midi": ""
