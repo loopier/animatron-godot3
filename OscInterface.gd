@@ -272,6 +272,26 @@ static func removeActions(actor : Node):
 			actor.remove_child(child)
 
 
+# Support a single float/int value, an array,
+# or a string of two floats separated by a comma
+static func getVector2(arg) -> Vector2:
+	var value : Vector2
+	if typeof(arg) == TYPE_STRING:
+		var parts = arg.split_floats(',')
+		if not parts.empty():
+			value = Vector2(parts[0], parts[0])
+		if parts.size() > 1:
+			value.y = parts[1]
+	elif typeof(arg) == TYPE_ARRAY:
+		if not arg.empty():
+			value = Vector2(arg[0], arg[0])
+		if arg.size() > 1:
+			value.y = arg[1] as float
+	else:
+		value = Vector2(float(arg), float(arg))
+	return value
+
+
 # The pivot should be specified in relative coordinates,
 # from 0 (left/top) to 1 (right/bottom). (0.5,0.5) is the centre (also default).
 func setAnimPivot(animNode, pivot := Vector2(0.5, 0.5), dur : float = 0):
@@ -315,7 +335,7 @@ func createActor(args, sender):
 		print("creating node '%s'" % [nodeName])
 		newNode = metanode.instance()
 		newNode.name = nodeName
-		newNode.position = Vector2(randf(), randf()) * main.get_viewport_rect().size
+		newNode.position = Vector2(0.5, 0.5) * main.get_viewport_rect().size
 		# Switch to the animation library that includes runtime-loaded data
 		newNode.get_node(actorAnimNodePath).frames = animFramesLibrary
 		actorsNode.add_child(newNode)
@@ -326,15 +346,17 @@ func createActor(args, sender):
 	setAnimPivot(animNode)
 	reportStatus("Created node '%s' with '%s'" % [newNode.name, animName], sender)
 
+
 func createOrDestroyActor(args, sender):
 	if args.size() != 2:
-		reportError("createActor expects two arguments", sender)
+		reportError("createOrDestroyActor expects two arguments", sender)
 		return
 	var nodeName = args[0]
 	if actorsNode.has_node(nodeName):
 		freeActor(args.slice(0,0), sender)
 	else:
 		createActor(args, sender)
+
 
 # List the instantiated actors
 func listActors(args, sender):
@@ -502,11 +524,11 @@ func setActorRotation(inArgs, sender):
 
 
 func setActorScale(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "setActorScale", [2, 3], sender)
-	if args:
-		var dur : float = 0 if args.args.size() == 2 else args.args[2]
-		var scl := Vector2(float(args.args[0]), float(args.args[1]))
-		for node in args.actors:
+	var aa = getActorsAndArgs(inArgs, "setActorScale", [1, 2], sender)
+	if aa:
+		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
+		var scl := getVector2(aa.args[0])
+		for node in aa.actors:
 			setPropertyWithDur(node, "scale", scl, dur)
 
 

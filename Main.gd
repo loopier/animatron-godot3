@@ -72,6 +72,7 @@ func _ready():
 	$Config.loadConfig([$Config.defaultConfigFile], null)
 	evalCommandList([["/config"]], null)
 
+
 func evalCommandList(commands : Array, sender):
 	while !commands.empty():
 		var cmd = commands.pop_front()

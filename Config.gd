@@ -17,7 +17,7 @@ func _ready():
 ############################################################
 # Helpers
 ############################################################
-func getBool(arg) -> bool:
+static func getBool(arg) -> bool:
 	if typeof(arg) == TYPE_STRING:
 		return arg.to_lower() == "true" or bool(int(arg))
 	else:

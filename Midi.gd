@@ -11,6 +11,7 @@ func _ready():
 	print("MIDI devices: ",OS.get_connected_midi_inputs())
 	set_process_unhandled_input(true)
 
+
 func _unhandled_input(event):
 	if(event is InputEventMIDI):
 #		print("MIDI: ", event.as_text())
