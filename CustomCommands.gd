@@ -1,5 +1,5 @@
-class_name CustomCommands
 extends Node
+class_name CustomCommands
 
 var commands = {}
 

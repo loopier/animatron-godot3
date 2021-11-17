@@ -9,9 +9,10 @@ onready var speechBubbleNode = preload("res://SpeechBubble.tscn")
 var animFramesLibrary
 var spriteFilenameRegex
 var sequenceFilenameRegex
-const selectionGroup = "selected"
-const loadAllAssetsAtStartup = false
-const actorAnimNodePath : String = "Offset/Animation"
+const selectionGroup := "selected"
+const loadAllAssetsAtStartup := false
+const actorAnimNodePath := "Offset/Animation"
+const defaultDefsDir := "commands/"
 
 func _ready():
 	spriteFilenameRegex = RegEx.new()
@@ -56,18 +57,19 @@ static func getAssetFilesMatching(path, nameWildcard):
 		dir.list_dir_begin(true, true)
 		var filename = dir.get_next()
 		while !filename.empty():
+			var fullPath = path.plus_file(filename)
 			if dir.current_is_dir():
 				var baseFile = getAssetBaseName(filename)
 				if baseFile.match(nameWildcard):
-					var seqFrames = getAnimSequenceFrames(path + filename);
+					var seqFrames = getAnimSequenceFrames(fullPath);
 					if !seqFrames.empty():
 						print("Sequence (%d frames) file name: %s" % [seqFrames.size(), filename])
-						files.seqs.push_back(path + filename)
+						files.seqs.push_back(fullPath)
 			elif filename.ends_with(".png") or filename.ends_with(".jpg"):
 				var baseFile = getAssetBaseName(filename)
 				if baseFile.match(nameWildcard):
 					print("File name: ", filename)
-					files.sprites.push_back(path + filename)
+					files.sprites.push_back(fullPath)
 			filename = dir.get_next()
 	return files
 
@@ -272,26 +274,6 @@ static func removeActions(actor : Node):
 			actor.remove_child(child)
 
 
-# Support a single float/int value, an array,
-# or a string of two floats separated by a comma
-static func getVector2(arg) -> Vector2:
-	var value : Vector2
-	if typeof(arg) == TYPE_STRING:
-		var parts = arg.split_floats(',')
-		if not parts.empty():
-			value = Vector2(parts[0], parts[0])
-		if parts.size() > 1:
-			value.y = parts[1]
-	elif typeof(arg) == TYPE_ARRAY:
-		if not arg.empty():
-			value = Vector2(arg[0], arg[0])
-		if arg.size() > 1:
-			value.y = arg[1] as float
-	else:
-		value = Vector2(float(arg), float(arg))
-	return value
-
-
 # The pivot should be specified in relative coordinates,
 # from 0 (left/top) to 1 (right/bottom). (0.5,0.5) is the centre (also default).
 func setAnimPivot(animNode, pivot := Vector2(0.5, 0.5), dur : float = 0):
@@ -308,7 +290,7 @@ func loadAsset(args, sender):
 	if args.size() != 1:
 		reportError("loadAsset expects one argument", sender)
 		return
-	var assetName = args[0]
+	var assetName : String = args[0]
 	var assets = getAssetFilesMatching(config.animationAssetPath, assetName)
 	if not assets.sprites.empty():
 		loadSprites(assets.sprites)
@@ -456,8 +438,10 @@ func loadDefsFile(args, sender):
 	if args.size() != 1:
 		reportError("loadDefsFile expects one argument", sender)
 		return
-	var defsFile = "res://commands/" + args[0]
-	if not customCmds.loadCommandFile(defsFile):
+	var defsFile = Helper.getPathWithDefaultDir(args[0], defaultDefsDir)
+	if customCmds.loadCommandFile(defsFile):
+		reportStatus("Loaded custom defs from '%s'" % defsFile, sender)
+	else:
 		reportError("Couldn't open defs file: '%s'" % [defsFile], sender)
 
 
@@ -527,7 +511,7 @@ func setActorScale(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "setActorScale", [1, 2], sender)
 	if aa:
 		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
-		var scl := getVector2(aa.args[0])
+		var scl := Helper.getVector2(aa.args[0])
 		for node in aa.actors:
 			setPropertyWithDur(node, "scale", scl, dur)
 

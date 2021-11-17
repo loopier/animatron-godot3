@@ -476,3 +476,14 @@ x.("/position cube 0.2 0.2");
 x.("/action cube oscillate 1 15 0.05 0.1 1 2 0.125");
 x.("/position cube 0.8 0.5 4");
 )
+
+x.("/load/defs init_example.osc")
+x.("/load/defs commands/init_example.osc")
+x.("/load/config config_example.osc")
+x.("/load/config config/config_example.osc")
+x.("/config")
+x.("/something")
+
+x.("/list/assets")
+x.("/assets/path animations")
+x.("/assets/path C:/Users/holag/Documents/Programming/gitreps/animatron/animations")

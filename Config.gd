@@ -1,34 +1,23 @@
-class_name Config
 extends Node
+class_name Config
 
 onready var cmds : CustomCommands = get_parent().find_node("CustomCommands")
 onready var osc = get_parent().find_node("OscInterface")
-var defaultConfigDir = "res://config/"
-var defaultConfigFile = defaultConfigDir + "config.osc"
-var defaultMidiFile = "res://commands/midi.osc"
-var animationAssetPath = "res://animations/" setget animPathSet
-var allowRemoteClients = true
+const defaultConfigDir := "config/"
+var defaultMidiFile := "commands/midi.osc"
+var animationAssetPath := Helper.getGlobalPath("animations/") setget animPathSet
+var allowRemoteClients := true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("Data dir: ", OS.get_user_data_dir())
+	print("User data dir: ", OS.get_user_data_dir())
 
 
 ############################################################
 # Helpers
 ############################################################
-static func getBool(arg) -> bool:
-	if typeof(arg) == TYPE_STRING:
-		return arg.to_lower() == "true" or bool(int(arg))
-	else:
-		return bool(arg)
-
-
 func animPathSet(path):
-	if path.begins_with("/") or path.begins_with("res://"):
-		animationAssetPath = path
-	else:
-		animationAssetPath = "res://" + path
+	animationAssetPath = Helper.getGlobalPath(path)
 
 
 ############################################################
@@ -39,8 +28,10 @@ func loadConfig(args, sender):
 	if args.size() != 1:
 		osc.reportError("loadConfig expects one argument", sender)
 		return
-	var configFile = args[0]
-	if not cmds.loadCommandFile(configFile):
+	var configFile = Helper.getPathWithDefaultDir(args[0], defaultConfigDir)
+	if cmds.loadCommandFile(configFile):
+		osc.reportStatus("Loaded config from '%s'" % configFile, sender)
+	else:
 		osc.reportError("Couldn't open config file: '%s'" % [configFile], sender)
 
 
@@ -73,12 +64,12 @@ func centerWindow(args, sender):
 
 
 func fullscreen(args, sender):
-	var fs = true if args.empty() else getBool(args[0])
+	var fs = true if args.empty() else Helper.getBool(args[0])
 	OS.set_window_fullscreen(fs)
 
 
 func windowAlwaysOnTop(args, sender):
-	var ot = true if args.empty() else getBool(args[0])
+	var ot = true if args.empty() else Helper.getBool(args[0])
 	OS.set_window_always_on_top(ot)
 
 
@@ -88,9 +79,12 @@ func setAnimationAssetPath(args, sender):
 	if args.size() == 1:
 		msg = "Set " + msg
 		self.animationAssetPath = args[0]
-	osc.reportStatus(msg + animationAssetPath, sender)
+	if Directory.new().dir_exists(animationAssetPath):
+		osc.reportStatus(msg + animationAssetPath, sender)
+	else:
+		osc.reportError("Invalid animation path: '%s'" % animationAssetPath, sender)
 
 
 func setAppRemote(args, sender):
-	allowRemoteClients = true if args.empty() else getBool(args[0])
+	allowRemoteClients = true if args.empty() else Helper.getBool(args[0])
 
