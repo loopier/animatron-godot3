@@ -4,6 +4,7 @@ var noise := OpenSimplexNoise.new()
 var wanderRange : float = 0.1		# as a fraction of the screen
 var wanderSpeed : float = 1
 
+
 func _init(args : Array):
 	if args.size() > 0:
 		wanderRange = float(args[0])
