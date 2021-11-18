@@ -1,0 +1,13 @@
+def /startup
+    /load/defs midi
+
+def /createsel actor anim
+    /create $actor $anim
+    /select $actor
+
+def /new actor anim
+    /load anim
+    /create $actor $anim
+
+def /help
+    /list/commands
