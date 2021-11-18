@@ -54,3 +54,6 @@ func hasCommand(address):
 
 func getCommand(address):
 	return commands[address]
+
+func getCommands():
+	return commands

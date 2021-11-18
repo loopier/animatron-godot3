@@ -26,7 +26,6 @@ func _ready():
 		loadSprites(assets.sprites)
 		loadSequences(assets.seqs)
 
-
 ############################################################
 # Helpers
 ############################################################
@@ -452,6 +451,21 @@ func wait(args, sender):
 	var waitTime = args[0] as float
 	return waitTime
 
+############################################################
+# App commands
+############################################################
+func listCommands(args, sender):
+	if !args.empty():
+		reportError("listCommands expects no arguments", sender)
+		return
+	var commands = ["\n=== ACTOR ==="] + main.getActorCommands().keys()
+	commands += ["\n=== OTHER ==="] + main.getOtherCommands().keys()
+	commands += ["\n=== CUSTOM ==="] + customCmds.getCommands().keys()
+	var commandsMsg = ""
+	for cmd in commands:
+		commandsMsg += cmd + "\n"
+	print(commandsMsg)
+	reportStatus("/list/commands/reply %s" % commandsMsg, sender)
 
 ############################################################
 # OSC Actor commands

@@ -40,10 +40,14 @@ onready var otherCmds = {
 	"/load/defs": funcref($OscInterface, "loadDefsFile"),
 	# "/wait" command is handled specially 
 
+	# app
+	"/list/commands": funcref($OscInterface, "listCommands"),
+
 	# config commands
 	"/load/config": funcref($Config, "loadConfig"),
 	"/assets/path": funcref($Config, "setAnimationAssetPath"),
 	"/app/remote": funcref($Config, "setAppRemote"),
+
 	# app window
 	"/window/screen": funcref($Config, "moveWindowToScreen"),
 	"/window/position": funcref($Config, "setWindowPosition"),
@@ -52,6 +56,12 @@ onready var otherCmds = {
 	"/window/fullscreen": funcref($Config, "fullscreen"),
 	"/window/top": funcref($Config, "windowAlwaysOnTop"),
 }
+
+func getActorCommands():
+	return actorCmds
+
+func getOtherCommands():
+	return otherCmds
 
 func _ready():
 	randomize()
