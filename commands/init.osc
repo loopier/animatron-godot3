@@ -6,7 +6,7 @@ def /createsel actor anim
     /select $actor
 
 def /new actor anim
-    /load anim
+    /load $anim
     /create $actor $anim
 
 def /help
