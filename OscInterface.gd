@@ -551,8 +551,9 @@ func setActorFade(inArgs, sender):
 
 func setActorSpeed(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorSpeed", 1, sender)
+	var speed := args.args[0] as float
 	if args: for node in args.actors:
-		node.get_node(actorAnimNodePath).set_speed_scale(args.args[0])
+		node.get_node(actorAnimNodePath).set_speed_scale(speed)
 
 
 func flipActorH(inArgs, sender):
