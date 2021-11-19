@@ -486,6 +486,13 @@ func playActor(inArgs, sender):
 		var animName = animNode.get_animation()
 		animNode.play(animName)
 
+func playActorRandom(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "playActor", 0, sender)
+	if args: for node in args.actors:
+		var animNode = node.get_node(actorAnimNodePath)
+		var animName = animNode.get_animation_list()
+		var randomAnimation = animName[randi() % animName.size()]
+		animNode.play(randomAnimation)
 
 func stopActor(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "stopActor", 0, sender)
