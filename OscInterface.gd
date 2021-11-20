@@ -46,6 +46,8 @@ static func getAnimSequenceFrames(path):
 			if filename.ends_with(".png") or filename.ends_with(".jpg"):
 				frames.push_back(filename)
 			filename = dir.get_next()
+	frames.sort()
+	print( frames )
 	return frames
 
 
