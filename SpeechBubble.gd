@@ -58,7 +58,6 @@ func _on_RichTextLabel_resized():
 	var animNode = get_node("../Offset/Animation")
 	if animNode:
 		var texSize = animNode.frames.get_frame(animNode.get_animation(), 0).get_size()
-		animNode.position = Vector2(0, texSize.y * -0.4)
 		offset.y = texSize.y * -0.55 - textNode.margin_bottom + animNode.position.y
 
 	$Anchor.set_position(offset)
