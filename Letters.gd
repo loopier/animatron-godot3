@@ -6,6 +6,7 @@ extends Node
 onready var main = get_parent()
 # spacing is a multiplier of actor width
 var spacing = 1
+var scale = 1
 var msg = ""
 var alphabet := { 
 	"a": "letter-a",
@@ -72,3 +73,9 @@ func write(inArgs, sender=null):
 func setSpacing(inArgs, sender=null):
 	spacing = inArgs[0]
 	write([msg], null)
+
+
+func setScale(inArgs, sender=null):
+	print("TODO SCALE " + str(inArgs[0]))
+	for x in msg:
+		main.evalOscCommand("/scale", [x, inArgs[0]], null)
