@@ -7,7 +7,7 @@ var oscrcv
 onready var actorCmds = {
 	"/free": funcref($OscInterface, "freeActor"),
 	"/play": funcref($OscInterface, "playActor"),
-	"/play/random": funcref($OscInterface, "playActorRandom"),
+	"/play/rand": funcref($OscInterface, "playActorRandom"),
 	"/stop": funcref($OscInterface, "stopActor"),
 	"/frame": funcref($OscInterface, "setActorFrame"),
 	"/position": funcref($OscInterface, "setActorPosition"),

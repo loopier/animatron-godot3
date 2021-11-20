@@ -327,8 +327,7 @@ func createActor(args, sender=null):
 	animNode.play(animName)
 	# Set the offset/pivot of the child sprite to the default.
 	setAnimPivot(animNode)
-	if sender:
-		reportStatus("Created node '%s' with '%s'" % [newNode.name, animName], sender)
+	reportStatus("Created node '%s' with '%s'" % [newNode.name, animName], sender)
 
 
 func createOrDestroyActor(args, sender):
