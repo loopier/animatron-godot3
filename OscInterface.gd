@@ -47,7 +47,6 @@ static func getAnimSequenceFrames(path):
 				frames.push_back(filename)
 			filename = dir.get_next()
 	frames.sort()
-	print( frames )
 	return frames
 
 
