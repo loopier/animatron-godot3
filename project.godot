@@ -30,6 +30,11 @@ _global_script_classes=[ {
 "path": "res://Helper.gd"
 }, {
 "base": "Node",
+"class": "Letters",
+"language": "GDScript",
+"path": "res://Letters.gd"
+}, {
+"base": "Node",
 "class": "Midi",
 "language": "GDScript",
 "path": "res://Midi.gd"
@@ -39,6 +44,7 @@ _global_script_class_icons={
 "Config": "",
 "CustomCommands": "",
 "Helper": "",
+"Letters": "",
 "Midi": ""
 }
 

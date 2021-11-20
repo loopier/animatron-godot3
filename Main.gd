@@ -84,6 +84,8 @@ func _ready():
 	# Load default config file (if it exists) and call config command
 	$Config.loadConfig(["config.osc"], null)
 	evalCommandList([["/config"]], null)
+	
+	$Letters.loadAlphabet()
 
 
 func evalCommandList(commands : Array, sender):
