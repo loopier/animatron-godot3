@@ -41,6 +41,13 @@ onready var otherCmds = {
 	"/load/defs": funcref($OscInterface, "loadDefsFile"),
 	# "/wait" command is handled specially 
 
+	# write
+	"/load/alphabet": funcref($Letters, "loadAlphabet"),
+	"/write": funcref($Letters, "write"),
+	"/letter": funcref($Letters, "setLetter"),
+	"/letters/spacing": funcref($Letters, "setSpacing"),
+	"/letters/scale": funcref($Letters, "setScale"),
+
 	# app
 	"/list/commands": funcref($OscInterface, "listCommands"),
 
@@ -84,8 +91,8 @@ func _ready():
 	# Load default config file (if it exists) and call config command
 	$Config.loadConfig(["config.osc"], null)
 	evalCommandList([["/config"]], null)
-	
-	$Letters.loadAlphabet()
+
+	# $Letters.loadAlphabet([])
 
 
 func evalCommandList(commands : Array, sender):

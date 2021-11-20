@@ -65,6 +65,10 @@ Address | Args <img width="1000px"/> | Description
 `/def` | `cmdName [subCommand] ...` | Define a custom OSC command that is a list of other OSC commands. This may be recursive, so each `subCommand` may reference one of the built-in commands, or another custom-defined command. Another way to define custom commands is via the file `commands/init.osc`. The `cmdName` string (first argument) may include argument names, which may be referenced as `subCommand` arguments using `$name`. Example: `/def "/addsel actor anim" "/create $actor $anim" "/select $actor"`.
 `/load/defs` | `filename` | Load a custom command definitions file, which should have the format [described below](#def-files).
 `/wait` | `duration` | Wait for `duration` seconds before executing the next command. Only relevant within a list of commands being executed together at once, such as inside a custom `def`ined command list.
+`/load/alphabet` |  | Load the alphabet (default letters load from folders named `letter-[ASCII_CHAR]`)
+`/letter` | `letter:c asset:s` | Map a single letter to an asset.  Creates an actor named after LETTER with ASSET.
+`/write`| `msg:s`| Write MSG string with assets mapped to letters.
+`/letter/spacing` | `ammount`| Set the spacing between letters.  It's a multiplier of the actors' size.
 
 ## Configuration commands
 Address | Args <img width=100px/> | Description
