@@ -299,7 +299,7 @@ func loadAsset(args, sender):
 		reportStatus("loaded sequences: " + String(assets.seqs), sender)
 
 
-func createActor(args, sender):
+func createActor(args, sender=null):
 	if args.size() != 2:
 		reportError("createActor expects two arguments", sender)
 		return
@@ -325,7 +325,8 @@ func createActor(args, sender):
 	animNode.play(animName)
 	# Set the offset/pivot of the child sprite to the default.
 	setAnimPivot(animNode)
-	reportStatus("Created node '%s' with '%s'" % [newNode.name, animName], sender)
+	if sender:
+		reportStatus("Created node '%s' with '%s'" % [newNode.name, animName], sender)
 
 
 func createOrDestroyActor(args, sender):
