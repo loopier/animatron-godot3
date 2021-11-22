@@ -3,11 +3,12 @@ A tool for real-time visual poetry.
 
 ## What is it?
 
-**Animatron** is an experimental environment that enables creation of
-"visual poetry," in the form of animations and images, created in
-real-time through live coding.  It implemented using the open-source
-[Godot engine](https://godotengine.org/), and communicates with any
-"client" application or live coding language &mdash; such as
+**Animatron** is an experimental environment (very much "work in
+progress") that enables creation of "visual poetry," in the form of
+animations and images, created in real-time through live coding.  It
+implemented using the open-source [Godot
+engine](https://godotengine.org/), and communicates with any "client"
+application or live coding language &mdash; such as
 [SuperCollider](https://supercollider.github.io/) &mdash; via the
 network, using the Open Sound Control (OSC) protocol.
 
