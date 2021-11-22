@@ -19,7 +19,8 @@ script = ExtResource( 2 )
 [node name="Config" type="Node" parent="."]
 script = ExtResource( 3 )
 
-[node name="Actors" type="Node2D" parent="."]
+[node name="Actors" type="YSort" parent="."]
+sort_enabled = false
 
 [node name="Midi" type="Node" parent="."]
 script = ExtResource( 4 )

@@ -28,6 +28,7 @@ onready var otherCmds = {
 	"/load": funcref($OscInterface, "loadAsset"),
 	"/create": funcref($OscInterface, "createActor"),
 	"/createordestroy": funcref($OscInterface, "createOrDestroyActor"),
+	"/ysort": funcref($OscInterface, "ySortActors"),
 	"/list": funcref($OscInterface, "listActors"), # shortcut for /list/actors
 	"/list/actors": funcref($OscInterface, "listActors"),
 	"/list/anims": funcref($OscInterface, "listAnims"),
@@ -98,7 +99,10 @@ func _ready():
 func evalCommandList(commands : Array, sender):
 	while !commands.empty():
 		var cmd = commands.pop_front()
-		var addr = cmd[0]
+		var addr : String = cmd[0]
+		if addr[0] != '/':
+			# Allow addresses missing the slash at start
+			addr = addr.insert(0, '/')
 		var args = cmd.slice(1, -1) if cmd.size() > 1 else []
 		if addr == "/wait":
 			var waitTime = $OscInterface.wait(args, sender)

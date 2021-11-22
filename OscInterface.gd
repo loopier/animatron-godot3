@@ -340,6 +340,15 @@ func createOrDestroyActor(args, sender):
 		createActor(args, sender)
 
 
+func ySortActors(args, sender):
+	if (args.size() > 1):
+		reportError("ySortActors expects 0 or 1 bool argument", sender)
+		return
+	var sort := Helper.getBool(args[0]) if args.size() == 1 else true
+	actorsNode.sort_enabled = sort
+	reportStatus("y-sorting: %s" % ["enabled" if sort else "disabled"], sender)
+
+
 # List the instantiated actors
 func listActors(args, sender):
 	if !args.empty():
