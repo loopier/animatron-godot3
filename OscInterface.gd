@@ -239,9 +239,10 @@ func matchNodes(nameWildcard, sender):
 # expectedArgs refers to the number of expected arguments
 # *not* including the first (target) argument. It can be an
 # integer or an array of two values (min/max number of allowed
-# arguments).
+# arguments). If it's null then it allows any number of args.
 func getActorsAndArgs(inArgs, methodName, expectedArgs, sender):
 	if typeof(expectedArgs) == TYPE_INT: expectedArgs = [expectedArgs]
+	elif typeof(expectedArgs) == TYPE_NIL: expectedArgs = [0, 1000]
 	if inArgs.size() > expectedArgs.front() and inArgs.size() <= expectedArgs.back() + 1:
 		return { actors = matchNodes(inArgs[0], sender), args = inArgs.slice(1, -1) }
 	else:
@@ -272,6 +273,10 @@ static func removeActions(actor : Node):
 	for child in actor.get_children():
 		if child as Action:
 			actor.remove_child(child)
+			var offset : Node2D = actor.get_node("Offset")
+			offset.position = Vector2(0, 0)
+			offset.rotation_degrees = 0
+			offset.scale = Vector2(1, 1)
 
 
 # The pivot should be specified in relative coordinates,
@@ -614,17 +619,18 @@ func sayActor(inArgs, sender):
 
 
 func actionActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "sayActor", [1, 100], sender)
+	var aa = getActorsAndArgs(inArgs, "actionActor", null, sender)
 	if aa:
 		for actor in aa.actors:
-			var actionName = String(aa.args[0])
-			var actionArgs = aa.args.slice(1, -1)
-			var action = load("res://actions/%s.gd" % actionName).new(actionArgs)
-			if action:
-				removeActions(actor)
-				actor.add_child(action)
-				action.name = actionName
-				reportStatus("added action '%s' to '%s' with args %s" % [actionName, actor.name, actionArgs], sender)
+			removeActions(actor)
+			if not aa.args.empty():
+				var actionName = String(aa.args[0])
+				var actionArgs = aa.args.slice(1, -1)
+				var action = load("res://actions/%s.gd" % actionName).new(actionArgs)
+				if action:
+					actor.add_child(action)
+					action.name = actionName
+					reportStatus("added action '%s' to '%s' with args %s" % [actionName, actor.name, actionArgs], sender)
 
 
 func behindActor(inArgs, sender):
