@@ -55,5 +55,10 @@ func hasCommand(address):
 func getCommand(address):
 	return commands[address]
 
-func getCommands():
-	return commands
+
+func getCommandSummary() -> String:
+	var cmdList := []
+	for k in commands:
+		cmdList.push_back("%-12s\t%s" % [k, (commands[k].args as PoolStringArray).join(' ')])
+	return (cmdList as PoolStringArray).join('\n')
+

@@ -16,6 +16,7 @@ onready var actorCmds = {
 	"/pivot": funcref($OscInterface, "setActorPivot"),
 	"/fade": funcref($OscInterface, "setActorFade"),
 	"/speed": funcref($OscInterface, "setActorSpeed"),
+	"/loop": funcref($OscInterface, "setActorLoop"),
 	"/fliph": funcref($OscInterface, "flipActorH"),
 	"/flipv": funcref($OscInterface, "flipActorV"),
 	"/color": funcref($OscInterface, "colorActor"),
@@ -66,11 +67,14 @@ onready var otherCmds = {
 	"/window/top": funcref($Config, "windowAlwaysOnTop"),
 }
 
-func getActorCommands():
-	return actorCmds
 
-func getOtherCommands():
-	return otherCmds
+func getActorCommandSummary() -> String:
+	return (actorCmds.keys() as PoolStringArray).join('\n')
+
+
+func getOtherCommandSummary() -> String:
+	return (otherCmds.keys() as PoolStringArray).join('\n')
+	
 
 func _ready():
 	randomize()

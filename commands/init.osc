@@ -9,5 +9,10 @@ def /new actor anim
     /load $anim
     /create $actor $anim
 
+def /newsel actor anim
+    /deselect
+    /new $actor $anim
+    /select $actor
+
 def /help
     /list/commands

@@ -371,20 +371,20 @@ n.sendMsg("/test", "fred", "steve")
 n.sendMsg("/list/anims")
 (
 n.sendMsg("/def", "/square actor",
-	"/create $actor om-walk-e",
+	"/new $actor om-walk-e",
 	"/position $actor 0.9 0.25 2",
 	"/wait 4",
-	"/create $actor om-walk-s",
+	"/new $actor om-walk-s",
 	"/position $actor 0.8 0.9 2",
 	"/wait 3",
-	"/create $actor om-walk-w",
+	"/new $actor om-walk-w",
 	"/position $actor 0.2 0.9 1",
 	"/wait 2",
-	"/create $actor om-walk-n",
+	"/new $actor om-walk-n",
 	"/position $actor 0.1 0.25 1")
 )
 n.sendMsg("/square", "om5")
-n.sendMsg("/load/defs", "test.csv")
+n.sendMsg("/load/defs", "test.osc")
 n.sendMsg("/startup")
 
 n.sendMsg("/list/assets");
@@ -392,8 +392,8 @@ n.sendMsg("/load", "march");
 n.sendMsg("/create", "m1", "march")
 n.sendMsg("/select", "m?")
 (1..5).do{|i| n.sendMsg("/position", "m" ++ i, i.linlin(1,5,0,1), 1, 4) }
-n.sendMsg("/rotate!", 0, 12)
-n.sendMsg("/scale!", 0.25, 4, 1)
+n.sendMsg("/rotate!", 90, 12)
+n.sendMsg("/scale!", "0.25,4", 1)
 n.sendMsg("/fade!", 0, 4)
 
 n.sendMsg("/load", "om-jump-up")
@@ -409,7 +409,7 @@ n.sendMsg("/go") // call repeatedly quickly and check for flicker (fixed tweenin
 // and can set it as the background (covering the whole view) like this:
 n.sendMsg("/load", "bg-black")
 n.sendMsg("/create", "bg", "bg-black")
-n.sendMsg("/position", "bg", 0.5,0.95)
+n.sendMsg("/position", "bg", 0.5,0.5)
 n.sendMsg("/window/fullscreen", false)
 n.sendMsg("/position", "axe", 0.5, 0.5)
 n.sendMsg("/position", "om", 0.5, 0.5)

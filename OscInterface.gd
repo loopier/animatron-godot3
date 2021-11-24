@@ -473,14 +473,11 @@ func listCommands(args, sender):
 	if !args.empty():
 		reportError("listCommands expects no arguments", sender)
 		return
-	var commands = ["\n=== ACTOR ==="] + main.getActorCommands().keys()
-	commands += ["\n=== OTHER ==="] + main.getOtherCommands().keys()
-	commands += ["\n=== CUSTOM ==="] + customCmds.getCommands().keys()
-	var commandsMsg = ""
-	for cmd in commands:
-		commandsMsg += cmd + "\n"
-	print(commandsMsg)
+	var commandsMsg = "\n=== ACTOR ===\n" + main.getActorCommandSummary()
+	commandsMsg += "\n\n=== OTHER ===\n" + main.getOtherCommandSummary()
+	commandsMsg += "\n\n=== CUSTOM ===\n" + customCmds.getCommandSummary()
 	reportStatus("/list/commands/reply %s" % commandsMsg, sender)
+
 
 ############################################################
 # OSC Actor commands
@@ -583,6 +580,15 @@ func setActorSpeed(inArgs, sender):
 		animNode.set_speed_scale(abs(speed))
 
 
+func setActorLoop(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "setActorLoop", [0, 1], sender)
+	if aa:
+		var loop := Helper.getBool(aa.args[0]) if not aa.args.empty() else true
+		for node in aa.actors:
+			var animNode : AnimatedSprite = node.get_node(actorAnimNodePath)
+			animNode.loop = loop
+
+
 func flipActorH(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "flipActorH", 0, sender)
 	if args: for node in args.actors:
@@ -626,11 +632,15 @@ func actionActor(inArgs, sender):
 			if not aa.args.empty():
 				var actionName = String(aa.args[0])
 				var actionArgs = aa.args.slice(1, -1)
-				var action = load("res://actions/%s.gd" % actionName).new(actionArgs)
-				if action:
-					actor.add_child(action)
-					action.name = actionName
-					reportStatus("added action '%s' to '%s' with args %s" % [actionName, actor.name, actionArgs], sender)
+				var resource = load("res://actions/%s.gd" % actionName)
+				if resource:
+					var action = load("res://actions/%s.gd" % actionName).new(actionArgs)
+					if action:
+						actor.add_child(action)
+						action.name = actionName
+						reportStatus("added action '%s' to '%s' with args %s" % [actionName, actor.name, actionArgs], sender)
+				else:
+					reportError("Action '%s' not found" % actionName, sender)
 
 
 func behindActor(inArgs, sender):
