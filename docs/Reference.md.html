@@ -39,6 +39,7 @@ Address | Args <img width=675px/> | Description
 `/pivot` <br/> `/pivot!` | `actor:s px:f py:f [dur:f]` <br/> `px:f py:f [dur:f]` | Set the actor's animation pivot to the specified point. `px` and `py` should be in the normalized range 0-1, with 0 being left/top of the frame and 1 being right/bottom. If `dur` is set, interpolate the pivot over that number of seconds, otherwise change instantaneously.
 `/fade` <br/> `/fade!` | `actor:s opacity:f [dur:f]` <br/> `opacity:f [dur:f]` | Fade the actor (set its opacity, where 1 is fully opaque/visible and 0 is transparent/invisible). If `dur` is set, interpolate the fade over that number of seconds, otherwise change instantaneously.
 `/speed` <br/> `/speed!` | `actor:s rate:f` <br/> `rate:f` | Set the playback speed (1 is normal speed).
+`/loop` <br/> `/loop!` | `actor:s [enable:b]` <br/> `[enable:b]` | Enable or disable looped animation playback. `enable` argument defaults to `true`, and initial state of animation looping for new actors is also `true`.
 `/fliph` <br/> `/fliph!` | `actor:s` <br/> - | Flip the actor horizontally.
 `/flipv` <br/> `/flipv!` | `actor:s` <br/> - | Flip the actor vertically.
 `/color` <br/> `/color!` | `actor:s r:f g:f b:f` <br/> `r:f g:f b:f` | Add an RGB colour to the actor. Red, green and blue should be in the 0-1 range (can be negative to subtract colour). Set to black (0,0,0) to restore its original colour.
