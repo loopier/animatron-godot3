@@ -21,4 +21,4 @@ func _physics_process(delta : float):
 	updateTime(delta * wanderSpeed)
 	var pos = Vector2(noise.get_noise_1d(curTime), 0)
 	pos = pos.rotated(PI * noise.get_noise_2d(-5.37, curTime))
-	offsetNode.position = pos * wanderRange * OS.window_size.y
+	offsetNode.position = (pos * wanderRange * OS.window_size.y).linear_interpolate(Vector2(0,0), 1.0 - clamp(curTime*2.0, 0, 1))

@@ -515,7 +515,8 @@ func stopActor(inArgs, sender):
 func setActorFrame(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorFrame", 1, sender)
 	if args: for node in args.actors:
-		node.get_node(actorAnimNodePath).set_frame(int(args.args[0]))
+		var anim = node.get_node(actorAnimNodePath)
+		anim.set_frame(fposmod(int(args.args[0]), anim.frames.get_frame_count(anim.animation)))
 
 
 func setActorPosition(inArgs, sender):
