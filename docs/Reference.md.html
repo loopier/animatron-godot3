@@ -66,6 +66,7 @@ Address | Args <img width="1000px"/> | Description
 `/selected` | | Get the list of selected actors.
 `/def` | `cmdName [subCommand] ...` | Define a custom OSC command that is a list of other OSC commands. This may be recursive, so each `subCommand` may reference one of the built-in commands, or another custom-defined command. Another way to define custom commands is via the file `commands/init.osc`. The `cmdName` string (first argument) may include argument names, which may be referenced as `subCommand` arguments using `$name`. Example: `/def "/addsel actor anim" "/create $actor $anim" "/select $actor"`.
 `/load/defs` | `filename` | Load a custom command definitions file, which should have the format [described below](#def-files).
+`/debug` | `[enable:b]` | Enable (or disable) reporting of informative status messages (via OSC and to the debug window). By default, this is disabled when running in exported builds, but enabled when running in the Godot editor. This flag does not affect error reporting (errors are always reported).
 `/wait` | `duration` | Wait for `duration` seconds before executing the next command. Only relevant within a list of commands being executed together at once, such as inside a custom `def`ined command list.
 `/load/alphabet` |  | Load the alphabet (default letters load from folders named `letter-[ASCII_CHAR]`)
 `/letter` | `letter:c asset:s` | Map a single letter to an asset.  Creates an actor named after LETTER with ASSET.

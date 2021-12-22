@@ -1,5 +1,8 @@
 extends Node
 
+# By default, perform status reporting when running in Godot editor,
+# but not on exported builds. Can be overridden at runtime with /debug message.
+var allowStatusReport : bool = not OS.has_feature("standalone")
 onready var main = get_parent()
 onready var actorsNode = main.get_node("Actors")
 onready var customCmds : CustomCommands = main.get_node("CustomCommands")
@@ -197,7 +200,9 @@ static func reportError(errString, target):
 		sendMessage(target, "/error/reply", [errString])
 
 
-static func reportStatus(statusString, target):
+func reportStatus(statusString, target):
+	if not allowStatusReport:
+		return
 	print(statusString)
 	if target:
 		sendMessage(target, "/status/reply", [statusString])
@@ -230,8 +235,8 @@ func matchNodes(nameWildcard, sender):
 			matches.push_back(a)
 	if matches.empty(): matches = get_tree().get_nodes_in_group(nameWildcard)
 	if matches.empty():
-		reportError("No matches found for: " + nameWildcard, sender)
-	else:
+		reportStatus("No matches found for: " + nameWildcard, sender)
+	elif allowStatusReport:
 		print("Matched: ", getNames(matches))
 	return matches
 
@@ -316,10 +321,12 @@ func createActor(args, sender=null):
 		return
 	var newNode
 	if actorsNode.has_node(nodeName):
-		print("replacing node '%s'" % [nodeName])
+		if allowStatusReport:
+			print("replacing node '%s'" % [nodeName])
 		newNode = actorsNode.get_node(nodeName)
 	else:
-		print("creating node '%s'" % [nodeName])
+		if allowStatusReport:
+			print("creating node '%s'" % [nodeName])
 		newNode = metanode.instance()
 		newNode.name = nodeName
 		newNode.position = Vector2(0.5, 0.5) * main.get_viewport_rect().size
@@ -457,6 +464,14 @@ func loadDefsFile(args, sender):
 		reportStatus("Loaded custom defs from '%s'" % defsFile, sender)
 	else:
 		reportError("Couldn't open defs file: '%s'" % [defsFile], sender)
+
+
+func enableStatusMessages(args, sender):
+	if (args.size() > 1):
+		reportError("enableStatusMessages expects 0 or 1 bool argument", sender)
+		return
+	allowStatusReport = Helper.getBool(args[0]) if args.size() == 1 else true
+	reportStatus("Status messages: %s" % ["enabled" if allowStatusReport else "disabled"], sender)
 
 
 func wait(args, sender):

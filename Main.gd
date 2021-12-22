@@ -41,6 +41,7 @@ onready var otherCmds = {
 	"/selected": funcref($OscInterface, "listSelectedActors"),
 	"/def": funcref($OscInterface, "defCommand"),
 	"/load/defs": funcref($OscInterface, "loadDefsFile"),
+	"/debug": funcref($OscInterface, "enableStatusMessages"),
 	# "/wait" command is handled specially 
 
 	# write
@@ -111,9 +112,11 @@ func evalCommandList(commands : Array, sender):
 		if addr == "/wait":
 			var waitTime = $OscInterface.wait(args, sender)
 			if waitTime:
-				print("Starting wait of %f seconds..." % [waitTime])
+				if $OscInterface.allowStatusReport:
+					print("Starting wait of %f seconds..." % [waitTime])
 				yield(get_tree().create_timer(waitTime), "timeout")
-				print("...done waiting %f seconds" % [waitTime])
+				if $OscInterface.allowStatusReport:
+					print("...done waiting %f seconds" % [waitTime])
 		else:
 			var subCmds = evalOscCommand(addr, args, sender)
 			if typeof(subCmds) == TYPE_ARRAY:
@@ -121,7 +124,8 @@ func evalCommandList(commands : Array, sender):
 
 
 func evalOscCommand(address : String, args, sender):
-	print("+++ evalOscCommand(", address, ", ", String(args), ")")
+	if $OscInterface.allowStatusReport:
+		print("+++ evalOscCommand(", address, ", ", String(args), ")")
 	var applyToSelection = address.ends_with("!")
 	if applyToSelection:
 		address = address.trim_suffix("!")
