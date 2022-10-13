@@ -507,11 +507,14 @@ func freeActor(inArgs, sender):
 
 
 func playActor(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "playActor", 0, sender)
+	var args = getActorsAndArgs(inArgs, "playActor", null, sender)
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
 		var animName = animNode.get_animation()
-		animNode.play(animName)
+		var reverse = false
+		if len(args.args) > 0:
+			reverse = args.args[0]
+		animNode.play(animName, reverse)
 
 func playActorRandom(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "playActor", 0, sender)
