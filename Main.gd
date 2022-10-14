@@ -28,6 +28,7 @@ onready var actorCmds = {
 onready var otherCmds = {
 	"/load": funcref($OscInterface, "loadAsset"),
 	"/create": funcref($OscInterface, "createActor"),
+	"/create/group": funcref($OscInterface, "createActorGroup"),
 	"/createordestroy": funcref($OscInterface, "createOrDestroyActor"),
 	"/ysort": funcref($OscInterface, "ySortActors"),
 	"/list": funcref($OscInterface, "listActors"), # shortcut for /list/actors
