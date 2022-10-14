@@ -55,7 +55,7 @@ Address | Args <img width="1000px"/> | Description
 --------|------|------------
 `/load` | `asset:s` | Load an (animation) asset from disk. It will create an `anim` with the same name as the asset. Wildcards are supported, so several animations can be loaded at once. The list of assets available to load can be found by calling `/list/assets`.
 `/create` | `actor:s anim:s` | Create a new actor with a given (loaded) animation. If the named actor already exists, change its animation to the one specified. The initial position of a new actor will be at (0.5,0.5), the centre of the viewport.
-`/create/group` | `group:s anim:s copies:i` | Create a group of actors with a given (loaded) animation. Each actor will be named after the group with an index sufix.
+`/create/group` | `group:s anim:s copies:i` | Create a batch of actors with a given (loaded) animation. A group will be created with this name and each actor will be named after the group with an index sufix.
 `/createordestroy` | `actor:s anim:s` | Like `/create`, but if the actor already exists, it removes it.
 `/ysort` | `[sort:b]` | Force actors to be sorted based on y position (lower on screen drawn later, i.e. "on top"). `sort` argument defaults to `true`, but initial state of y-sorting at startup is `false`.
 `/list` <br/> `/list/actors` | | Get list of current actor instances. Returned in the form of a `/list/actors/reply` OSC message.
