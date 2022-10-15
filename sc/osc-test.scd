@@ -488,8 +488,21 @@ x.("/list/assets")
 x.("/assets/path animations")
 x.("/assets/path C:/Users/holag/Documents/Programming/gitreps/animatron/animations")
 
+x.("/load letter-a")
 x.("/load letter-b")
+x.("/load letter-c")
 x.("/list/anims")
 x.("/new a letter-a")
-x.("/scale a 0.5")
+x.("/new b letter-b")
+x.("/new c letter-c")
+x.("/scale", "a", 0.5")
+x.("/scale", "b", 0.5")
+x.("/position", "a", 0.25, 0.5);
+x.("/position", "b", 0.75, 0.5);
+x.("/group", "ltrs", "a", "b");
+x.("/group", "ltrs", "b");
+x.("/group", "ltrs");
+x.("/stop", "ltrs");
+x.("/play", "ltrs");
+x.("/stop", "b");
 x.("/list/actors")
