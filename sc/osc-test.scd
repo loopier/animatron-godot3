@@ -485,11 +485,12 @@ x.("/config")
 x.("/something")
 
 x.("/list/assets")
+x.("/assets/path")
 x.("/assets/path animations")
 x.("/assets/path C:/Users/holag/Documents/Programming/gitreps/animatron/animations")
 
-x.("/load letter-b")
-x.("/list/anims")
-x.("/new a letter-a")
-x.("/scale a 0.5")
-x.("/list/actors")
+(
+x.("/load", "letter-a");
+x.("/new", "a", "letter-a");
+)
+x.("/free", "a");

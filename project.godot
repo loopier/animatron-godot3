@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Action",
 "language": "GDScript",
-"path": "res://actions/Action.gd"
+"path": "res://bin/actions/Action.gd"
 }, {
 "base": "Node",
 "class": "Config",
@@ -40,7 +40,7 @@ _global_script_classes=[ {
 "path": "res://Midi.gd"
 } ]
 _global_script_class_icons={
-"Action": "res://icons/action.svg",
+"Action": "",
 "Config": "",
 "CustomCommands": "",
 "Helper": "",
@@ -53,6 +53,10 @@ _global_script_class_icons={
 config/name="Animatron"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+Events="*res://Events.gd"
 
 [display]
 

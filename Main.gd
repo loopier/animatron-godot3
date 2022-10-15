@@ -99,6 +99,7 @@ func _ready():
 	$Config.loadConfig(["config.osc"], null)
 	evalCommandList([["/config"]], null)
 
+	get_node("/root/Events").connect("animation_finished", self, "_on_Animation_animation_finished")
 	# $Letters.loadAlphabet([])
 
 
@@ -187,3 +188,7 @@ func _process(_delta):
 func _exit_tree ( ):
 	# disable the receiver, highly recommended!
 	oscrcv.stop()
+
+
+func _on_Animation_animation_finished(actorName):
+	print("Animation finished: %s" % [actorName])
