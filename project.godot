@@ -40,7 +40,7 @@ _global_script_classes=[ {
 "path": "res://Midi.gd"
 } ]
 _global_script_class_icons={
-"Action": "",
+"Action": "res://icons/action.svg",
 "Config": "",
 "CustomCommands": "",
 "Helper": "",
@@ -53,10 +53,6 @@ _global_script_class_icons={
 config/name="Animatron"
 run/main_scene="res://Main.tscn"
 config/icon="res://icon.png"
-
-[autoload]
-
-Events="*res://Events.gd"
 
 [display]
 
