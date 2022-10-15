@@ -506,3 +506,11 @@ x.("/stop", "ltrs");
 x.("/play", "ltrs");
 x.("/stop", "b");
 x.("/list/actors")
+
+(
+x.("/new", "n", "numbers");
+x.("/speed", "n", 1/12);
+x.("/play/rand", "n");
+)
+x.("/play/rand", "n", 0);
+x.("/stop", "n");
