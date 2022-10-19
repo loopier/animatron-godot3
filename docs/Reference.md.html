@@ -30,8 +30,8 @@ Animatron.
 Address | Args <img width=675px/> | Description
 --------|------|------------
 `/free` <br/> `/free!` | `actor:s` <br/> - | Delete the actor (remove its instance).
-`/play` <br/> `/play!` | `actor:s [reverse:b]` <br/> - | Play the actor's animation from the current frame. If `reverse` is set play it backwards.
-`/play/rand` <br/> `/play/rand!` | `actor:s [enable:b]` <br/> - | Play the `actor` frames in a random order.
+`/play` <br/> `/play!` | `actor:s [reverse:b]` <br/> `actor:s [reverse:b]`| Play the actor's animation from the current frame. If `reverse` is set play it backwards. Defaults to `false`
+`/play/rand` <br/> `/play/rand!` | `actor:s [enable:b]` <br/> `[enable:b]`| Play the `actor` frames in a random order. Defaults to `true`.
 `/stop` <br/> `/stop!` | `actor:s` <br/> - | Stop playing the actor's animation.
 `/frame` <br/> `/frame!` | `actor:s frame:i` <br/> `frame:i` | Jump to the given frame number (with wrapping).
 `/position` <br/> `/position!` | `actor:s x:f y:f [dur:f]` <br/> `x:f y:f [dur:f]` | Set the actor to the x,y coordinates (specified as fractions of the viewport from 0-1). If `dur` is set, interpolate the movement over that number of seconds, otherwise change instantaneously.
