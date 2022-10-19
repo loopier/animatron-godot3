@@ -346,7 +346,7 @@ func createActorGroup(args, sender=null):
 		reportError("createActorGroup expects two arguments", sender)
 		return
 	for i in range(args[2]):
-		var actorName = "%s_%02d" % [args[0], i]
+		var actorName = "%s_%d" % [args[0], i]
 		var animName = args[1]
 		createActor([actorName, animName], sender)
 		groupActor([args[0], actorName], sender)
