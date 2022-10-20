@@ -340,6 +340,18 @@ func createActor(args, sender=null):
 	setAnimPivot(animNode)
 	reportStatus("Created node '%s' with '%s'" % [newNode.name, animName], sender)
 
+func createActorGroup(args, sender=null):
+	# args: groupName, animName, numOfInstances
+	if args.size() != 3:
+		reportError("createActorGroup expects two arguments", sender)
+		return
+	for i in range(args[2]):
+		var actorName = "%s_%d" % [args[0], i]
+		var animName = args[1]
+		createActor([actorName, animName], sender)
+		groupActor([args[0], actorName], sender)
+	groupActor([args[0]], sender)
+
 
 func createOrDestroyActor(args, sender):
 	if args.size() != 2:
@@ -507,19 +519,24 @@ func freeActor(inArgs, sender):
 
 
 func playActor(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "playActor", 0, sender)
+	var args = getActorsAndArgs(inArgs, "playActor", null, sender)
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
 		var animName = animNode.get_animation()
-		animNode.play(animName)
+		var reverse = false
+		if len(args.args) > 0:
+			reverse = args.args[0]
+		animNode.play(animName, reverse)
 
 func playActorRandom(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "playActor", 0, sender)
+	var args = getActorsAndArgs(inArgs, "playActor", [0,1], sender)
+	var rand := Helper.getBool(args.args[0]) if not args.args.empty() else true
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
-		var animName = animNode.get_animation_list()
-		var randomAnimation = animName[randi() % animName.size()]
-		animNode.play(randomAnimation)
+#		var animName = animNode.get_animation_list()
+#		var randomAnimation = animName[randi() % animName.size()]
+#		animNode.play(randomAnimation)
+		animNode.random = rand
 
 func stopActor(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "stopActor", 0, sender)
