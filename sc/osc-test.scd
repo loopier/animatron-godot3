@@ -509,8 +509,17 @@ x.("/list/actors")
 
 (
 x.("/new", "n", "numbers");
-x.("/speed", "n", 1/12);
-x.("/play/rand", "n");
-)
-x.("/play/rand", "n", 0);
+// x.("/speed", "n", 1/12);
+// x.("/play/rand", "n");
+// x.("/play/rand", "n", 0);
 x.("/stop", "n");
+// x.("/scale", "n", 1);
+// x.("/scale", "n", 0.7, 2);
+x.("/scale/xy", "n", 0.2, 0.3, 0.2);
+// x.("/scale/x", "n", 0.5, 2.0);
+// x.("/scale/y", "n", 0.4, 2.0);
+// x.("/position/x", "n", 0.2);
+// x.("/position/x", "n", 0.3, 0.7);
+// x.("/position/y", "n", 0.2);
+// x.("/position/y", "n", 0.7, 0.2);
+)
