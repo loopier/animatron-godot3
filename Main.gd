@@ -8,6 +8,7 @@ onready var actorCmds = {
 	"/free": funcref($OscInterface, "freeActor"),
 	"/play": funcref($OscInterface, "playActor"),
 	"/play/rand": funcref($OscInterface, "playActorRandom"),
+	"/play/reverse": funcref($OscInterface, "playActorReverse"),
 	"/stop": funcref($OscInterface, "stopActor"),
 	"/frame": funcref($OscInterface, "setActorFrame"),
 	"/position": funcref($OscInterface, "setActorPosition"),

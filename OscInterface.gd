@@ -523,10 +523,18 @@ func playActor(inArgs, sender):
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
 		var animName = animNode.get_animation()
-		var reverse = false
+		animNode.play(animName)
+
+func playActorReverse(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "playActor", null, sender)
+	if args: for node in args.actors:
+		var animNode = node.get_node(actorAnimNodePath)
+		var animName = animNode.get_animation()
+		var reverse = true
 		if len(args.args) > 0:
 			reverse = args.args[0]
 		animNode.play(animName, reverse)
+	
 
 func playActorRandom(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "playActor", [0,1], sender)

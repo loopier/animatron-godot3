@@ -16,8 +16,6 @@ func _on_Animation_frame_changed():
 	if random:
 		set_frame( randi() % frames.get_frame_count( animation ) )
 
-
-
 func setLoop(newLoop):
 	loop = newLoop
 	if loop and not is_playing():
