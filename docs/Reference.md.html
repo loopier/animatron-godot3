@@ -34,7 +34,7 @@ Address | Args <img width=675px/> | Description
 `/play/reverse` <br/> `/play/everse!` | `actor:s [enable:b]` <br/> `[enable:b]`| Play the `actor` frames in reverse. Defaults to `true`.
 `/play/rand` <br/> `/play/rand!` | `actor:s [enable:b]` <br/> `[enable:b]`| Play the `actor` frames in a random order. Defaults to `true`.
 `/stop` <br/> `/stop!` | `actor:s` <br/> - | Stop playing the actor's animation.
-`/frame` <br/> `/frame!` | `actor:s frame:i` <br/> `frame:i` | Jump to the given frame number (with wrapping).
+`/frame` <br/> `/frame!` | `actor:s frame:i` <br/> `frame:i` | Jump to the given frame number (with wrapping). If a `float` from 0-1 is passed, it will jump to the frame corresponding to that position (`0` being the first frame and `1` the last).
 `/position` <br/> `/position!` | `actor:s x:f y:f [dur:f]` <br/> `x:f y:f [dur:f]` | Set the actor to the x,y coordinates (specified as fractions of the viewport from 0-1). If `dur` is set, interpolate the movement over that number of seconds, otherwise change instantaneously.
 `/rotate` <br/> `/rotate!` | `actor:s rot:f [dur:f]` <br/> `rot:f [dur:f]` | Set the actor's rotation to `rot` degrees. If `dur` is set, interpolate the rotation over that number of seconds, otherwise change instantaneously.
 `/scale` <br/> `/scale!` | `actor:s scl:f [dur:f]` <br/> `scl:f [dur:f]` | Set the actor's scale. If `dur` is set, interpolate the scale over that number of seconds, otherwise change instantaneously. `scl` can be a single `float` for uniform scaling, or it can be a comma-separated string of two numbers, to specify different x,y scaling. <br/> (e.g. `/scale myActor 2.5,1 4`).
