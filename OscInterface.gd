@@ -9,6 +9,7 @@ onready var customCmds : CustomCommands = main.get_node("CustomCommands")
 onready var config : Config = main.get_node("Config")
 onready var metanode = preload("res://MetaNode.tscn")
 onready var speechBubbleNode = preload("res://SpeechBubble.tscn")
+onready var audioInputNode = main.get_node("AudioInputPlayer")
 var animFramesLibrary
 var spriteFilenameRegex
 var sequenceFilenameRegex
@@ -410,7 +411,6 @@ func listAssets(args, sender):
 	print(names)
 	sendMessage(sender, "/list/assets/reply", names)
 
-
 func groupActor(args, sender):
 	var groupName = args[0]
 	if args.size() == 1:
@@ -420,7 +420,6 @@ func groupActor(args, sender):
 	else:
 		for node in matchNodes(args[1], sender):
 			node.add_to_group(groupName)
-	
 
 func ungroupActor(args, sender):
 	var groupName = args[0]
@@ -761,3 +760,9 @@ func frontActor(inArgs, sender):
 				var reference = String(aa.args[0])
 				print("Move %s in front of %s" % [node.name, reference])
 				actorsNode.move_child(node, maxIndex)
+
+func soundActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "frontActor", 1, sender)
+	if aa:
+		for actor in aa.actors:
+			audioInputNode.connect("sound_changed", actor, "_on_AudioInputPlayer_sound_changed")

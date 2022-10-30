@@ -527,3 +527,18 @@ x.("/play/reverse", "n");
 // x.("/position/y", "n", 0.2);
 // x.("/position/y", "n", 0.7, 0.2);
 )
+(
+x.("/new", "n", "numbers");
+x.("/sound", "n");
+// x.("/new", "na", "numbers");
+// x.("/new", "ne", "numbers");
+x.("/stop", "n");
+// x.("/stop", "na");
+// x.("/stop", "ne");
+// x.("/position/x", "n", 0.2);
+// x.("/position/x", "ne", 0.7);
+// x.("/action", "n", "sound", "/scale", 1, 12, 0.1, 1.2);
+// x.("/action", "na", "sound", "/scale", 2, 12, 0.1, 1.2);
+// x.("/action", "ne", "sound", "/scale", 3, 12, 0.1, 1.2);
+// x.("/action", "n", "sound", "/scale", 0, 0.1, 1.2);
+)
