@@ -273,6 +273,9 @@ static func setShaderUniform(node, uName, uValue):
 	var image = node.get_node(actorAnimNodePath)
 	image.material.set_shader_param(uName, uValue)
 
+static func getShaderUniform(node, uName):
+	var image = node.get_node(actorAnimNodePath)
+	return image.material.get_shader_param(uName)
 
 static func removeActions(actor : Node):
 	var toRemove := []
@@ -701,7 +704,30 @@ func colorActor(inArgs, sender):
 		for node in args.actors:
 			setShaderUniform(node, "uAddColor", rgb)
 
+func colorRedActor(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "colorActor", 1, sender)
+	if args:
+		for actor in args.actors:
+			var rgb = getShaderUniform(actor, "uAddColor")
+			rgb.x = args.args[0]
+			setShaderUniform(actor, "uAddColor", rgb)
+			
+func colorGreenActor(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "colorActor", 1, sender)
+	if args:
+		for actor in args.actors:
+			var rgb = getShaderUniform(actor, "uAddColor")
+			rgb.y = args.args[0]
+			setShaderUniform(actor, "uAddColor", rgb)
 
+func colorBlueActor(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "colorActor", 1, sender)
+	if args:
+		for actor in args.actors:
+			var rgb = getShaderUniform(actor, "uAddColor")
+			rgb.z = args.args[0]
+			setShaderUniform(actor, "uAddColor", rgb)
+			
 func sayActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "sayActor", [1, 2], sender)
 	if aa:

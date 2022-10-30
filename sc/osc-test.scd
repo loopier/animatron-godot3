@@ -544,3 +544,12 @@ x.("/sound", "ni", 3, "/scale/y");
 x.("/free", "*")
 x.("/sound/free", "na", 1)
 x.("/sound", "na", 1, "play")
+
+(
+x.("/new", "sqa", "square");
+// x.("/color", "sqa", 1,0,0);
+x.("/color/r", "sqa", 0.0);
+x.("/color/g", "sqa", 0.0);
+x.("/color/b", "sqa", 0.0);
+x.("/sound", "sqa", 1, "/color/r");
+)
