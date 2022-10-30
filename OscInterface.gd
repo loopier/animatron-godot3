@@ -560,7 +560,11 @@ func setActorFrame(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorFrame", 1, sender)
 	if args: for node in args.actors:
 		var anim = node.get_node(actorAnimNodePath)
-		anim.set_frame(fposmod(int(args.args[0]), anim.frames.get_frame_count(anim.animation)))
+		var frame = args.args[0]
+		if typeof(frame) != TYPE_INT:
+			frame = int(frame * anim.frames.get_frame_count(anim.animation))
+			print(frame)
+		anim.set_frame(fposmod(frame, anim.frames.get_frame_count(anim.animation)))
 
 
 func setActorPosition(inArgs, sender):
