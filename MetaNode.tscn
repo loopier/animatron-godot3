@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Animation.gd" type="Script" id=1]
+[ext_resource path="res://MetaNode.gd" type="Script" id=2]
 
 [sub_resource type="Shader" id=1]
 code = "shader_type canvas_item;
@@ -29,6 +30,7 @@ animations = [  ]
 
 [node name="MetaNode" type="KinematicBody2D"]
 position = Vector2( 500, 300 )
+script = ExtResource( 2 )
 
 [node name="Offset" type="Node2D" parent="."]
 

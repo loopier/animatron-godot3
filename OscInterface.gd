@@ -762,7 +762,10 @@ func frontActor(inArgs, sender):
 				actorsNode.move_child(node, maxIndex)
 
 func soundActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "frontActor", 1, sender)
+	var aa = getActorsAndArgs(inArgs, "frontActor", 2, sender)
 	if aa:
 		for actor in aa.actors:
 			audioInputNode.connect("sound_changed", actor, "_on_AudioInputPlayer_sound_changed")
+			var band = aa.args[0]
+			var cmd = aa.args[1]
+			actor.addSoundCmd(band, cmd,0,1)
