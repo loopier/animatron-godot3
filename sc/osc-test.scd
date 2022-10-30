@@ -537,7 +537,7 @@ x.("/position/y", "n*", 0.9);
 x.("/position/x", "na", 0.2);
 x.("/position/x", "ni", 0.8);
 x.("/sound", "na", 1, "/scale/y");
-x.("/sound", "na", 3, "/scale/x");
+x.("/sound", "na", 1, "/position/y");
 x.("/sound", "ne", 2, "/scale/y");
 x.("/sound", "ni", 3, "/scale/y");
 )
