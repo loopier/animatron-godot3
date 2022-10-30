@@ -31,6 +31,7 @@ onready var actorCmds = {
 	"/behind": funcref($OscInterface, "behindActor"),
 	"/front": funcref($OscInterface, "frontActor"),
 	"/sound": funcref($OscInterface, "soundActor"),
+	"/sound/free": funcref($OscInterface, "soundFreeActor"),
 }
 onready var otherCmds = {
 	"/load": funcref($OscInterface, "loadAsset"),

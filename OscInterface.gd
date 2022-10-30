@@ -511,6 +511,8 @@ func listCommands(args, sender):
 #   It may be "!" (selection), an actor instance name or a wildcard string.
 ############################################################
 func freeActor(inArgs, sender):
+	soundFreeActor(inArgs, sender)
+	
 	var args = getActorsAndArgs(inArgs, "freeActor", 0, sender)
 	if args: for node in args.actors:
 		actorsNode.remove_child(node)
@@ -769,3 +771,11 @@ func soundActor(inArgs, sender):
 			var band = aa.args[0]
 			var cmd = aa.args[1]
 			actor.addSoundCmd(band, cmd,0,1)
+
+func soundFreeActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "frontActor", 1, sender)
+	if aa:
+		for actor in aa.actors:
+			audioInputNode.disconnect("sound_changed", actor, "_on_AudioInputPlayer_sound_changed")
+			var band = aa.args[0]
+			actor.removeSoundCmd(band)
