@@ -553,3 +553,16 @@ x.("/color/g", "sqa", 0.0);
 x.("/color/b", "sqa", 0.0);
 x.("/sound", "sqa", 1, "/color/r");
 )
+x.("/load/config", Platform.userHomeDir++"/work/animatron/config/asturies-config.osc");
+(
+x.("/full", "bg");
+x.("/new", "m", "mouth");
+x.("/behind", "bg", "*")
+x.("/stop", "m");
+x.("/stop", "bg");
+x.("/color/orange", "bg");
+x.("/speed", "bg", rrand(0.3,0.7));
+x.("/speed", "m", 0.2);
+x.("/play/rand", "m");
+x.("/scale", "m", 0.25);
+)
