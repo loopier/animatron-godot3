@@ -21,7 +21,7 @@ func update():
 	var prev_hz = 0
 	for i in range(1, VU_COUNT+1):
 		var hz = i * FREQ_MAX / VU_COUNT;
-		var magnitude: float = spectrum.get_magnitude_for_frequency_range(prev_hz, hz).length()
+		var magnitude: float = spectrum.get_magnitude_for_frequency_range(prev_hz, hz).length() if spectrum else 0
 		var amp = clamp((MIN_DB + linear2db(magnitude)) / MIN_DB, 0, 1)
 		var height = amp * HEIGHT
 #		draw_rect(Rect2(w * i, HEIGHT - height, w, height), Color.white)
