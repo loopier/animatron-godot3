@@ -566,3 +566,38 @@ x.("/speed", "m", 0.2);
 x.("/play/rand", "m");
 x.("/scale", "m", 0.25);
 )
+(
+x.("/load", "spiral-1");
+x.("/load", "square");
+x.("/new", "sp", "spiral-1");
+x.("/new", "spa", "spiral-1");
+x.("/new", "spi", "spiral-1");
+x.("/new", "sq", "square");
+x.("/pivot", "spa", 0.47, 0.51);
+x.("/speed", "sp", rrand(0.3,0.6));
+x.("/speed", "spa", rrand(0.4,0.6));
+x.("/speed", "spi", rrand(0.4,0.6));
+x.("/rotate", "spa", 360.rand);
+x.("/color", "sq", 0.3,0.05,0.02);
+x.("/color", "spa", 0.3,0.05,0.02);
+x.("/color", "sp", 0.7,0.55,0.02);
+x.("/color", "spa", 0.7,0.60,0.02);
+x.("/behind", "sq", "*");
+x.("/scale", "sq", 2, 1.2, 0);
+x.("/")
+)
+(
+x.("/load", "square");
+x.("/load", "canon-man");
+x.("/new", "bg", "square");
+x.("/scale", "bg", 2,1.2);
+x.("/behind", "bg", "*");
+x.("/stop", "bg");
+x.("/new", "man", "canon-man");
+x.("/new", "mana", "canon-man");
+x.("/speed", "man", 1.5);
+x.("/play", "man", 0);
+x.("/color", "man", 1,0,0);
+)
+a = Animatron.new;
+a.sendMsg("/list");
