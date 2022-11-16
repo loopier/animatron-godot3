@@ -600,4 +600,14 @@ x.("/play", "man", 0);
 x.("/color", "man", 1,0,0);
 )
 a = Animatron.new;
+a.sendMsg("/load/config", "config-abstract.osc")
 a.sendMsg("/list");
+a.sendMsg("/list/assets");
+a.sendMsg("/list/anims");
+a.sendMsg("/load", "bg");
+a.sendMsg("/load", "square");
+a.sendMsg("/new", "bg", "bg");
+a.sendMsg("/new", "sqa", "square");
+a.sendMsg("/color/blue", "sqa");
+a.sendMsg("/scale/xy", "sqa", 2.0, 1.2);
+a.sendMsg("/speed", "sqa", 0.4);

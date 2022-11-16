@@ -398,6 +398,7 @@ func listAnims(args, sender):
 	for a in animFramesLibrary.get_animation_names():
 		names.push_back(a)
 	print(names)
+	names.sort()
 	sendMessage(sender, "/list/anims/reply", names)
 
 
@@ -412,6 +413,7 @@ func listAssets(args, sender):
 		var name = getAssetBaseName(path.get_file())
 		names.push_back(name)
 	print(names)
+	names.sort()
 	sendMessage(sender, "/list/assets/reply", names)
 
 func groupActor(args, sender):
