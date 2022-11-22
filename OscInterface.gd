@@ -10,6 +10,7 @@ onready var config : Config = main.get_node("Config")
 onready var metanode = preload("res://MetaNode.tscn")
 onready var speechBubbleNode = preload("res://SpeechBubble.tscn")
 onready var audioInputNode = main.get_node("AudioInputPlayer")
+onready var midiNode = main.get_node("Midi")
 var animFramesLibrary
 var spriteFilenameRegex
 var sequenceFilenameRegex

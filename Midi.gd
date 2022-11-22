@@ -16,7 +16,7 @@ func _unhandled_input(event):
 	if(event is InputEventMIDI):
 #		print("MIDI: ", event.as_text())
 		var msg =  "ch:" + str(event.get_channel()) + " note:" + str(event.get_pitch()) + " vel:" + str(event.get_velocity()) + " inst:" + str(event.get_instrument()) + " pres:" + str(event.get_pressure()) + " cc#:" + str(event.get_controller_number()) + " ccv:" + str(event.get_controller_value())
-#		print(msg)
+		print(msg)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
