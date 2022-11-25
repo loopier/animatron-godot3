@@ -16,3 +16,21 @@ def /newsel actor anim
 
 def /help
     /list/commands
+
+def /play/rev actor
+    /play $actor true
+
+def /adsr actor atk dec sus sust rel
+    /fade $actor 0
+    /fade $actor 1 $atk
+    /wait $atk
+    /fade $actor $sus $dec
+    /wait $dec
+    /wait $sust
+    /fade $actor 0 $rel
+
+def /ar actor atk rel
+    /fade $actor 0
+    /fade $actor 1 $atk
+    /wait $atk
+    /fade $actor 0 $rel

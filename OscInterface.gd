@@ -808,12 +808,12 @@ func soundActor(inArgs, sender):
 	if aa:
 		for actor in aa.actors:
 			audioInputNode.connect("sound_changed", actor, "_on_AudioInputPlayer_sound_changed")
-			print(audioInputNode.get_incoming_connections())
 			var band = aa.args[0]
 			var cmd = aa.args[1]
-			if len(aa.args) == 2:
+			if len(aa.args) == 4:
 				rangemin = aa.args[2]
 				rangemax = aa.args[3]
+#			print("%d %d %d" % [rangemin, rangemax, len(aa.args)])
 			actor.addSoundCmd(band, cmd, rangemin, rangemax)
 
 func soundFreeActor(inArgs, sender):
