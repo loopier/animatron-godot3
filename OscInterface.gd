@@ -563,7 +563,7 @@ func setActorFrame(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorFrame", 1, sender)
 	if args: for node in args.actors:
 		var anim = node.get_node(actorAnimNodePath)
-		var frame = args.args[0]
+		var frame = int(args.args[0])
 		if typeof(frame) != TYPE_INT:
 			frame = int(frame * anim.frames.get_frame_count(anim.animation))
 			print(frame)
@@ -797,13 +797,24 @@ func frontActor(inArgs, sender):
 				actorsNode.move_child(node, maxIndex)
 
 func soundActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "frontActor", 2, sender)
+	var aa = false
+	var rangemin = 0.0
+	var rangemax = 1.0
+	if len(inArgs) == 3:
+		aa = getActorsAndArgs(inArgs, "frontActor", 2, sender)
+	else:
+		aa = getActorsAndArgs(inArgs, "frontActor", 4, sender)
+	
 	if aa:
 		for actor in aa.actors:
 			audioInputNode.connect("sound_changed", actor, "_on_AudioInputPlayer_sound_changed")
+			print(audioInputNode.get_incoming_connections())
 			var band = aa.args[0]
 			var cmd = aa.args[1]
-			actor.addSoundCmd(band, cmd,0,1)
+			if len(aa.args) > 2:
+				rangemin = aa.args[2]
+				rangemax = aa.args[3]
+			actor.addSoundCmd(band, cmd, rangemin, rangemax)
 
 func soundFreeActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "frontActor", 1, sender)
