@@ -27,7 +27,6 @@ func _on_AudioInputPlayer_sound_changed(band, amp):
 		
 		# linlin() is a helper function declared below
 		amp = linlin(amp, 0.0, 1.0, minval, maxval)
-		print(amp)
 		main.evalOscCommand(addr, [name, amp], null)
 
 func _ready():
@@ -37,5 +36,4 @@ func _ready():
 		soundCmds.append({})
 
 func linlin(val, inmin, inmax, outmin, outmax):
-#	print("%s %s %s %s %s" % [val, inmin, inmax, outmin, outmax])
 	return (val - inmin) / (inmax - inmin) * (outmax - outmin) + outmin

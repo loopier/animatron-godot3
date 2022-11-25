@@ -813,7 +813,6 @@ func soundActor(inArgs, sender):
 			if len(aa.args) == 4:
 				rangemin = aa.args[2]
 				rangemax = aa.args[3]
-#			print("%d %d %d" % [rangemin, rangemax, len(aa.args)])
 			actor.addSoundCmd(band, cmd, rangemin, rangemax)
 
 func soundFreeActor(inArgs, sender):
