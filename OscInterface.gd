@@ -801,9 +801,9 @@ func soundActor(inArgs, sender):
 	var rangemin = 0.0
 	var rangemax = 1.0
 	if len(inArgs) == 3:
-		aa = getActorsAndArgs(inArgs, "frontActor", 2, sender)
+		aa = getActorsAndArgs(inArgs, "soundActor", 2, sender)
 	else:
-		aa = getActorsAndArgs(inArgs, "frontActor", 4, sender)
+		aa = getActorsAndArgs(inArgs, "soundActor", 4, sender)
 	
 	if aa:
 		for actor in aa.actors:
@@ -816,9 +816,55 @@ func soundActor(inArgs, sender):
 			actor.addSoundCmd(band, cmd, rangemin, rangemax)
 
 func soundFreeActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "frontActor", 1, sender)
+	var aa = getActorsAndArgs(inArgs, "soundFreeActor", 1, sender)
 	if aa:
 		for actor in aa.actors:
 			audioInputNode.disconnect("sound_changed", actor, "_on_AudioInputPlayer_sound_changed")
 			var band = aa.args[0]
 			actor.removeSoundCmd(band)
+
+func midiActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "midiActor", 4, sender)
+	var signalmap = {
+		"noteon": "note_on_received",
+		"noteoff": "note_off_received",
+		"cc": "cc_reveived",
+	}
+	
+	if aa:
+		for actor in aa.actors:
+			var midimsg = aa.args[0]
+			var signalmsg = signalmap[midimsg]
+			var cmd = aa.args[1]
+			var rangemin = aa.args[2]
+			var rangemax = aa.args[3]
+			midiNode.connect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
+			if midimsg == "noteon":
+				actor.addMidiNoteOnCmd(cmd, rangemin, rangemax)
+			elif midimsg == "noteoff":
+				actor.addMidiNoteOffCmd(cmd, rangemin, rangemax)
+			elif midimsg == "cc":
+				actor.addMidiCcCmd(cmd, rangemin, rangemax)
+
+func midiFreeActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "midiFreeActor", 2, sender)
+	var signalmap = {
+		"noteon": "note_on_received",
+		"noteoff": "note_off_received",
+		"cc": "cc_reveived",
+	}
+	
+	if aa:
+		for actor in aa.actors:
+			var midimsg = aa.args[0]
+			var signalmsg = signalmap[midimsg]
+			print("_on_Midi_%s" % signalmsg)
+			midiNode.disconnect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
+			var cmd = aa.args[1]
+			if midimsg == "noteon":
+				actor.removeMidiNoteOnCmd(cmd)
+			elif midimsg == "noteoff":
+				actor.removeMidiNoteOffCmd(cmd)
+			elif midimsg == "cc":
+				actor.removeMidiCcCmd(cmd)
+
