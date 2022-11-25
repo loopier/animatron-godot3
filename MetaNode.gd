@@ -5,11 +5,11 @@ var soundCmds : Array
 var main
 
 func addSoundCmd( band, cmd, minVal, maxVal ):
-	soundCmds[band][cmd] = [minVal, maxVal]
+	soundCmds[min(band, len(soundCmds)-1)][cmd] = [minVal, maxVal]
 	print(soundCmds)
 
 func removeSoundCmd( band ):
-	soundCmds[band] = {}
+	soundCmds[min(band, len(soundCmds)-1)] = {}
 	print(soundCmds)
 
 func _on_AudioInputPlayer_sound_changed(band, amp):

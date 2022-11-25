@@ -811,7 +811,7 @@ func soundActor(inArgs, sender):
 			print(audioInputNode.get_incoming_connections())
 			var band = aa.args[0]
 			var cmd = aa.args[1]
-			if len(aa.args) > 2:
+			if len(aa.args) == 2:
 				rangemin = aa.args[2]
 				rangemax = aa.args[3]
 			actor.addSoundCmd(band, cmd, rangemin, rangemax)
