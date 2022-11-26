@@ -54,8 +54,8 @@ Address | Args <img width=675px/> | Description
 `/front` <br/> `/front!` | `actor:s ref:s` <br/> `ref:s` | Change the draw order for an actor to be in front of a reference actor. To move to the foreground, use `/front actor *`.
 `/sound` <br/> `/sound!` | `actor:s band:i command:s [min:f max:f]` <br/> `band:i command:s [min:f max:f]` | Map the amplitude of the sound input at the frequency `band` to any `command` within the range `min` and `max` (if ommited they default to `[0.0..1.0]`)
 `/sound/free` <br/> `/sound!` | `actor:s band:i` <br/> `band:i` | Unmap sound for the given `band`
-`/midi` <br/><br/> `/midi!` | `actor:s midimsg:s [ccnumber:i] command:s [min:f max:f]` <br/><br/> `midimsg:i [ccnumber:i] command:s [min:f max:f]` | Map the `midimsg` (`noteon`, `noteoff` number or `cc` value) to a `command` within a range between `min` and `max`. For `cc` messages the `ccnumber` must be also specified.
-`/sound/free` <br/> `/sound!` | `actor:s midimsg:s ` <br/> `midimsg:i` | Unmap MIDI for the given `midimsg`
+`/midi` <br/><br/> `/midi!` | `actor:s midimsg:s [ccnumber:i] command:s [min:f max:f]` <br/><br/> `midimsg:i [ccnumber:i] command:s [min:f max:f]` | Map the `midimsg` (`noteon`, `noteoff` event or `cc` number) to a `command` within a range between `min` and `max`. For `cc` messages the `ccnumber` must be also specified.
+`/midi/free` <br/> `/midi!` | `actor:s midimsg:s ` <br/> `midimsg:i` | Unmap MIDI for the given `midimsg`
 
 ## Other commands
 
