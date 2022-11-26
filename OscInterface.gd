@@ -490,6 +490,11 @@ func enableStatusMessages(args, sender):
 	allowStatusReport = Helper.getBool(args[0]) if args.size() == 1 else true
 	reportStatus("Status messages: %s" % ["enabled" if allowStatusReport else "disabled"], sender)
 
+func midiEnableStatusMessages(args, sender):
+	if (args.size() != 1):
+		reportError("midiEnableStatusMessages 1 bool argument", sender)
+		return
+	midiNode.enableDebug(args[0])
 
 func wait(args, sender):
 	if args.size() != 1:
@@ -824,7 +829,12 @@ func soundFreeActor(inArgs, sender):
 			actor.removeSoundCmd(band)
 
 func midiActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "midiActor", 4, sender)
+	var aa
+	if len(inArgs) == 5:
+		aa = getActorsAndArgs(inArgs, "midiActor", 4, sender)
+	else:
+		aa = getActorsAndArgs(inArgs, "midiActor", 5, sender)
+		
 	var signalmap = {
 		"noteon": "note_on_received",
 		"noteoff": "note_off_received",
@@ -844,7 +854,14 @@ func midiActor(inArgs, sender):
 			elif midimsg == "noteoff":
 				actor.addMidiNoteOffCmd(cmd, rangemin, rangemax)
 			elif midimsg == "cc":
-				actor.addMidiCcCmd(cmd, rangemin, rangemax)
+				midiNode.connect("cc_received", actor, "_on_Midi_cc_received")
+				actor.addMidiCcCmd(aa.args[1], aa.args[2], aa.args[3], aa.args[4])
+
+func midiChannelActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "midiChannelActor", 1, sender)
+	if aa:
+		for actor in aa.actors:
+			actor.setMidiChannel(aa.args[0])
 
 func midiFreeActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "midiFreeActor", 2, sender)

@@ -2,9 +2,16 @@ extends KinematicBody2D
 
 # store commands for different frequency bands
 var soundCmds : Array
+
+# while NOTEON and NOTEOFF events trigger commands, using note NUMBER as the
+# argument's value (leaving VELOCITY unused), on CC the NUMBER is what triggers
+# the commands, and the VALUE is passed as argument.
+# So MIDI NOTEON/OFF events are dictionaries, while CC events is an array of
+# dictionaries (each dictionary being a list of commands to be triggered).
 var midiNoteOnCmds
 var midiNoteOffCmds
-var midiCcCmds
+var midiCcCmds : Array
+var midiChannel = 0
 var main
 
 func addSoundCmd( band, cmd, minVal, maxVal ):
@@ -15,6 +22,10 @@ func removeSoundCmd( band ):
 	soundCmds[min(band, len(soundCmds)-1)] = {}
 	print(soundCmds)
 
+func setMidiChannel( ch ):
+	midiChannel = ch
+	print("'%s' listening to MIDI channel: %d" % [name, midiChannel])
+
 func addMidiNoteOnCmd( cmd, minVal, maxVal ):
 	midiNoteOnCmds[cmd] = [minVal, maxVal]
 	print(midiNoteOnCmds)
@@ -23,8 +34,9 @@ func addMidiNoteOffCmd( cmd, minVal, maxVal ):
 	midiNoteOffCmds[cmd] = [minVal, maxVal]
 	print(midiNoteOffCmds)
 	
-func addMidiCcCmd( cmd, minVal, maxVal ):
-	midiCcCmds[cmd] = [minVal, maxVal]
+func addMidiCcCmd( cc, cmd, minVal, maxVal ):
+	midiCcCmds[cc][cmd] = [minVal, maxVal]
+#	print("cc:%d cmd:%s min:%f max:%f" % [cc, cmd, minVal, maxVal])
 	print(midiCcCmds)
 
 func removeMidiNoteOnCmd( cmd ):
@@ -48,14 +60,21 @@ func _on_AudioInputPlayer_sound_changed(band, amp):
 	eventToOsc(soundCmds[band], amp, 0.0, 1.0)
 
 # TODO: 'velocity' is unused 
-func _on_Midi_note_on_received(num, velocity):
+func _on_Midi_note_on_received(num, velocity, ch):
+	if ch != midiChannel:
+		return
 	eventToOsc(midiNoteOnCmds, num, 0, 127)
 
-func _on_Midi_note_off_received(num, val):
+func _on_Midi_note_off_received(num, val, ch):
+	if ch != midiChannel:
+		return
 	eventToOsc(midiNoteOffCmds, num, 0, 127)
 	
-func _on_Midi_cc_received(num, val):
-	eventToOsc(midiCcCmds, num, 0, 127)
+func _on_Midi_cc_received(num, val, ch):
+	print("%d %d %d" % [num, val, ch])
+	if ch != midiChannel:
+		return
+	eventToOsc(midiCcCmds[num], val, 0, 127)
 	
 func _ready():
 	main = get_parent().get_parent()
@@ -64,7 +83,8 @@ func _ready():
 		soundCmds.append({})
 	midiNoteOnCmds = {}
 	midiNoteOffCmds = {}
-	midiCcCmds = {}
+	for i in range(127):
+		midiCcCmds.append({})
 
 func eventToOsc(cmdsList, value, inmin, inmax):
 	if not get_parent():

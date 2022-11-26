@@ -36,6 +36,7 @@ onready var actorCmds = {
 	"/sound": funcref($OscInterface, "soundActor"),
 	"/sound/free": funcref($OscInterface, "soundFreeActor"),
 	"/midi": funcref($OscInterface, "midiActor"),
+	"/midi/ch": funcref($OscInterface, "midiChannelActor"),
 	"/midi/free": funcref($OscInterface, "midiFreeActor"),
 	
 }
@@ -57,6 +58,7 @@ onready var otherCmds = {
 	"/def": funcref($OscInterface, "defCommand"),
 	"/load/defs": funcref($OscInterface, "loadDefsFile"),
 	"/debug": funcref($OscInterface, "enableStatusMessages"),
+	"/midi/debug": funcref($OscInterface, "midiEnableStatusMessages"),
 	# "/wait" command is handled specially 
 
 	# write
