@@ -54,7 +54,8 @@ Address | Args <img width=675px/> | Description
 `/front` <br/> `/front!` | `actor:s ref:s` <br/> `ref:s` | Change the draw order for an actor to be in front of a reference actor. To move to the foreground, use `/front actor *`.
 `/sound` <br/> `/sound!` | `actor:s band:i command:s [min:f max:f]` <br/> `band:i command:s [min:f max:f]` | Map the amplitude of the sound input at the frequency `band` to any `command` within the range `min` and `max` (if ommited they default to `[0.0..1.0]`)
 `/sound/free` <br/> `/sound!` | `actor:s band:i` <br/> `band:i` | Unmap sound for the given `band`
-`/midi` <br/> `/midi!` | `actor:s midimsg:s [ccnumber:i] command:s [min:f max:f]` <br/> `midimsg:i [ccnumber:i] command:s [min:f max:f]` | Map the `midimsg` (`noteon`, `noteoff` number or `cc` value) to a `command` within a range between `min` and `max`. For `cc` messages the `ccnumber` must be also specified.
+`/midi` <br/><br/> `/midi!` | `actor:s midimsg:s [ccnumber:i] command:s [min:f max:f]` <br/><br/> `midimsg:i [ccnumber:i] command:s [min:f max:f]` | Map the `midimsg` (`noteon`, `noteoff` number or `cc` value) to a `command` within a range between `min` and `max`. For `cc` messages the `ccnumber` must be also specified.
+`/sound/free` <br/> `/sound!` | `actor:s midimsg:s ` <br/> `midimsg:i` | Unmap MIDI for the given `midimsg`
 
 ## Other commands
 
@@ -76,6 +77,7 @@ Address | Args <img width="1000px"/> | Description
 `/def` | `cmdName [subCommand] ...` | Define a custom OSC command that is a list of other OSC commands. This may be recursive, so each `subCommand` may reference one of the built-in commands, or another custom-defined command. Another way to define custom commands is via the file `commands/init.osc`. The `cmdName` string (first argument) may include argument names, which may be referenced as `subCommand` arguments using `$name`. Example: `/def "/addsel actor anim" "/create $actor $anim" "/select $actor"`.
 `/load/defs` | `filename` | Load a custom command definitions file, which should have the format [described below](#def-files).
 `/debug` | `[enable:b]` | Enable (or disable) reporting of informative status messages (via OSC and to the debug window). By default, this is disabled when running in exported builds, but enabled when running in the Godot editor. This flag does not affect error reporting (errors are always reported).
+`/midi/debug` | `[enable:b]` | Enable (or disable) reporting of MIDI input events.
 `/wait` | `duration` | Wait for `duration` seconds before executing the next command. Only relevant within a list of commands being executed together at once, such as inside a custom `def`ined command list.
 `/load/alphabet` |  | Load the alphabet (default letters load from folders named `letter-[ASCII_CHAR]`)
 `/letter` | `letter:c asset:s` | Map a single letter to an asset.  Creates an actor named after LETTER with ASSET.
