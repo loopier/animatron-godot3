@@ -63,6 +63,11 @@ func addMidiCcCmd( cc, cmd, minVal, maxVal ):
 #	print("cc:%d cmd:%s min:%f max:%f" % [cc, cmd, minVal, maxVal])
 	print(midiCcCmds)
 
+func addMidiVelocityCmd( cmd, minVal, maxVal ):
+	for i in range(128):
+		addMidiNoteOnCmd(i, cmd, minVal, maxVal)
+#	print(midiNoteOnCmds)
+
 func removeMidiNotesOnCmd( cmd ):
 	midiNotesOnCmds.erase(cmd)
 	print(midiNotesOnCmds)
@@ -82,6 +87,11 @@ func removeMidiNoteOffCmd( num, cmd ):
 func removeMidiCcCmd( num, cmd ):
 	midiCcCmds[num].erase(cmd)
 	print(midiCcCmds)
+
+func removeMidiVelocityCmd( cmd ):
+	for i in range(128):
+		removeMidiNoteOnCmd(i, cmd)
+#	print(midiNoteOnCmds)
 
 func _on_AudioInputPlayer_sound_changed(band, amp):
 #	print(band, ":", amp)
@@ -117,7 +127,7 @@ func _ready():
 		soundCmds.append({})
 	midiNotesOnCmds = {}
 	midiNotesOffCmds = {}
-	for i in range(127):
+	for i in range(128):
 		midiNoteOnCmds.append({})
 		midiNoteOffCmds.append({})
 		midiCcCmds.append({})

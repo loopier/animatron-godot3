@@ -836,6 +836,7 @@ func midiActor(inArgs, sender):
 		"noteon": "note_on_received",
 		"noteoff": "note_off_received",
 		"cc": "cc_reveived",
+		"velocity": "note_on_received",
 	}
 	
 	if aa:
@@ -860,6 +861,8 @@ func midiActor(inArgs, sender):
 			elif midimsg == "cc":
 #				midiNode.connect("cc_received", actor, "_on_Midi_cc_received")
 				actor.addMidiCcCmd(num, cmd, rangemin, rangemax)
+			elif midimsg == "velocity":
+				actor.addMidiVelocityCmd(cmd, rangemin, rangemax)
 
 func midiChannelActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "midiChannelActor", 1, sender)
@@ -873,6 +876,7 @@ func midiFreeActor(inArgs, sender):
 		"noteon": "note_on_received",
 		"noteoff": "note_off_received",
 		"cc": "cc_reveived",
+		"velocity": "note_on_received",
 	}
 	
 	if aa:
@@ -893,4 +897,6 @@ func midiFreeActor(inArgs, sender):
 				actor.removeMidiNotesOffCmd(cmd)
 			elif midimsg == "cc":
 				actor.removeMidiCcCmd(num, cmd)
+			elif midimsg == "velocity":
+				actor.removeMidiVelocityCmd(cmd)
 
