@@ -115,7 +115,6 @@ func _on_Midi_note_off_received(num, velocity, ch):
 	eventToOsc(midiNoteOffCmds[num], velocity, 0, 127)
 	
 func _on_Midi_cc_received(num, val, ch):
-	print("%d %d %d" % [num, val, ch])
 	if ch != midiChannel:
 		return
 	eventToOsc(midiCcCmds[num], val, 0, 127)

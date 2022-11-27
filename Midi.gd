@@ -43,7 +43,3 @@ func _unhandled_input(event):
 			print("MIDI msg: %s - num:%d - val:%d - ch:%d" % [signalMsg, num, value, event.get_channel()])
 #		print("signal: %s %d %d %d" % [signalMsg, num, value, event.get_channel()])
 		emit_signal(signalMsg, num, value, event.get_channel())
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

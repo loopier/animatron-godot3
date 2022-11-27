@@ -830,26 +830,28 @@ func soundFreeActor(inArgs, sender):
 
 # see MetaNode.gd for information on differences between MIDI messages
 func midiActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "midiActor", 5, sender)
-		
+	if len(inArgs) != 6:
+		reportError("midiActor expects 6 arguments", sender)
+		return
 	var signalmap = {
 		"noteon": "note_on_received",
 		"noteoff": "note_off_received",
-		"cc": "cc_reveived",
+		"cc": "cc_received",
 		"velocity": "note_on_received",
 	}
+	var midimsg = inArgs[0]
+	var num = inArgs[1]
+	var cmd = inArgs[2]
+	var signalmsg = signalmap[midimsg]
+	var aa = getActorsAndArgs(inArgs.slice(3,-1), "midiActor", 2, sender)
+#	print("MIDI msg:%s - singal:%s - num:%s - cmd:%s" % [midimsg, signalmsg, num, cmd])
 	
 	if aa:
 		for actor in aa.actors:
-			var midimsg = aa.args[0]
-			var signalmsg = signalmap[midimsg]
-			var num = aa.args[1]
-			var cmd = aa.args[2]
-			var rangemin = aa.args[3]
-			var rangemax = aa.args[4]
+			var rangemin = aa.args[0]
+			var rangemax = aa.args[1]
 			midiNode.connect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
 			print("MIDI msg:%s - singal:%s - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, num, cmd, rangemin, rangemax])
-#			print(typeof(num))
 			if midimsg == "noteon" and typeof(num) == TYPE_INT:
 				actor.addMidiNoteOnCmd(num, cmd, rangemin, rangemax)
 			elif midimsg == "noteon" and num == "*":
@@ -871,20 +873,24 @@ func midiChannelActor(inArgs, sender):
 			actor.setMidiChannel(aa.args[0])
 
 func midiFreeActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "midiFreeActor", 3, sender)
+	if len(inArgs) != 4:
+		reportError("midiActor expects 4 arguments", sender)
+		return
 	var signalmap = {
 		"noteon": "note_on_received",
 		"noteoff": "note_off_received",
-		"cc": "cc_reveived",
+		"cc": "cc_received",
 		"velocity": "note_on_received",
 	}
+	var midimsg = inArgs[0]
+	var num = inArgs[1]
+	var cmd = inArgs[2]
+	var signalmsg = signalmap[midimsg]
+	var aa = getActorsAndArgs(inArgs.slice(3,-1), "midiActor", 0, sender)
+#	print("MIDI msg:%s - singal:%s - num:%s - cmd:%s" % [midimsg, signalmsg, num, cmd])
 	
 	if aa:
 		for actor in aa.actors:
-			var midimsg = aa.args[0]
-			var signalmsg = signalmap[midimsg]
-			var num = aa.args[1]
-			var cmd = aa.args[2]
 			print("_on_Midi_%s" % signalmsg)
 #			midiNode.disconnect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
 			if midimsg == "noteon" and typeof(num) == TYPE_INT:
