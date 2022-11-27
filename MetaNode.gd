@@ -6,10 +6,10 @@ var soundCmds : Array
 # MIDI message mapping
 # --------------------
 # NOTEON and NOTEOFF events can be mapped in 2 different ways:
-# - midiNoteOnCmd/midiNoteOffCmd (singular): DIFFERENT NOTENUM send DIFFERENT 
-# COMMANDS, using VELOCITY as the command argument
-# - midiAnyNoteOnCmd/midiAnyNoteOffCmd (plural): DIFFERENT NOTENUM send the SAME 
-# COMMANDS, using NOTENUM as the command argument discarding VELOCITY
+# - midiNoteOnCmd/midiNoteOffCmd: DIFFERENT NOTENUM send DIFFERENT COMMANDS, 
+# using VELOCITY as the command argument
+# - midiAnyNoteOnCmd/midiAnyNoteOffCmd: DIFFERENT NOTENUM send the SAME COMMANDS, 
+# using NOTENUM as the command argument discarding VELOCITY
 
 # CC events are mapped so that DIFFERENT CCNUM send DIFFERENT COMMANDS, using
 # VALUE as command argument
