@@ -3,13 +3,29 @@ extends KinematicBody2D
 # store commands for different frequency bands
 var soundCmds : Array
 
-# while NOTEON and NOTEOFF events trigger commands, using note NUMBER as the
-# argument's value (leaving VELOCITY unused), on CC the NUMBER is what triggers
-# the commands, and the VALUE is passed as argument.
-# So MIDI NOTEON/OFF events are dictionaries, while CC events is an array of
-# dictionaries (each dictionary being a list of commands to be triggered).
-var midiNoteOnCmds
-var midiNoteOffCmds
+# MIDI message mapping
+# --------------------
+# NOTEON and NOTEOFF events can be mapped in 2 different ways:
+# - midiNoteOnCmd/midiNoteOffCmd (singular): DIFFERENT NOTENUM send DIFFERENT 
+# COMMANDS, using VELOCITY as the command argument
+# - midiNotesOnCmd/midiNotesOffCmd (plural): DIFFERENT NOTENUM send the SAME 
+# COMMANDS, using NOTENUM as the command argument discarding VELOCITY
+
+# CC events are mapped so that DIFFERENT CCNUM send DIFFERENT COMMANDS, using
+# VALUE as command argument
+
+# Signals
+# -------
+# WARNING: MIDI signals are connected the first time a MIDI event is mapped. But
+#          they are NEVER explicitly disconnected. I'm not sure if this affects
+#          the performance. If it does, signals should be disconnected when
+#          BOTH midiNoteOnCmds (singular) and midiNotesOnCmd (plural) arrays
+#          are empty (same for *noteOff*).
+
+var midiNotesOnCmds
+var midiNotesOffCmds
+var midiNoteOnCmds : Array
+var midiNoteOffCmds : Array
 var midiCcCmds : Array
 var midiChannel = 0
 var main
@@ -26,12 +42,20 @@ func setMidiChannel( ch ):
 	midiChannel = ch
 	print("'%s' listening to MIDI channel: %d" % [name, midiChannel])
 
-func addMidiNoteOnCmd( cmd, minVal, maxVal ):
-	midiNoteOnCmds[cmd] = [minVal, maxVal]
+func addMidiNotesOnCmd( cmd, minVal, maxVal ):
+	midiNotesOnCmds[cmd] = [minVal, maxVal]
+	print(midiNotesOnCmds)
+	
+func addMidiNotesOffCmd( cmd, minVal, maxVal ):
+	midiNotesOffCmds[cmd] = [minVal, maxVal]
+	print(midiNotesOffCmds)
+	
+func addMidiNoteOnCmd( num, cmd, minVal, maxVal ):
+	midiNoteOnCmds[num][cmd] = [minVal, maxVal]
 	print(midiNoteOnCmds)
 	
-func addMidiNoteOffCmd( cmd, minVal, maxVal ):
-	midiNoteOffCmds[cmd] = [minVal, maxVal]
+func addMidiNoteOffCmd( num, cmd, minVal, maxVal ):
+	midiNoteOffCmds[num][cmd] = [minVal, maxVal]
 	print(midiNoteOffCmds)
 	
 func addMidiCcCmd( cc, cmd, minVal, maxVal ):
@@ -39,16 +63,24 @@ func addMidiCcCmd( cc, cmd, minVal, maxVal ):
 #	print("cc:%d cmd:%s min:%f max:%f" % [cc, cmd, minVal, maxVal])
 	print(midiCcCmds)
 
-func removeMidiNoteOnCmd( cmd ):
-	midiNoteOnCmds.erase(cmd)
+func removeMidiNotesOnCmd( cmd ):
+	midiNotesOnCmds.erase(cmd)
+	print(midiNotesOnCmds)
+
+func removeMidiNotesOffCmd( cmd ):
+	midiNotesOffCmds.erase(cmd)
+	print(midiNotesOffCmds)
+	
+func removeMidiNoteOnCmd( num, cmd ):
+	midiNoteOnCmds[num].erase(cmd)
 	print(midiNoteOnCmds)
 
-func removeMidiNoteOffCmd( cmd ):
-	midiNoteOffCmds.erase(cmd)
+func removeMidiNoteOffCmd( num, cmd ):
+	midiNoteOffCmds[num].erase(cmd)
 	print(midiNoteOffCmds)
 
-func removeMidiCcCmd( cmd ):
-	midiCcCmds.erase(cmd)
+func removeMidiCcCmd( num, cmd ):
+	midiCcCmds[num].erase(cmd)
 	print(midiCcCmds)
 
 func _on_AudioInputPlayer_sound_changed(band, amp):
@@ -63,12 +95,14 @@ func _on_AudioInputPlayer_sound_changed(band, amp):
 func _on_Midi_note_on_received(num, velocity, ch):
 	if ch != midiChannel:
 		return
-	eventToOsc(midiNoteOnCmds, num, 0, 127)
+	eventToOsc(midiNotesOnCmds, num, 0, 127)
+	eventToOsc(midiNoteOnCmds[num], velocity, 0, 127)
 
-func _on_Midi_note_off_received(num, val, ch):
+func _on_Midi_note_off_received(num, velocity, ch):
 	if ch != midiChannel:
 		return
-	eventToOsc(midiNoteOffCmds, num, 0, 127)
+	eventToOsc(midiNotesOffCmds, num, 0, 127)
+	eventToOsc(midiNoteOffCmds[num], velocity, 0, 127)
 	
 func _on_Midi_cc_received(num, val, ch):
 	print("%d %d %d" % [num, val, ch])
@@ -81,9 +115,11 @@ func _ready():
 	# VU_COUNT is declared in AudioInputPlayer.gd
 	for i in range(main.get_node("AudioInputPlayer").VU_COUNT):
 		soundCmds.append({})
-	midiNoteOnCmds = {}
-	midiNoteOffCmds = {}
+	midiNotesOnCmds = {}
+	midiNotesOffCmds = {}
 	for i in range(127):
+		midiNoteOnCmds.append({})
+		midiNoteOffCmds.append({})
 		midiCcCmds.append({})
 
 func eventToOsc(cmdsList, value, inmin, inmax):
@@ -96,7 +132,7 @@ func eventToOsc(cmdsList, value, inmin, inmax):
 		var minval = cmdsList[addr][0]
 		var maxval = cmdsList[addr][1]
 		value  = linlin(value, inmin, inmax, minval, maxval)
-#		print(value)
+		print("sending msg from MIDI: %s %f" % [addr, value])
 		main.evalOscCommand(addr, [name, value], null)
 		
 

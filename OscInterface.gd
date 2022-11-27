@@ -828,12 +828,9 @@ func soundFreeActor(inArgs, sender):
 			var band = aa.args[0]
 			actor.removeSoundCmd(band)
 
+# see MetaNode.gd for information on differences between MIDI messages
 func midiActor(inArgs, sender):
-	var aa
-	if len(inArgs) == 5:
-		aa = getActorsAndArgs(inArgs, "midiActor", 4, sender)
-	else:
-		aa = getActorsAndArgs(inArgs, "midiActor", 5, sender)
+	var aa = getActorsAndArgs(inArgs, "midiActor", 5, sender)
 		
 	var signalmap = {
 		"noteon": "note_on_received",
@@ -845,17 +842,24 @@ func midiActor(inArgs, sender):
 		for actor in aa.actors:
 			var midimsg = aa.args[0]
 			var signalmsg = signalmap[midimsg]
-			var cmd = aa.args[1]
-			var rangemin = aa.args[2]
-			var rangemax = aa.args[3]
+			var num = aa.args[1]
+			var cmd = aa.args[2]
+			var rangemin = aa.args[3]
+			var rangemax = aa.args[4]
 			midiNode.connect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
-			if midimsg == "noteon":
-				actor.addMidiNoteOnCmd(cmd, rangemin, rangemax)
-			elif midimsg == "noteoff":
-				actor.addMidiNoteOffCmd(cmd, rangemin, rangemax)
+			print("MIDI msg:%s - singal:%s - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, num, cmd, rangemin, rangemax])
+#			print(typeof(num))
+			if midimsg == "noteon" and typeof(num) == TYPE_INT:
+				actor.addMidiNoteOnCmd(num, cmd, rangemin, rangemax)
+			elif midimsg == "noteon" and num == "*":
+				actor.addMidiNotesOnCmd(cmd, rangemin, rangemax)
+			elif midimsg == "noteoff" and typeof(num) == TYPE_INT:
+				actor.addMidiNoteOffCmd(num, cmd, rangemin, rangemax)
+			elif midimsg == "noteoff" and num == "*":
+				actor.addMidiNotesOffCmd(cmd, rangemin, rangemax)
 			elif midimsg == "cc":
-				midiNode.connect("cc_received", actor, "_on_Midi_cc_received")
-				actor.addMidiCcCmd(aa.args[1], aa.args[2], aa.args[3], aa.args[4])
+#				midiNode.connect("cc_received", actor, "_on_Midi_cc_received")
+				actor.addMidiCcCmd(num, cmd, rangemin, rangemax)
 
 func midiChannelActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "midiChannelActor", 1, sender)
@@ -864,7 +868,7 @@ func midiChannelActor(inArgs, sender):
 			actor.setMidiChannel(aa.args[0])
 
 func midiFreeActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "midiFreeActor", 2, sender)
+	var aa = getActorsAndArgs(inArgs, "midiFreeActor", 3, sender)
 	var signalmap = {
 		"noteon": "note_on_received",
 		"noteoff": "note_off_received",
@@ -875,13 +879,18 @@ func midiFreeActor(inArgs, sender):
 		for actor in aa.actors:
 			var midimsg = aa.args[0]
 			var signalmsg = signalmap[midimsg]
+			var num = aa.args[1]
+			var cmd = aa.args[2]
 			print("_on_Midi_%s" % signalmsg)
-			midiNode.disconnect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
-			var cmd = aa.args[1]
-			if midimsg == "noteon":
-				actor.removeMidiNoteOnCmd(cmd)
-			elif midimsg == "noteoff":
-				actor.removeMidiNoteOffCmd(cmd)
+#			midiNode.disconnect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
+			if midimsg == "noteon" and typeof(num) == TYPE_INT:
+				actor.removeMidiNoteOnCmd(num, cmd)
+			elif midimsg == "noteon" and num == "*":
+				actor.removeMidiNotesOnCmd(cmd)
+			elif midimsg == "noteoff" and typeof(num) == TYPE_INT:
+				actor.removeMidiNoteOffCmd(num, cmd)
+			elif midimsg == "noteoff" and num == "*":
+				actor.removeMidiNotesOffCmd(cmd)
 			elif midimsg == "cc":
-				actor.removeMidiCcCmd(cmd)
+				actor.removeMidiCcCmd(num, cmd)
 
