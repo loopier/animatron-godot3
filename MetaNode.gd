@@ -8,7 +8,7 @@ var soundCmds : Array
 # NOTEON and NOTEOFF events can be mapped in 2 different ways:
 # - midiNoteOnCmd/midiNoteOffCmd (singular): DIFFERENT NOTENUM send DIFFERENT 
 # COMMANDS, using VELOCITY as the command argument
-# - midiNotesOnCmd/midiNotesOffCmd (plural): DIFFERENT NOTENUM send the SAME 
+# - midiAnyNoteOnCmd/midiAnyNoteOffCmd (plural): DIFFERENT NOTENUM send the SAME 
 # COMMANDS, using NOTENUM as the command argument discarding VELOCITY
 
 # CC events are mapped so that DIFFERENT CCNUM send DIFFERENT COMMANDS, using
@@ -19,11 +19,11 @@ var soundCmds : Array
 # WARNING: MIDI signals are connected the first time a MIDI event is mapped. But
 #          they are NEVER explicitly disconnected. I'm not sure if this affects
 #          the performance. If it does, signals should be disconnected when
-#          BOTH midiNoteOnCmds (singular) and midiNotesOnCmd (plural) arrays
+#          BOTH midiNoteOnCmds (singular) and midiAnyNoteOnCmd (plural) arrays
 #          are empty (same for *noteOff*).
 
-var midiNotesOnCmds
-var midiNotesOffCmds
+var midiAnyNoteOnCmds
+var midiAnyNoteOffCmds
 var midiNoteOnCmds : Array
 var midiNoteOffCmds : Array
 var midiCcCmds : Array
@@ -42,13 +42,13 @@ func setMidiChannel( ch ):
 	midiChannel = ch
 	print("'%s' listening to MIDI channel: %d" % [name, midiChannel])
 
-func addMidiNotesOnCmd( cmd, minVal, maxVal ):
-	midiNotesOnCmds[cmd] = [minVal, maxVal]
-	print(midiNotesOnCmds)
+func addMidiAnyNoteOnCmd( cmd, minVal, maxVal ):
+	midiAnyNoteOnCmds[cmd] = [minVal, maxVal]
+	print(midiAnyNoteOnCmds)
 	
-func addMidiNotesOffCmd( cmd, minVal, maxVal ):
-	midiNotesOffCmds[cmd] = [minVal, maxVal]
-	print(midiNotesOffCmds)
+func addMidiAnyNoteOffCmd( cmd, minVal, maxVal ):
+	midiAnyNoteOffCmds[cmd] = [minVal, maxVal]
+	print(midiAnyNoteOffCmds)
 	
 func addMidiNoteOnCmd( num, cmd, minVal, maxVal ):
 	midiNoteOnCmds[num][cmd] = [minVal, maxVal]
@@ -68,13 +68,13 @@ func addMidiVelocityCmd( cmd, minVal, maxVal ):
 		addMidiNoteOnCmd(i, cmd, minVal, maxVal)
 #	print(midiNoteOnCmds)
 
-func removeMidiNotesOnCmd( cmd ):
-	midiNotesOnCmds.erase(cmd)
-	print(midiNotesOnCmds)
+func removeMidiAnyNoteOnCmd( cmd ):
+	midiAnyNoteOnCmds.erase(cmd)
+	print(midiAnyNoteOnCmds)
 
-func removeMidiNotesOffCmd( cmd ):
-	midiNotesOffCmds.erase(cmd)
-	print(midiNotesOffCmds)
+func removeMidiAnyNoteOffCmd( cmd ):
+	midiAnyNoteOffCmds.erase(cmd)
+	print(midiAnyNoteOffCmds)
 	
 func removeMidiNoteOnCmd( num, cmd ):
 	midiNoteOnCmds[num].erase(cmd)
@@ -105,13 +105,13 @@ func _on_AudioInputPlayer_sound_changed(band, amp):
 func _on_Midi_note_on_received(num, velocity, ch):
 	if ch != midiChannel:
 		return
-	eventToOsc(midiNotesOnCmds, num, 0, 127)
+	eventToOsc(midiAnyNoteOnCmds, num, 0, 127)
 	eventToOsc(midiNoteOnCmds[num], velocity, 0, 127)
 
 func _on_Midi_note_off_received(num, velocity, ch):
 	if ch != midiChannel:
 		return
-	eventToOsc(midiNotesOffCmds, num, 0, 127)
+	eventToOsc(midiAnyNoteOffCmds, num, 0, 127)
 	eventToOsc(midiNoteOffCmds[num], velocity, 0, 127)
 	
 func _on_Midi_cc_received(num, val, ch):
@@ -125,8 +125,8 @@ func _ready():
 	# VU_COUNT is declared in AudioInputPlayer.gd
 	for i in range(main.get_node("AudioInputPlayer").VU_COUNT):
 		soundCmds.append({})
-	midiNotesOnCmds = {}
-	midiNotesOffCmds = {}
+	midiAnyNoteOnCmds = {}
+	midiAnyNoteOffCmds = {}
 	for i in range(128):
 		midiNoteOnCmds.append({})
 		midiNoteOffCmds.append({})

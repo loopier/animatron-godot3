@@ -853,11 +853,11 @@ func midiActor(inArgs, sender):
 			if midimsg == "noteon" and typeof(num) == TYPE_INT:
 				actor.addMidiNoteOnCmd(num, cmd, rangemin, rangemax)
 			elif midimsg == "noteon" and num == "*":
-				actor.addMidiNotesOnCmd(cmd, rangemin, rangemax)
+				actor.addMidiAnyNoteOnCmd(cmd, rangemin, rangemax)
 			elif midimsg == "noteoff" and typeof(num) == TYPE_INT:
 				actor.addMidiNoteOffCmd(num, cmd, rangemin, rangemax)
 			elif midimsg == "noteoff" and num == "*":
-				actor.addMidiNotesOffCmd(cmd, rangemin, rangemax)
+				actor.addMidiAnyNoteOffCmd(cmd, rangemin, rangemax)
 			elif midimsg == "cc":
 #				midiNode.connect("cc_received", actor, "_on_Midi_cc_received")
 				actor.addMidiCcCmd(num, cmd, rangemin, rangemax)
@@ -890,11 +890,11 @@ func midiFreeActor(inArgs, sender):
 			if midimsg == "noteon" and typeof(num) == TYPE_INT:
 				actor.removeMidiNoteOnCmd(num, cmd)
 			elif midimsg == "noteon" and num == "*":
-				actor.removeMidiNotesOnCmd(cmd)
+				actor.removeMidiAnyNoteOnCmd(cmd)
 			elif midimsg == "noteoff" and typeof(num) == TYPE_INT:
 				actor.removeMidiNoteOffCmd(num, cmd)
 			elif midimsg == "noteoff" and num == "*":
-				actor.removeMidiNotesOffCmd(cmd)
+				actor.removeMidiAnyNoteOffCmd(cmd)
 			elif midimsg == "cc":
 				actor.removeMidiCcCmd(num, cmd)
 			elif midimsg == "velocity":
