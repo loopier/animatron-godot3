@@ -522,7 +522,8 @@ func listCommands(args, sender):
 #   It may be "!" (selection), an actor instance name or a wildcard string.
 ############################################################
 func freeActor(inArgs, sender):
-	soundFreeActor(inArgs, sender)
+#	soundFreeActor(inArgs, sender)
+#	midiFreeActor(inArgs, sender)
 	
 	var args = getActorsAndArgs(inArgs, "freeActor", 0, sender)
 	if args: for node in args.actors:
@@ -902,3 +903,17 @@ func midiFreeActor(inArgs, sender):
 			elif midimsg == "velocity":
 				midiNode.removeMidiVelocityCmd(cmd, actor)
 
+func onFrameActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "onFrameActor", 4, sender)
+	if aa:
+		for actor in aa.actors:
+			var frame = inArgs[1]
+			var cmd = aa.args.slice(1, -1)
+#			print("actor:%s frame:%d cmd:%s" % [actor, frame, cmd])
+			actor.addCmdToSequence(frame, cmd)
+
+func onFrameFreeActor(inArgs, sender):
+	reportError("TODO onFrameFreeActor", sender)
+
+func getSequenceActor(inArgs, sender):
+	reportError("TODO getSequenceActor", sender)
