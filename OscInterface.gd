@@ -854,27 +854,19 @@ func midiActor(inArgs, sender):
 		for actor in aa.actors:
 			var rangemin = aa.args[0]
 			var rangemax = aa.args[1]
-			midiNode.connect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
 			print("MIDI msg:%s - singal:%s - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, num, cmd, rangemin, rangemax])
 			if midimsg == "noteon" and typeof(num) == TYPE_INT:
-				actor.addMidiNoteOnCmd(num, cmd, rangemin, rangemax)
+				midiNode.addMidiNoteOnCmd(num, cmd, actor, rangemin, rangemax)
 			elif midimsg == "noteon" and num == "*":
-				actor.addMidiAnyNoteOnCmd(cmd, rangemin, rangemax)
+				midiNode.addMidiAnyNoteOnCmd(cmd, actor, rangemin, rangemax)
 			elif midimsg == "noteoff" and typeof(num) == TYPE_INT:
-				actor.addMidiNoteOffCmd(num, cmd, rangemin, rangemax)
+				midiNode.addMidiNoteOffCmd(num, cmd, actor, rangemin, rangemax)
 			elif midimsg == "noteoff" and num == "*":
-				actor.addMidiAnyNoteOffCmd(cmd, rangemin, rangemax)
+				midiNode.addMidiAnyNoteOffCmd(cmd, actor, rangemin, rangemax)
 			elif midimsg == "cc":
-#				midiNode.connect("cc_received", actor, "_on_Midi_cc_received")
-				actor.addMidiCcCmd(num, cmd, rangemin, rangemax)
+				midiNode.addMidiCcCmd(num, cmd, actor, rangemin, rangemax)
 			elif midimsg == "velocity":
-				actor.addMidiVelocityCmd(cmd, rangemin, rangemax)
-
-func midiChannelActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "midiChannelActor", 1, sender)
-	if aa:
-		for actor in aa.actors:
-			actor.setMidiChannel(aa.args[0])
+				midiNode.addMidiVelocityCmd(cmd, actor, rangemin, rangemax)
 
 func midiFreeActor(inArgs, sender):
 	if len(inArgs) != 4:
@@ -898,15 +890,15 @@ func midiFreeActor(inArgs, sender):
 			print("_on_Midi_%s" % signalmsg)
 #			midiNode.disconnect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
 			if midimsg == "noteon" and typeof(num) == TYPE_INT:
-				actor.removeMidiNoteOnCmd(num, cmd)
+				midiNode.removeMidiNoteOnCmd(num, cmd, actor)
 			elif midimsg == "noteon" and num == "*":
-				actor.removeMidiAnyNoteOnCmd(cmd)
+				midiNode.removeMidiAnyNoteOnCmd(cmd, actor)
 			elif midimsg == "noteoff" and typeof(num) == TYPE_INT:
-				actor.removeMidiNoteOffCmd(num, cmd)
+				midiNode.removeMidiNoteOffCmd(num, cmd, actor)
 			elif midimsg == "noteoff" and num == "*":
-				actor.removeMidiAnyNoteOffCmd(cmd)
+				midiNode.removeMidiAnyNoteOffCmd(cmd, actor)
 			elif midimsg == "cc":
-				actor.removeMidiCcCmd(num, cmd)
+				midiNode.removeMidiCcCmd(num, cmd, actor)
 			elif midimsg == "velocity":
-				actor.removeMidiVelocityCmd(cmd)
+				midiNode.removeMidiVelocityCmd(cmd, actor)
 
