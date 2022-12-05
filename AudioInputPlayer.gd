@@ -14,6 +14,8 @@ var spectrum
 var band
 var amp
 
+var cmds : Array
+
 func update():
 	#warning-ignore:integer_division
 #	print("---")
@@ -30,15 +32,58 @@ func update():
 #			print(i, ":", amp)
 			
 
-
 func _process(_delta):
 	update()
 
 func _on_AudioInputPlayer_sound_changed(band, amp):
-#	print(band, ":", amp)
-	pass
+	if not get_parent():
+		return
+	var main = get_parent()
+	for cmd in cmds:
+		for key in cmd.keys():
+			# need for a check to avoid crash on removing cmds from band dictionaries
+			if not cmd[key].has("addr"): return
+			var addr = cmd[key]["addr"]
+			var actor = cmd[key]["actor"].name
+			var rangemin = cmd[key]["range"][0]
+			var rangemax = cmd[key]["range"][1]
+			var value = Helper.linlin(amp, 0.0, 1.0, rangemin, rangemax)
+			main.evalOscCommand(addr, [actor, value], null)
 
 func _ready():
-#	connect("sound_changed", self, "_on_AudioInputPlayer_sound_changed")
 	spectrum = AudioServer.get_bus_effect_instance(0,0)
+	for i in range(VU_COUNT):
+		cmds.append({})
+	connect("sound_changed", self, "_on_AudioInputPlayer_sound_changed")
 
+func addSoundCmd( band, cmd, actor, minVal, maxVal ):
+	var key = getKey(cmd, actor)
+	cmds[min(band, len(cmds)-1)][key] = {"addr": cmd, "actor": actor, "range": [minVal, maxVal]}
+	print(cmds)
+
+# removes all commands for BAND
+func removeAllSoundCmds( band ):
+	cmds[min(band, len(cmds)-1)] = {}
+	print(cmds)
+
+# removes only the CMD for ACTOR in BAND
+func removeSoundCmd( band, cmd, actor ):
+	var key = getKey(cmd, actor)
+	cmds[min(band, len(cmds)-1)].erase(key)
+	print(cmds)
+
+func getKey(cmd, actor):
+	return "%s/%s" % [cmd, actor.name]
+
+func eventToOsc(cmdsList, value, inmin, inmax):
+	if not get_parent():
+		return
+	var main = get_parent()
+	for addr in cmdsList.keys():
+		if not addr.begins_with("/"):
+			addr = "/" + addr
+		var minval = cmdsList[addr][0]
+		var maxval = cmdsList[addr][1]
+		value  = $Helper.linlin(value, inmin, inmax, minval, maxval)
+		print("sending msg from MIDI: %s %f" % [addr, value])
+		main.evalOscCommand(addr, [name, value], null)

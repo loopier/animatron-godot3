@@ -806,27 +806,31 @@ func soundActor(inArgs, sender):
 	var rangemin = 0.0
 	var rangemax = 1.0
 	if len(inArgs) == 3:
-		aa = getActorsAndArgs(inArgs, "soundActor", 2, sender)
+		aa = getActorsAndArgs(inArgs.slice(2, -1), "soundActor", 0, sender)
 	else:
-		aa = getActorsAndArgs(inArgs, "soundActor", 4, sender)
+		aa = getActorsAndArgs(inArgs.slice(2, -1), "soundActor", 2, sender)
+		rangemin = aa.args[0]
+		rangemax = aa.args[1]
+	var band = inArgs[0]
+	var cmd = inArgs[1]
 	
 	if aa:
 		for actor in aa.actors:
-			audioInputNode.connect("sound_changed", actor, "_on_AudioInputPlayer_sound_changed")
-			var band = aa.args[0]
-			var cmd = aa.args[1]
-			if len(aa.args) == 4:
-				rangemin = aa.args[2]
-				rangemax = aa.args[3]
-			actor.addSoundCmd(band, cmd, rangemin, rangemax)
+			audioInputNode.addSoundCmd(band, cmd, actor, rangemin, rangemax)
 
 func soundFreeActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "soundFreeActor", 1, sender)
+	if len(inArgs) != 1 and len(inArgs) != 3:
+		reportError("SoundFreeActor: unexpected number of arguments: " + String(inArgs.size()) + " instead of 1 or 3", sender)
+		return
+	
+	var band = inArgs[0]
+	var aa = getActorsAndArgs(inArgs.slice(2,-1), "soundFreeActor", 0, sender)
 	if aa:
 		for actor in aa.actors:
-			audioInputNode.disconnect("sound_changed", actor, "_on_AudioInputPlayer_sound_changed")
-			var band = aa.args[0]
-			actor.removeSoundCmd(band)
+			var cmd = inArgs[1]
+			audioInputNode.removeSoundCmd(band, cmd, actor)
+	else:
+		audioInputNode.removeAllSoundCmds(band)
 
 # see MetaNode.gd for information on differences between MIDI messages
 func midiActor(inArgs, sender):

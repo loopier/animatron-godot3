@@ -65,4 +65,6 @@ static func getVector2(arg) -> Vector2:
 	else:
 		value = Vector2(float(arg), float(arg))
 	return value
-
+	
+static func linlin(val, inmin, inmax, outmin, outmax):
+	return (float(val - inmin) / float(inmax - inmin)) * float(outmax - outmin) + outmin
