@@ -195,7 +195,6 @@ static func sendMessage(target, oscAddress, oscArgs):
 	oscsnd.send()
 	oscsnd.stop()
 
-
 static func reportError(errString, target):
 	push_error(errString)
 	if target:
@@ -913,7 +912,13 @@ func onFrameActor(inArgs, sender):
 			actor.addCmdToSequence(frame, cmd)
 
 func onFrameFreeActor(inArgs, sender):
-	reportError("TODO onFrameFreeActor", sender)
+	var aa = getActorsAndArgs(inArgs, "onFrameFreeActor", 3, sender)
+	if aa:
+		for actor in aa.actors:
+			var frame = inArgs[1]
+			var cmd = aa.args.slice(1, -1)
+#			print("actor:%s frame:%d cmd:%s" % [actor, frame, cmd])
+			actor.removeCmdFromSequence(frame, cmd)
 
 func getSequenceActor(inArgs, sender):
 	reportError("TODO getSequenceActor", sender)
