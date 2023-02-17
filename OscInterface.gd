@@ -834,7 +834,43 @@ func soundFreeActor(inArgs, sender):
 
 # see MetaNode.gd for information on differences between MIDI messages
 func midiActor(inArgs, sender):
-	if len(inArgs) != 6:
+	if len(inArgs) != 7:
+		reportError("midiActor expects 7 arguments", sender)
+		return
+	var signalmap = {
+		"noteon": "note_on_received",
+		"noteoff": "note_off_received",
+		"cc": "cc_received",
+		"velocity": "note_on_received",
+	}
+	var midimsg = inArgs[0]
+	var ch = inArgs[1]
+	var num = inArgs[2]
+	var cmd = inArgs[3]
+	var signalmsg = signalmap[midimsg]
+	var aa = getActorsAndArgs(inArgs.slice(4,-1), "midiActor", 2, sender)
+#	print("MIDI msg:%s - singal:%s - num:%s - cmd:%s" % [midimsg, signalmsg, num, cmd])
+	
+	if aa:
+		for actor in aa.actors:
+			var rangemin = int(aa.args[0])
+			var rangemax = int(aa.args[1])
+			print("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
+			if midimsg == "noteon" and typeof(num) == TYPE_INT:
+				midiNode.addMidiNoteOnCmd(ch, num, cmd, actor, rangemin, rangemax)
+			elif midimsg == "noteon" and num == "*":
+				midiNode.addMidiAnyNoteOnCmd(ch, cmd, actor, rangemin, rangemax)
+			elif midimsg == "noteoff" and typeof(num) == TYPE_INT:
+				midiNode.addMidiNoteOffCmd(ch, num, cmd, actor, rangemin, rangemax)
+			elif midimsg == "noteoff" and num == "*":
+				midiNode.addMidiAnyNoteOffCmd(ch, cmd, actor, rangemin, rangemax)
+			elif midimsg == "cc":
+				midiNode.addMidiCcCmd(ch, num, cmd, actor, rangemin, rangemax)
+			elif midimsg == "velocity":
+				midiNode.addMidiVelocityCmd(ch, cmd, actor, rangemin, rangemax)
+
+func midiFreeActor(inArgs, sender):
+	if len(inArgs) != 5:
 		reportError("midiActor expects 6 arguments", sender)
 		return
 	var signalmap = {
@@ -844,45 +880,11 @@ func midiActor(inArgs, sender):
 		"velocity": "note_on_received",
 	}
 	var midimsg = inArgs[0]
-	var num = inArgs[1]
-	var cmd = inArgs[2]
+	var ch = inArgs[1]
+	var num = inArgs[2]
+	var cmd = inArgs[3]
 	var signalmsg = signalmap[midimsg]
-	var aa = getActorsAndArgs(inArgs.slice(3,-1), "midiActor", 2, sender)
-#	print("MIDI msg:%s - singal:%s - num:%s - cmd:%s" % [midimsg, signalmsg, num, cmd])
-	
-	if aa:
-		for actor in aa.actors:
-			var rangemin = aa.args[0]
-			var rangemax = aa.args[1]
-			print("MIDI msg:%s - singal:%s - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, num, cmd, rangemin, rangemax])
-			if midimsg == "noteon" and typeof(num) == TYPE_INT:
-				midiNode.addMidiNoteOnCmd(num, cmd, actor, rangemin, rangemax)
-			elif midimsg == "noteon" and num == "*":
-				midiNode.addMidiAnyNoteOnCmd(cmd, actor, rangemin, rangemax)
-			elif midimsg == "noteoff" and typeof(num) == TYPE_INT:
-				midiNode.addMidiNoteOffCmd(num, cmd, actor, rangemin, rangemax)
-			elif midimsg == "noteoff" and num == "*":
-				midiNode.addMidiAnyNoteOffCmd(cmd, actor, rangemin, rangemax)
-			elif midimsg == "cc":
-				midiNode.addMidiCcCmd(num, cmd, actor, rangemin, rangemax)
-			elif midimsg == "velocity":
-				midiNode.addMidiVelocityCmd(cmd, actor, rangemin, rangemax)
-
-func midiFreeActor(inArgs, sender):
-	if len(inArgs) != 4:
-		reportError("midiActor expects 4 arguments", sender)
-		return
-	var signalmap = {
-		"noteon": "note_on_received",
-		"noteoff": "note_off_received",
-		"cc": "cc_received",
-		"velocity": "note_on_received",
-	}
-	var midimsg = inArgs[0]
-	var num = inArgs[1]
-	var cmd = inArgs[2]
-	var signalmsg = signalmap[midimsg]
-	var aa = getActorsAndArgs(inArgs.slice(3,-1), "midiActor", 0, sender)
+	var aa = getActorsAndArgs(inArgs.slice(4,-1), "midiActor", 0, sender)
 #	print("MIDI msg:%s - singal:%s - num:%s - cmd:%s" % [midimsg, signalmsg, num, cmd])
 	
 	if aa:
@@ -890,17 +892,24 @@ func midiFreeActor(inArgs, sender):
 			print("_on_Midi_%s" % signalmsg)
 #			midiNode.disconnect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
 			if midimsg == "noteon" and typeof(num) == TYPE_INT:
-				midiNode.removeMidiNoteOnCmd(num, cmd, actor)
+				midiNode.removeMidiNoteOnCmd(ch, num, cmd, actor)
 			elif midimsg == "noteon" and num == "*":
-				midiNode.removeMidiAnyNoteOnCmd(cmd, actor)
+				midiNode.removeMidiAnyNoteOnCmd(ch, cmd, actor)
 			elif midimsg == "noteoff" and typeof(num) == TYPE_INT:
-				midiNode.removeMidiNoteOffCmd(num, cmd, actor)
+				midiNode.removeMidiNoteOffCmd(ch, num, cmd, actor)
 			elif midimsg == "noteoff" and num == "*":
-				midiNode.removeMidiAnyNoteOffCmd(cmd, actor)
+				midiNode.removeMidiAnyNoteOffCmd(ch, cmd, actor)
 			elif midimsg == "cc":
-				midiNode.removeMidiCcCmd(num, cmd, actor)
+				midiNode.removeMidiCcCmd(ch, num, cmd, actor)
 			elif midimsg == "velocity":
-				midiNode.removeMidiVelocityCmd(cmd, actor)
+				midiNode.removeMidiVelocityCmd(ch, cmd, actor)
+
+func listMidiCmds(args, sender):
+	if !args.empty():
+		reportError("listMidiCmds expects no arguments", sender)
+		return
+	midiNode.listCmds()
+	
 
 func onFrameActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "onFrameActor", 4, sender)

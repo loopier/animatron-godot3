@@ -1,7 +1,7 @@
 (
-a = Animatron()
+a = Animatron();
 s.waitForBoot{
-	Pdef(\a, Pbind()).play;
+	Pdef(\a, Pbind(\amp, Pwhite(), \degree, Pwhite(0,7))).play;
 }
 )
 

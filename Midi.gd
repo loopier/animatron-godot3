@@ -58,12 +58,13 @@ func enableDebug(enable):
 func _unhandled_input(event):
 	if(event is InputEventMIDI):
 		var signalMsg = ""
+		var ch = event.get_channel()
 		var num = 0
 		var value = 0
 #		print("MIDI: ", event.as_text())
 #		print("MIDI:", event.message)
 #		print("MSG:", MIDI_MESSAGE_CONTROL_CHANGE)
-		var msg =  "ch:" + str(event.get_channel()) + " note:" + str(event.get_pitch()) + " vel:" + str(event.get_velocity()) + " inst:" + str(event.get_instrument()) + " pres:" + str(event.get_pressure()) + " cc#:" + str(event.get_controller_number()) + " ccv:" + str(event.get_controller_value())
+#		var msg =  "ch:" + str(ch) + " note:" + str(event.get_pitch()) + " vel:" + str(event.get_velocity()) + " inst:" + str(event.get_instrument()) + " pres:" + str(event.get_pressure()) + " cc#:" + str(event.get_controller_number()) + " ccv:" + str(event.get_controller_value())
 #		print(msg)
 		if event.message == MIDI_MESSAGE_NOTE_ON:
 				signalMsg = "note_on_received"
@@ -79,96 +80,92 @@ func _unhandled_input(event):
 				value = event.get_controller_value()
 		
 		if debug:
-			print("MIDI msg: %s - num:%d - val:%d - ch:%d" % [signalMsg, num, value, event.get_channel()])
+			print("MIDI msg: %s - ch: %d - num:%d - val:%d - ch:%d" % [signalMsg, ch, num, value, event.get_channel()])
 #		print("signal: %s %d %d %d" % [signalMsg, num, value, event.get_channel()])
+		if signalMsg == "":
+			return
 		emit_signal(signalMsg, num, value, event.get_channel())
 
 # TODO: 'velocity' is unused 
 func _on_Midi_note_on_received(num, velocity, ch):
-	if ch != midiChannel:
-		return
-	eventToOsc(midiAnyNoteOnCmds, num, 0, 127)
-	eventToOsc(midiNoteOnCmds[num], velocity, 0, 127)
+	eventToOsc(midiAnyNoteOnCmds, ch, num, 0, 127)
+	eventToOsc(midiNoteOnCmds[num], ch, velocity, 0, 127)
 
 func _on_Midi_note_off_received(num, velocity, ch):
-	if ch != midiChannel:
-		return
-	eventToOsc(midiAnyNoteOffCmds, num, 0, 127)
-	eventToOsc(midiNoteOffCmds[num], velocity, 0, 127)
+	eventToOsc(midiAnyNoteOffCmds, ch, num, 0, 127)
+	eventToOsc(midiNoteOffCmds[num], ch, velocity, 0, 127)
 	
 func _on_Midi_cc_received(num, val, ch):
-	if ch != midiChannel:
-		return
-	eventToOsc(midiCcCmds[num], val, 0, 127)
+	eventToOsc(midiCcCmds[num], ch, val, 0, 127)
 
 
 func setMidiChannel( ch ):
 	midiChannel = ch
 	print("'%s' listening to MIDI channel: %d" % [name, midiChannel])
 
-func addMidiAnyNoteOnCmd( cmd, actor, minVal, maxVal ):
-	var key = getKey(cmd, actor)
+func addMidiAnyNoteOnCmd( ch, cmd, actor, minVal, maxVal ):
+	var key = getKey(ch, cmd, actor)
 	midiAnyNoteOnCmds[key] = {"addr":cmd, "actor":actor, "value":[minVal, maxVal]}
 	print(midiAnyNoteOnCmds)
 
-func addMidiAnyNoteOffCmd( cmd, actor, minVal, maxVal ):
-	var key = getKey(cmd, actor)
+func addMidiAnyNoteOffCmd( ch, cmd, actor, minVal, maxVal ):
+	var key = getKey(ch, cmd, actor)
 	midiAnyNoteOffCmds[key] = {"addr":cmd, "actor":actor, "value":[minVal, maxVal]}
 	print(midiAnyNoteOffCmds)
 
-func addMidiNoteOnCmd( num, cmd, actor, minVal, maxVal ):
-	var key = getKey(cmd, actor)
+func addMidiNoteOnCmd( ch, num, cmd, actor, minVal, maxVal ):
+	var key = getKey(ch, cmd, actor)
 	midiNoteOnCmds[num][key] = {"addr":cmd, "actor":actor, "value":[minVal, maxVal]}
 	print(midiNoteOnCmds)
 
-func addMidiNoteOffCmd( num, cmd, actor, minVal, maxVal ):
-	var key = getKey(cmd, actor)
+func addMidiNoteOffCmd( ch, num, cmd, actor, minVal, maxVal ):
+	var key = getKey(ch, cmd, actor)
 	midiNoteOffCmds[num][key] = {"addr":cmd, "actor":actor, "value":[minVal, maxVal]}
 	print(midiNoteOffCmds)
 
-func addMidiCcCmd( cc, cmd, actor, minVal, maxVal ):
-	var key = getKey(cmd, actor)
+func addMidiCcCmd( ch, cc, cmd, actor, minVal, maxVal ):
+	var key = getKey(ch, cmd, actor)
 	midiCcCmds[cc][key] = {"addr":cmd, "actor":actor, "value":[minVal, maxVal]}
 #	print("cc:%d cmd:%s min:%f max:%f" % [cc, cmd, actor, minVal, maxVal])
 	print(midiCcCmds)
 
-func addMidiVelocityCmd( cmd, actor, minVal, maxVal ):
+func addMidiVelocityCmd( ch, cmd, actor, minVal, maxVal ):
 	for i in range(128):
-		addMidiNoteOnCmd(i, cmd, actor, minVal, maxVal)
+		addMidiNoteOnCmd(ch, i, cmd, actor, minVal, maxVal)
 #	print(midiNoteOnCmds)
 
-func removeMidiAnyNoteOnCmd( cmd, actor ):
-	var key = getKey(cmd, actor)
+func removeMidiAnyNoteOnCmd( ch, cmd, actor ):
+	var key = getKey(ch, cmd, actor)
 	midiAnyNoteOnCmds.erase(key)
 	print(midiAnyNoteOnCmds)
 
-func removeMidiAnyNoteOffCmd( cmd, actor ):
-	var key = getKey(cmd, actor)
+func removeMidiAnyNoteOffCmd( ch, cmd, actor ):
+	var key = getKey(ch, cmd, actor)
 	midiAnyNoteOffCmds.erase(key)
 	print(midiAnyNoteOffCmds)
 	
-func removeMidiNoteOnCmd( num, cmd, actor ):
-	var key = getKey(cmd, actor)
+func removeMidiNoteOnCmd( ch, num, cmd, actor ):
+	var key = getKey(ch, cmd, actor)
 	midiNoteOnCmds[num].erase(key)
 	print(midiNoteOnCmds)
 
-func removeMidiNoteOffCmd( num, cmd, actor ):
-	var key = getKey(cmd, actor)
+func removeMidiNoteOffCmd( ch, num, cmd, actor ):
+	var key = getKey(ch, cmd, actor)
 	midiNoteOffCmds[num].erase(key)
 	print(midiNoteOffCmds)
 
-func removeMidiCcCmd( num, cmd, actor ):
-	var key = getKey(cmd, actor)
+func removeMidiCcCmd( ch, num, cmd, actor ):
+	var key = getKey(ch, cmd, actor)
 	midiCcCmds[num].erase(key)
 	print(midiCcCmds)
 
-func removeMidiVelocityCmd( cmd, actor ):
+func removeMidiVelocityCmd( ch, cmd, actor ):
 	for i in range(128):
-		removeMidiNoteOnCmd(i, cmd, actor)
+		removeMidiNoteOnCmd( ch, i, cmd, actor)
 	print(midiNoteOnCmds)
 
 
-func eventToOsc(cmdsList, value, inmin, inmax):
+func eventToOsc(cmdsList, ch, value, inmin, inmax):
 	if not get_parent():
 		return
 	var main = get_parent()
@@ -183,5 +180,14 @@ func eventToOsc(cmdsList, value, inmin, inmax):
 #		print("sending msg from MIDI: %s %s %f" % [addr, actor, value])
 		main.evalOscCommand(addr, [actor, value], null)
 
-func getKey(cmd, actor):
-	return "%s/%s" % [cmd, actor.name]
+func getKey(ch, cmd, actor):
+	# 'cmd' comes with its own leading '/'
+	# it should output: 'chN/cmdstring/actorname'
+	return "ch%d%s/%s" % [ch, cmd, actor.name]
+
+func listCmds():
+	print("any note on:\n", midiAnyNoteOnCmds)
+	print("any note off:\n", midiAnyNoteOffCmds)
+	print("note on:\n", midiNoteOnCmds)
+	print("note of:\n", midiNoteOffCmds)
+	print("cc:\n", midiCcCmds)
