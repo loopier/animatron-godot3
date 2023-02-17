@@ -54,8 +54,8 @@ Address | Args <img width=675px/> | Description
 `/front` <br/> `/front!` | `actor:s ref:s` <br/> `ref:s` | Change the draw order for an actor to be in front of a reference actor. To move to the foreground, use `/front actor *`.
 `/sound` <br/> `/sound!` | `band:i command:s actor:s [min:f max:f]` <br/> `band:i command:s [min:f max:f]` | Map the amplitude of the sound input at the frequency `band` to any `command` within the range `min` and `max` (if ommited they default to `[0.0..1.0]`)
 `/sound/free` <br/> `/sound!` | `band:i [command:s actor:s]` <br/> `band:i [command:s actor:s]` | Unmap sound for the given `band`. If `command` and `actor` are specified, remove only that `command` for the actor.
-`/midi` <br/><br/> `/midi!` | `midimsg:s midinum:i command:s actor:s min:f max:f` <br/><br/> `midimsg:i midinum:i command:s min:f max:f` | Map the `midimsg` (`noteon`, `noteoff`, `cc`, `velocity`) to a `command` within a range between `min` and `max`. For `noteon/noteoff` events, a `*` wildcard can be passed as `midinum` to use the note number as value (ignoring the velocity). The `velocity` midimsg maps the velocity of all notes to `command`, passing it as an argument (ignoring the note number).
-`/midi/free` <br/><br/> `/midi/free!` | `midimsg:s midinum:i actor:s` <br/><br/> `midimsg:i midinum:i` | Unmap MIDI `midimsg` for `midinum`.
+`/midi` <br/><br/> `/midi!` | `midimsg:s midich:i midinum:i command:s actor:s min:f max:f` <br/><br/> `midimsg:i midich:i midinum:i command:s min:f max:f` | Map the `midimsg` (`noteon`, `noteoff`, `cc`, `velocity`) to a `command` within a range between `min` and `max`. For `noteon/noteoff` events, a `*` wildcard can be passed as `midinum` to use the note number as value (ignoring the velocity). The `velocity` midimsg maps the velocity of all notes to `command`, passing it as an argument (ignoring the note number).
+`/midi/free` <br/><br/> `/midi/free!` | `midimsg:s midich:i midinum:i actor:s` <br/><br/> `midimsg:i midich:i midinum:i` | Unmap MIDI `midimsg` for `midinum`.
 `/onframe`| `actor:s frame:i subCommand`| Add `subCommand` to be triggered on `frame`. The `subCommand` can be any valid command. <br><br> For example, to create an animation sequence, the animation asset can be changed on the desired `frame`: <br><br> `/create actorA animA`<br>`/onframe actorA 8 /create actorA animB`.
 `/onframe/free` | `actor:s frame:i subCommand`| Remove `subCommand` trigger from `frame`.
 
@@ -71,6 +71,7 @@ Address | Args <img width="1000px"/> | Description
 `/list` <br/> `/list/actors` | | Get list of current actor instances. Returned in the form of a `/list/actors/reply` OSC message.
 `/list/anims` | | Get list of available (loaded) animations. Returned in the form of a `/list/anims/reply` OSC message.
 `/list/assets` | | Get list of available (unloaded) assets on disk. Returned in the form of a `/list/assets/reply` OSC message.
+`/midi/list` | | Get list of commands mapped to MIDI events.
 `/group` | `group:s [actor:s]` | Add the actor to a named group. If run without `actor` it will return the list of actors in the group. Note that `/group "myGroup" "!"` may be used to add the current selection to a group. Use the group name as an actor name in all commands to apply it to all it's members.
 `/ungroup` | `group:s actor:s` | Remove the actor from a named group.
 `/select` | `[actor:s]` | Add the actor to the selected set. If run without `actor` it will return the list of selected actors.
