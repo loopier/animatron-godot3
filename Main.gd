@@ -61,7 +61,7 @@ onready var otherCmds = {
 	"/load/defs": funcref($OscInterface, "loadDefsFile"),
 	"/debug": funcref($OscInterface, "enableStatusMessages"),
 	"/midi/debug": funcref($OscInterface, "midiEnableStatusMessages"),
-	"/midi/list": funcref($OscInterface, "listMidiCmds"),
+	"/list/midi": funcref($OscInterface, "listMidiCmds"),
 	# "/wait" command is handled specially 
 
 	# write

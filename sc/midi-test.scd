@@ -27,7 +27,7 @@ a.sendMsg("/midi/free", "noteon", 0, 61, "/frame", "n2");
 
 // test MIDI cmds
 a.sendMsg("/midi", "noteon", 0, 60, "/frame", "n", 0, 10);
-a.sendMsg("/midi/list");
+a.sendMsg("/list/midi");
 m.noteOn(0, 60,0);
 a.sendMsg("/midi/free", "noteon", 0, 60, "/frame", "n");
 
