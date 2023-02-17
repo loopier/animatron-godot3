@@ -8,14 +8,37 @@ a.sendMsg("/free", "*");
 // ------------------------------------------------------------
 // basic
 // ------------------------------------------------------------
+(
 a.sendMsg("/load", "numbers");
 a.sendMsg("/create", "n", "numbers");
+a.sendMsg("/create", "n2", "numbers");
 a.sendMsg("/speed", "n", 1/12);
-a.sendMsg("/midi", "noteon", 0, "*", "/frame", "n", 0, 10);
-m.noteOn(0, 0,60);
+a.sendMsg("/speed", "n2", 1/12);
+a.sendMsg("/scale", "n2", 1/2);
+a.sendMsg("/position/x", "n2", 1/4);
+)
+// add/remove MIDI cmds
+a.sendMsg("/midi", "noteon", 0, 60, "/frame", "n", 0, 10);
+a.sendMsg("/midi", "noteon", 0, 60, "/frame", "n2", 0, 10);
+a.sendMsg("/midi/free", "noteon", 0, 60, "/frame", "n");
+a.sendMsg("/midi/free", "noteon", 0, 60, "/frame", "n2");
+a.sendMsg("/midi/free", "noteon", 0, 60, "/frame", "x2");
+a.sendMsg("/midi/free", "noteon", 0, 61, "/frame", "n2");
+
+// test MIDI cmds
+a.sendMsg("/midi", "noteon", 0, 60, "/frame", "n", 0, 10);
 a.sendMsg("/midi/list");
-a.sendMsg("/midi/free", "noteon", 0, "*", "/frame", "n");
-m.noteOn(0, 0,60);
+m.noteOn(0, 60,0);
+a.sendMsg("/midi/free", "noteon", 0, 60, "/frame", "n");
+
+// test 2 different MIDI channels
+a.sendMsg("/midi", "noteon", 0, 60, "/frame", "n", 0, 10);
+a.sendMsg("/midi", "noteon", 1, 60, "/scale", "n", 0.1, 2.0);
+a.sendMsg("/midi/list");
+m.noteOn(0, 60, 127);m.allNotesOff(0);
+m.noteOn(1, 60, 127.rand);m.allNotesOff(1);
+a.sendMsg("/midi/free", "noteon", 0, 60, "/frame", "n");
+a.sendMsg("/midi/free", "noteon", 1, 60, "/scale", "n");
 
 // ------------------------------------------------------------
 // matrix
@@ -35,12 +58,14 @@ a.sendMsg("/midi", "noteon", 0, "*", "/frame", "n0", 0.0, 10.0);
 (
 Tdef(\midi, {
 	inf.do{ |i|
-		var ch = 16.rand;
-		// var ch = 0;
-		var note = 127.rand;
-		var vel = 127.rand;
+		// var ch = 16.rand;
+		var ch = 0;
+		// var note = 127.rand;
+		// var vel = 127.rand;
+		var note = 60;
+		var vel = 10;
 		m.noteOn(ch, note, vel);
-		0.5.wait;
+		0.1.wait;
 		m.noteOff(ch, note, vel);
 		1.wait;
 	};

@@ -856,6 +856,9 @@ func midiActor(inArgs, sender):
 			var rangemin = int(aa.args[0])
 			var rangemax = int(aa.args[1])
 			print("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
+			midiNode.addMidiCmd(midimsg, ch, num, cmd, actor, rangemin, rangemax)
+			return
+			
 			if midimsg == "noteon" and typeof(num) == TYPE_INT:
 				midiNode.addMidiNoteOnCmd(ch, num, cmd, actor, rangemin, rangemax)
 			elif midimsg == "noteon" and num == "*":
@@ -891,6 +894,9 @@ func midiFreeActor(inArgs, sender):
 		for actor in aa.actors:
 			print("_on_Midi_%s" % signalmsg)
 #			midiNode.disconnect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
+			midiNode.removeMidiCmd(midimsg, ch, num, cmd, actor)
+			return
+			
 			if midimsg == "noteon" and typeof(num) == TYPE_INT:
 				midiNode.removeMidiNoteOnCmd(ch, num, cmd, actor)
 			elif midimsg == "noteon" and num == "*":
