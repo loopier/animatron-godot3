@@ -923,12 +923,7 @@ func onFrameActor(inArgs, sender):
 		for actor in aa.actors:
 			var frame = inArgs[1]
 			var cmd = aa.args.slice(1, -1)
-#			print("actor:%s frame:%d cmd:%s" % [actor, frame, cmd])
 			actor.addCmdToSequence(frame, cmd)
-
-func onFinishActor(inArgs, sender):
-	inArgs.insert(1,-1)
-	onFrameActor(inArgs, sender)
 
 func onFrameFreeActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "onFrameFreeActor", 3, sender)
@@ -936,12 +931,21 @@ func onFrameFreeActor(inArgs, sender):
 		for actor in aa.actors:
 			var frame = inArgs[1]
 			var cmd = aa.args.slice(1, -1)
-#			print("actor:%s frame:%d cmd:%s" % [actor, frame, cmd])
 			actor.removeCmdFromSequence(frame, cmd)
 
+func onFinishActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "onFrameActor", 3, sender)
+	if aa:
+		for actor in aa.actors:
+			var cmd = aa.args.slice(0, -1)
+			actor.addFinishCmd(cmd)
+
 func onFinishFreeActor(inArgs, sender):
-	inArgs.insert(1,-1)
-	onFrameFreeActor(inArgs, sender)
+	var aa = getActorsAndArgs(inArgs, "onFinishFreeActor", 2, sender)
+	if aa:
+		for actor in aa.actors:
+			var cmd = aa.args.slice(0, -1)
+			actor.removeFinishCmd(cmd)
 
 func getSequenceActor(inArgs, sender):
 	reportError("TODO getSequenceActor", sender)

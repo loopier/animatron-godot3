@@ -1,6 +1,7 @@
 extends KinematicBody2D
 
 var sequence : Dictionary
+var finishCmds : Dictionary
 var sequenceIndex = 0
 # frame that triggers the next command in the sequence
 var trigFrame = 0
@@ -20,8 +21,8 @@ func _on_Animation_frame_changed():
 		sendCmds(frame)
 
 func _on_Animation_animation_finished():
-#	print("finished: %s" % [name])
-	pass
+	for cmd in finishCmds:
+		main.evalOscCommand(finishCmds[cmd][0], finishCmds[cmd].slice(1,-1), null)
 
 func resetSequence():
 	sequenceIndex = 0
@@ -30,10 +31,7 @@ func addCmdToSequence( inframe, cmd ):
 	var anim = get_node("Offset/Animation").get_animation()
 #	print("%s:%s %s:%s" % [typeof frame, frame, typeof cmd, cmd])
 #	print("%s:%s %s" % [frame, cmd, anim])
-	if inframe < 0:
-		trigFrame = get_node("Offset/Animation").get_sprite_frames().get_frame_count(anim) - 1
-	else:
-		trigFrame = inframe % get_node("Offset/Animation").get_sprite_frames().get_frame_count(anim)
+	trigFrame = inframe % get_node("Offset/Animation").get_sprite_frames().get_frame_count(anim)
 	
 	var key = getKey(cmd)
 	if sequence.has(trigFrame):
@@ -49,10 +47,7 @@ func removeCmdFromSequence( inframe, cmd ):
 	print("remove cmd for frame %d: %s" % [inframe, cmd])
 	var reply
 	var key = getKey(cmd)
-	var anim = get_node("Offset/Animation").get_animation()
-	if inframe < 0:
-		inframe = get_node("Offset/Animation").get_sprite_frames().get_frame_count(anim) - 1
-	print("inframe: ", inframe)
+	
 	if sequence.has(inframe):
 		sequence[inframe].erase(key)
 		reply = sequence[inframe]
@@ -63,6 +58,20 @@ func removeCmdFromSequence( inframe, cmd ):
 		reply = "Command not found in trigger frame %d: %s" % [inframe, cmd]
 	print(reply)
 	return reply
+
+func addFinishCmd( cmd ):
+	var key = getKey(cmd)
+	finishCmds[key] = cmd
+	print("add onfinish cmd: %s : %s" % [key, cmd])
+	print("on finish: ", finishCmds)
+
+func removeFinishCmd( cmd ):
+	print(cmd)
+	var key = getKey(cmd)
+	if finishCmds.has(key):
+		finishCmds.erase(key)
+	print("remove  cmd: %s : %s" % [key, cmd])
+	print("on finish: ", finishCmds)
 
 func getSequence():
 	return sequence
@@ -80,3 +89,4 @@ func sendCmds( inframe ):
 
 func listSequenceCmds():
 	print("frame commands for %s:\n%s" % [name,sequence])
+	print("finish commands for %s:\n%s" % [name,finishCmds])
