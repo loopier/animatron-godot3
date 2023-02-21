@@ -937,3 +937,8 @@ func onFrameFreeActor(inArgs, sender):
 
 func getSequenceActor(inArgs, sender):
 	reportError("TODO getSequenceActor", sender)
+	var aa = getActorsAndArgs(inArgs, "getSequenceActor", 0, sender)
+	if aa:
+		for actor in aa.actors:
+			actor.listSequenceCmds()
+	

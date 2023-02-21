@@ -68,5 +68,6 @@ func sendCmds( inframe ):
 #		print("sending %s to %s" % [sequence[inframe][cmd], main])
 #		print("cmd:%s args:%s" % [addr, args])
 		main.evalOscCommand(addr, args, null)
-		
-		
+
+func listSequenceCmds():
+	print("frame commands for %s:\n%s" % [name,sequence])

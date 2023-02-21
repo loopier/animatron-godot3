@@ -57,7 +57,7 @@ Address | Args <img width=675px/> | Description
 `/midi` <br/><br/> `/midi!` | `midimsg:s midich:i midinum:i command:s actor:s min:f max:f` <br/><br/> `midimsg:i midich:i midinum:i command:s min:f max:f` | Map the `midimsg` (`noteon`, `noteoff`, `cc`, `velocity`) received in channel `midich` to a `command` within a range between `min` and `max`. For `noteon/noteoff` events, a `*` wildcard can be passed as `midinum` to use the note number as value (ignoring the velocity). The `velocity` midimsg maps the velocity of all notes to `command`, passing it as an argument (ignoring the note number).
 `/midi/free` <br/><br/> `/midi/free!` | `midimsg:s midich:i midinum:i actor:s` <br/><br/> `midimsg:i midich:i midinum:i` | Unmap MIDI `midimsg` for `midinum` in channel `midich`.
 `/onframe`| `actor:s frame:i subCommand`| Add `subCommand` to be triggered on `frame`. The `subCommand` can be any valid command. <br><br> For example, to create an animation sequence, the animation asset can be changed on the desired `frame`: <br><br> `/create actorA animA`<br>`/onframe actorA 8 /create actorA animB`.
-`/onframe/free` | `actor:s frame:i subCommand`| Remove `subCommand` trigger from `frame`.
+`/onframe/free` | `actor:s frame:i subCommand`| Remove `subCommand` trigger from `frame`. The `subCommand` only needs the command address (with leading `/`) and the actor name -- don't add the command parameter value.
 
 ## Other commands
 

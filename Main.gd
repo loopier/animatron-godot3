@@ -39,7 +39,7 @@ onready var actorCmds = {
 	"/midi/free": funcref($OscInterface, "midiFreeActor"),
 	"/onframe": funcref($OscInterface, "onFrameActor"),
 	"/onframe/free": funcref($OscInterface, "onFrameFreeActor"),
-	"/sequence": funcref($OscInterface, "getSequenceActor"),
+	"/list/sequence": funcref($OscInterface, "getSequenceActor"),
 	
 }
 onready var otherCmds = {
