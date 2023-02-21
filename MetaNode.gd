@@ -30,7 +30,10 @@ func addCmdToSequence( inframe, cmd ):
 	var anim = get_node("Offset/Animation").get_animation()
 #	print("%s:%s %s:%s" % [typeof frame, frame, typeof cmd, cmd])
 #	print("%s:%s %s" % [frame, cmd, anim])
-	trigFrame = inframe % get_node("Offset/Animation").get_sprite_frames().get_frame_count(anim)
+	if inframe < 0:
+		trigFrame = get_node("Offset/Animation").get_sprite_frames().get_frame_count(anim) - 1
+	else:
+		trigFrame = inframe % get_node("Offset/Animation").get_sprite_frames().get_frame_count(anim)
 	
 	var key = getKey(cmd)
 	if sequence.has(trigFrame):
@@ -46,6 +49,10 @@ func removeCmdFromSequence( inframe, cmd ):
 	print("remove cmd for frame %d: %s" % [inframe, cmd])
 	var reply
 	var key = getKey(cmd)
+	var anim = get_node("Offset/Animation").get_animation()
+	if inframe < 0:
+		inframe = get_node("Offset/Animation").get_sprite_frames().get_frame_count(anim) - 1
+	print("inframe: ", inframe)
 	if sequence.has(inframe):
 		sequence[inframe].erase(key)
 		reply = sequence[inframe]

@@ -926,6 +926,10 @@ func onFrameActor(inArgs, sender):
 #			print("actor:%s frame:%d cmd:%s" % [actor, frame, cmd])
 			actor.addCmdToSequence(frame, cmd)
 
+func onFinishActor(inArgs, sender):
+	inArgs.insert(1,-1)
+	onFrameActor(inArgs, sender)
+
 func onFrameFreeActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "onFrameFreeActor", 3, sender)
 	if aa:
@@ -934,6 +938,10 @@ func onFrameFreeActor(inArgs, sender):
 			var cmd = aa.args.slice(1, -1)
 #			print("actor:%s frame:%d cmd:%s" % [actor, frame, cmd])
 			actor.removeCmdFromSequence(frame, cmd)
+
+func onFinishFreeActor(inArgs, sender):
+	inArgs.insert(1,-1)
+	onFrameFreeActor(inArgs, sender)
 
 func getSequenceActor(inArgs, sender):
 	reportError("TODO getSequenceActor", sender)
