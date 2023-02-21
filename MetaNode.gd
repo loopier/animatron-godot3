@@ -56,6 +56,8 @@ func removeCmdFromSequence( inframe, cmd ):
 	if sequence.has(inframe):
 		sequence[inframe].erase(key)
 		reply = sequence[inframe]
+		if len(sequence[inframe]) == 0:
+			sequence.erase(inframe)
 	else:
 		# TODO: change to send '/report/error'
 		reply = "Command not found in trigger frame %d: %s" % [inframe, cmd]
