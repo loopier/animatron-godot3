@@ -14,7 +14,10 @@ func _ready():
 	animNode.connect("animation_finished", self, "_on_Animation_animation_finished")
 
 func _on_Animation_frame_changed():
-	main = get_parent().get_parent()
+	main = get_parent()
+	if main == null:
+		return
+	main = main.get_parent()
 	var anim = get_node("Offset/Animation").get_animation()
 	var frame = get_node("Offset/Animation").get_frame()
 	if sequence.has(frame):
@@ -30,8 +33,9 @@ func resetSequence():
 func addCmdToSequence( inframe, cmd ):
 	var anim = get_node("Offset/Animation").get_animation()
 #	print("%s:%s %s:%s" % [typeof frame, frame, typeof cmd, cmd])
-#	print("%s:%s %s" % [frame, cmd, anim])
-	trigFrame = inframe % get_node("Offset/Animation").get_sprite_frames().get_frame_count(anim)
+	var numframes = get_node("Offset/Animation").get_sprite_frames().get_frame_count(anim)
+#	print("%s/%s: %s %s" % [inframe, numframes, cmd, anim])
+	trigFrame = int(inframe) % numframes
 	
 	var key = getKey(cmd)
 	if sequence.has(trigFrame):
@@ -77,7 +81,9 @@ func getSequence():
 	return sequence
 
 func getKey( cmd ):
-	return "%s/%s" % [cmd[0], cmd[1]]
+	if len(cmd) > 1:
+		return "%s/%s" % [cmd[0], cmd[1]]
+	return cmd[0]
 
 func sendCmds( inframe ):
 	for cmd in sequence[inframe]:

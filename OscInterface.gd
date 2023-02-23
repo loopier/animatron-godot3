@@ -934,14 +934,14 @@ func onFrameFreeActor(inArgs, sender):
 			actor.removeCmdFromSequence(frame, cmd)
 
 func onFinishActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "onFrameActor", 3, sender)
+	var aa = getActorsAndArgs(inArgs, "onFrameActor", null, sender)
 	if aa:
 		for actor in aa.actors:
 			var cmd = aa.args.slice(0, -1)
 			actor.addFinishCmd(cmd)
 
 func onFinishFreeActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "onFinishFreeActor", 2, sender)
+	var aa = getActorsAndArgs(inArgs, "onFinishFreeActor", null, sender)
 	if aa:
 		for actor in aa.actors:
 			var cmd = aa.args.slice(0, -1)
