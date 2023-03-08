@@ -52,7 +52,12 @@ func _unhandled_input(event):
 func addMidiCmd( event, ch, num, cmd, actor, minVal, maxVal ):
 	if String(num) == "*":
 		for i in range(128):
-			addMidiCmd(event, ch, i, cmd, actor, minVal, maxVal)
+			# to map any note midievent to a command, we need to
+			# map use note number as velocity value, so we pass
+			# the same value for both min and max
+			var newMinVal = Helper.linlin(i, 0,127, minVal, maxVal)
+			var newMaxVal = newMinVal
+			addMidiCmd(event, ch, i, cmd, actor, newMinVal, newMaxVal)
 		return
 	var key = "%s/ch%s/%s" % [event, ch, num]
 	if not midiCmds.has(key):
@@ -103,6 +108,7 @@ func eventToOsc(cmd, value):
 	print("event to osc: ", cmd, value)
 	if not get_parent():
 		return
+	
 	var main = get_parent()
 	var addr = cmd["addr"]
 	if not addr.begins_with("/"):
@@ -110,9 +116,10 @@ func eventToOsc(cmd, value):
 	var actor = cmd["actor"]
 	var minval = cmd["value"][0]
 	var maxval = cmd["value"][1]
-	value  = Helper.linlin(value, 0, 127, minval, maxval)
+	var scaledValue  = Helper.linlin(value, 0, 127, minval, maxval)
+	print("MIDI PARSE: original:%s scaled:%s" % [value, scaledValue])
 	print("sending msg from MIDI: %s %s %f" % [addr, actor, value])
-	main.evalOscCommand(addr, [actor, value], null)
+	main.evalOscCommand(addr, [actor, scaledValue], null)
 
 func getKey(event, ch, num):
 	return "%s/ch%s/%s" % [event, ch, num]

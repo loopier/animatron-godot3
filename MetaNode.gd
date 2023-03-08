@@ -48,9 +48,10 @@ func addCmdToSequence( inframe, cmd ):
 	return sequence
 
 func removeCmdFromSequence( inframe, cmd ):
-	print("remove cmd for frame %d: %s" % [inframe, cmd])
+	print("remove cmd for frame %s: %s" % [inframe, cmd])
 	var reply
 	var key = getKey(cmd)
+	inframe = int(inframe)
 	
 	if sequence.has(inframe):
 		sequence[inframe].erase(key)

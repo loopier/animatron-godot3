@@ -29,17 +29,21 @@ a.sendMsg("/midi/free", "noteon", 0, 61, "/frame", "n2");
 a.sendMsg("/midi", "noteon", 0, 60, "/frame", "n", 0, 10);
 a.sendMsg("/list/midi");
 m.noteOn(0, 60,0);
+m.noteOff(0,60,0);
 a.sendMsg("/midi/free", "noteon", 0, 60, "/frame", "n");
 
 // test 2 different MIDI channels
 a.sendMsg("/midi", "noteon", 0, 60, "/frame", "n", 0, 10);
 a.sendMsg("/midi", "noteon", 1, 60, "/scale", "n", 0.1, 2.0);
-a.sendMsg("/midi/list");
+a.sendMsg("/list/midi");
 m.noteOn(0, 60, 127);m.allNotesOff(0);
 m.noteOn(1, 60, 127.rand);m.allNotesOff(1);
 a.sendMsg("/midi/free", "noteon", 0, 60, "/frame", "n");
 a.sendMsg("/midi/free", "noteon", 1, 60, "/scale", "n");
 
+a.sendMsg("/midi", "noteon", 0, "*", "/frame", "n", 0, 10);
+a.sendMsg("/midi/free", "noteon", 0, "*", "/frame", "n");
+a.sendMsg("/list/midi");
 // ------------------------------------------------------------
 // matrix
 // ------------------------------------------------------------
@@ -137,3 +141,7 @@ Ziva.boot;
 ].ziva;
 )
 Pdef(\ziva).remove
+
+/midi event ch
+a.sendMsg("/midi", "noteon", x, "/frame", a, min, max);
+noteon/chx/a cmd:[{addr:"/frame", actor:a, value:n.linlin(0,127,min,max)}]

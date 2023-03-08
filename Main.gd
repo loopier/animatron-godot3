@@ -42,8 +42,8 @@ onready var actorCmds = {
 	"/onframe/free": funcref($OscInterface, "onFrameFreeActor"),
 	"/onfinish/free": funcref($OscInterface, "onFinishFreeActor"),
 	"/list/sequence": funcref($OscInterface, "getSequenceActor"),
-	
 }
+
 onready var otherCmds = {
 	"/load": funcref($OscInterface, "loadAsset"),
 	"/create": funcref($OscInterface, "createActor"),
@@ -65,7 +65,7 @@ onready var otherCmds = {
 	"/midi/debug": funcref($OscInterface, "midiEnableStatusMessages"),
 	"/list/midi": funcref($OscInterface, "listMidiCmds"),
 	# "/wait" command is handled specially 
-
+	
 	# write
 	"/load/alphabet": funcref($Letters, "loadAlphabet"),
 	"/write": funcref($Letters, "write"),
