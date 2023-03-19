@@ -119,6 +119,8 @@ func _ready():
 	# Load default config file (if it exists) and call config command
 	$Config.loadConfig(["config.osc"], null)
 	evalCommandList([["/config"]], null)
+	
+	$OscTextEdit._set_size(OS.get_window_size())
 
 	# $Letters.loadAlphabet([])
 
@@ -208,3 +210,12 @@ func _process(_delta):
 func _exit_tree ( ):
 	# disable the receiver, highly recommended!
 	oscrcv.stop()
+
+
+func _on_Control_gui_input(event):
+	pass # Replace with function body.
+
+func _input(event):
+#	print(event.as_text())
+	if event.is_action_pressed("toggle_editor", true):
+		$OscTextEdit.set_visible(not($OscTextEdit.is_visible()))

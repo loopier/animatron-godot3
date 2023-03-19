@@ -184,6 +184,8 @@ func loadSequences(sequences):
 # For now, it just creates a sender instance each call,
 # so isn't designed for continuous/heavy use...
 static func sendMessage(target, oscAddress, oscArgs):
+	if not target:
+		return
 	var oscsnd = load("res://addons/gdosc/gdoscsender.gdns").new()
 	var ip = target[0]
 	var port = target[1]
