@@ -3,29 +3,11 @@ extends TextEdit
 var regex
 var main
 
-
 func _ready():
 	regex = RegEx.new()
 	main = get_parent()
-	var help = "================================================================\n" \
-	+ "Type OSC messages with the format:\n" \
-	+ "\n" \
-	+ "/<CMD> <TARGET_NAME> [ARG_1 ... ARG_N]\n" \
-	+ "\n" \
-	+ "Shortcuts:\n" \
-	+ "\t CTRL + ENTER - evaluate current line selection.\n" \
-	+ "\t CTRL + E - toggle editor and post window.\n" \
-	+ "\t CTRL + SHIFT + E - toggle editor.\n" \
-	+ "\t CTRL + P - toggle post window.\n" \
-	+ "\t CTRL + SHIFT + P - clear post window.\n" \
-	+ "\n" \
-	+ "For a full list of available OSC messages see the OSC\n" \
-	+ "interface documentation in 'docs/Reference.md.html\n" \
-	+ "================================================================\n\n"
 	var defaultText = "/list/assets" 
 	set_text(defaultText)
-	main.get_node("PostTextEdit").set_text(help)
-	print(main)
 
 
 func _on_OscTextEdit_gui_input(event):
@@ -48,7 +30,8 @@ func selectBlock():
 
 func evalLine():
 	print("eval line")
-	textToOsc(get_line(cursor_get_line()))
+	select(cursor_get_line(), 0, cursor_get_line(), -1)
+#	textToOsc(get_line(cursor_get_line()))
 
 func textToOsc( msgString ):
 	var cmds = []
