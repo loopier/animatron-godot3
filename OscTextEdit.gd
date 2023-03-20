@@ -8,6 +8,7 @@ func _ready():
 	main = get_parent()
 	var defaultText = "/list/assets" 
 	set_text(defaultText)
+	set_visible(true)
 
 
 func _on_OscTextEdit_gui_input(event):

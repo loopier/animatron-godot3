@@ -227,3 +227,8 @@ func _input(event):
 		$PostTextEdit.clear()
 	elif event.is_action_pressed("toggle_post", true):
 		$PostTextEdit.set_visible(not($PostTextEdit.is_visible()))
+	elif event.is_action_pressed("post_commands", true):
+		$OscTextEdit.set_visible(true)
+		$PostTextEdit.set_visible($OscTextEdit.is_visible())
+		$PostTextEdit.help()
+		evalOscCommand("/list/commands", [], null)

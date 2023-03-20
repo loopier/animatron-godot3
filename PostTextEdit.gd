@@ -1,4 +1,9 @@
 extends TextEdit
+var shortcutsHelp = "\t CTRL + ENTER - evaluate current line selection.\n" \
+	+ "\t CTRL + E - toggle editor and post window.\n" \
+	+ "\t CTRL + SHIFT + E - toggle editor.\n" \
+	+ "\t CTRL + P - toggle post window.\n" \
+	+ "\t CTRL + SHIFT + P - clear post window.\n" 
 
 var help = "================================================================\n" \
 	+ "Type OSC messages with the format:\n" \
@@ -6,11 +11,7 @@ var help = "================================================================\n" 
 	+ "/<CMD> <TARGET_NAME> [ARG_1 ... ARG_N]\n" \
 	+ "\n" \
 	+ "Shortcuts:\n" \
-	+ "\t CTRL + ENTER - evaluate current line selection.\n" \
-	+ "\t CTRL + E - toggle editor and post window.\n" \
-	+ "\t CTRL + SHIFT + E - toggle editor.\n" \
-	+ "\t CTRL + P - toggle post window.\n" \
-	+ "\t CTRL + SHIFT + P - clear post window.\n" \
+	+ shortcutsHelp \
 	+ "\n" \
 	+ "For a full list of available OSC messages see the OSC\n" \
 	+ "interface documentation in 'docs/Reference.md.html\n" \
@@ -30,3 +31,6 @@ func printDict( dict ):
 
 func clear():
 	set_text("")
+
+func help():
+	append(shortcutsHelp)
