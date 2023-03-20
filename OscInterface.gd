@@ -4,6 +4,7 @@ extends Node
 # but not on exported builds. Can be overridden at runtime with /debug message.
 var allowStatusReport : bool = not OS.has_feature("standalone")
 onready var main = get_parent()
+onready var post = main.get_node("PostTextEdit")
 onready var actorsNode = main.get_node("Actors")
 onready var customCmds : CustomCommands = main.get_node("CustomCommands")
 onready var config : Config = main.get_node("Config")
@@ -206,7 +207,6 @@ static func reportError(errString, target):
 func reportStatus(statusString, target):
 	if not allowStatusReport:
 		return
-	print(statusString)
 	if target:
 		sendMessage(target, "/status/reply", [statusString])
 
@@ -217,6 +217,7 @@ func getNode(nodeName, sender):
 		return node
 	else:
 		reportError("Node not found: " + nodeName, sender)
+		post.append("Node not found: " + nodeName)
 		return false
 
 
@@ -383,10 +384,16 @@ func ySortActors(args, sender):
 func listActors(args, sender):
 	if !args.empty():
 		reportError("listActors expects no arguments", sender)
+		post.append("listActors expects no arguments")
 		return
 	var pairs = {}
-	for a in actorsNode.get_children():
-		pairs[a.name] = a.get_node(actorAnimNodePath).get_animation()
+	var actors = actorsNode.get_children()
+	actors.sort()
+	post.append("List of Actors:")
+	for a in actors:
+		var anim = a.get_node(actorAnimNodePath).get_animation()
+		pairs[a.name] = anim
+		post.append("%s - %s" % [a.name, anim])
 	print(pairs)
 	sendMessage(sender, "/list/actors/reply", pairs)
 
@@ -395,12 +402,14 @@ func listActors(args, sender):
 func listAnims(args, sender):
 	if !args.empty():
 		reportError("listAnims expects no arguments", sender)
+		post.append("listAnims expects no arguments")
 		return
 	var names = []
+	post.append("List of loaded Animations:")
 	for a in animFramesLibrary.get_animation_names():
 		names.push_back(a)
+		post.append(a)
 	print(names)
-	names.sort()
 	sendMessage(sender, "/list/anims/reply", names)
 
 
@@ -408,14 +417,18 @@ func listAnims(args, sender):
 func listAssets(args, sender):
 	if !args.empty():
 		reportError("listAssets expects no arguments", sender)
+		post.append("listAssets expects no arguments")
 		return
 	var assets = getAssetFilesMatching(config.animationAssetPath, "*")
 	var names = []
-	for path in assets.sprites + assets.seqs:
+	var paths = assets.sprites + assets.seqs
+	paths.sort()
+	post.append("List of available Animations:")
+	for path in paths:
 		var name = getAssetBaseName(path.get_file())
 		names.push_back(name)
+		post.append(name)
 	print(names)
-	names.sort()
 	sendMessage(sender, "/list/assets/reply", names)
 
 func groupActor(args, sender):
@@ -455,9 +468,11 @@ func deselectActor(args, sender):
 func listSelectedActors(args, sender):
 	if !args.empty():
 		reportError("listSelectedActors expects no arguments", sender)
+		post.append("listSelectedActors expects no arguments")
 		return
 	var nodes = get_tree().get_nodes_in_group(selectionGroup)
 	reportStatus("selected: " + String(getNames(nodes)), sender)
+	post.append("selected: " + String(getNames(nodes)))
 
 
 func defCommand(args, sender):
@@ -510,13 +525,16 @@ func wait(args, sender):
 func listCommands(args, sender):
 	if !args.empty():
 		reportError("listCommands expects no arguments", sender)
+		post.append("listCommands expects no arguments")
 		return
 	var commandsMsg = "\n=== ACTOR ===\n" + main.getActorCommandSummary()
 	commandsMsg += "\n\n=== OTHER ===\n" + main.getOtherCommandSummary()
 	commandsMsg += "\n\n=== CUSTOM ===\n" + customCmds.getCommandSummary()
+	post.append(commandsMsg)
 	reportStatus("/list/commands/reply %s" % commandsMsg, sender)
 	
 	print(commandsMsg)
+	
 
 
 ############################################################
@@ -903,8 +921,10 @@ func midiFreeActor(inArgs, sender):
 func listMidiCmds(args, sender):
 	if !args.empty():
 		reportError("listMidiCmds expects no arguments", sender)
+		post.append("listMidiCmds expects no arguments", sender)
 		return
-	midiNode.listCmds()
+	var midiCmds = midiNode.listCmds()
+	post.printDict(midiCmds)
 	
 
 func onFrameActor(inArgs, sender):

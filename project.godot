@@ -79,7 +79,22 @@ eval_block={
 }
 toggle_editor={
 "deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":true,"control":true,"meta":false,"command":true,"pressed":false,"scancode":69,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+toggle_post={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":true,"meta":false,"command":true,"pressed":false,"scancode":80,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+toggle_editor_and_post={
+"deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":true,"meta":false,"command":true,"pressed":false,"scancode":69,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
+ ]
+}
+clear_post={
+"deadzone": 0.5,
+"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":true,"control":true,"meta":false,"command":true,"pressed":false,"scancode":80,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
 

@@ -8,18 +8,23 @@ func _ready():
 	regex = RegEx.new()
 	main = get_parent()
 	var help = "================================================================\n" \
-	+ "\t This is a simple OSC sender for Animatron. \n" \
-	+ "\t To use it, type OSC messages with the format:\n" \
+	+ "Type OSC messages with the format:\n" \
 	+ "\n" \
-	+ "\t /<CMD> <TARGET_NAME> <ARG_1> [... ARG_N]\n" \
+	+ "/<CMD> <TARGET_NAME> [ARG_1 ... ARG_N]\n" \
 	+ "\n" \
-	+ "\t Then press: CTRL + ENTER to evaluate the current line or selection.\n" \
+	+ "Shortcuts:\n" \
+	+ "\t CTRL + ENTER - evaluate current line selection.\n" \
+	+ "\t CTRL + E - toggle editor and post window.\n" \
+	+ "\t CTRL + SHIFT + E - toggle editor.\n" \
+	+ "\t CTRL + P - toggle post window.\n" \
+	+ "\t CTRL + SHIFT + P - clear post window.\n" \
 	+ "\n" \
-	+ "\t See the OSC interface documentation in 'docs/Reference.md.html for a\n" \
-	+ "\t\t full list of available OSC messages.\n" \
-	+ "================================================================\n\n" \
-	+ "/list/assets" 
-	set_text(help)
+	+ "For a full list of available OSC messages see the OSC\n" \
+	+ "interface documentation in 'docs/Reference.md.html\n" \
+	+ "================================================================\n\n"
+	var defaultText = "/list/assets" 
+	set_text(defaultText)
+	main.get_node("PostTextEdit").set_text(help)
 	print(main)
 
 
@@ -54,4 +59,3 @@ func textToOsc( msgString ):
 		var args = cmd.slice(1,-1)
 		main.evalOscCommand(addr, args, null)
 #	sendMessage(cmds)
-

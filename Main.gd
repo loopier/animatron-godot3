@@ -120,7 +120,12 @@ func _ready():
 	$Config.loadConfig(["config.osc"], null)
 	evalCommandList([["/config"]], null)
 	
-	$OscTextEdit._set_size(OS.get_window_size())
+	var w = OS.get_window_size().x
+	var h = OS.get_window_size().y
+	var gap = 10
+	$OscTextEdit._set_size(Vector2(w*2/3, h))
+	$PostTextEdit._set_size(Vector2(w*1/3 - gap, h))
+	$PostTextEdit._set_position(Vector2(w*2/3 + gap, 0))
 
 	# $Letters.loadAlphabet([])
 
@@ -211,11 +216,14 @@ func _exit_tree ( ):
 	# disable the receiver, highly recommended!
 	oscrcv.stop()
 
-
-func _on_Control_gui_input(event):
-	pass # Replace with function body.
-
 func _input(event):
 #	print(event.as_text())
 	if event.is_action_pressed("toggle_editor", true):
 		$OscTextEdit.set_visible(not($OscTextEdit.is_visible()))
+	elif event.is_action_pressed("toggle_editor_and_post", true):
+		$OscTextEdit.set_visible(not($OscTextEdit.is_visible()))
+		$PostTextEdit.set_visible($OscTextEdit.is_visible())
+	elif event.is_action_pressed("clear_post", true):
+		$PostTextEdit.clear()
+	elif event.is_action_pressed("toggle_post", true):
+		$PostTextEdit.set_visible(not($PostTextEdit.is_visible()))

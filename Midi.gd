@@ -126,3 +126,4 @@ func getKey(event, ch, num):
 
 func listCmds():
 	print(midiCmds)
+	return midiCmds
