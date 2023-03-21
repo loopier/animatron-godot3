@@ -31,8 +31,9 @@ func selectBlock():
 
 func evalLine():
 	print("eval line")
-	select(cursor_get_line(), 0, cursor_get_line(), -1)
-#	textToOsc(get_line(cursor_get_line()))
+	select(cursor_get_line(), 0, cursor_get_line(), cursor_get_column())
+	textToOsc(get_selection_text())
+#	deselect()
 
 func textToOsc( msgString ):
 	var cmds = []
