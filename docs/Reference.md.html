@@ -64,6 +64,13 @@ Address | Args <img width=675px/> | Description
 `/rand` | `cmd:s actor:s min:f max:f` | Send a `cmd` with a random value between `min` and `max`.
 
 ## Other commands
+Address | Args <img width="1000px"/> | Description
+--------|------|------------
+`/help` | | Open this file in a browser and print the keyboard shortcuts and commands.
+`/list` <br/> `/list/actors` | | Get list of current actor instances. Returned in the form of a `/list/actors/reply` OSC message.
+`/list/anims` | | Get list of available (loaded) animations. Returned in the form of a `/list/anims/reply` OSC message.
+`/list/assets` | | Get list of available (unloaded) assets on disk. Returned in the form of a `/list/assets/reply` OSC message.
+`/list/midi` | | Get list of commands mapped to MIDI events.
 
 Address | Args <img width="1000px"/> | Description
 --------|------|------------
@@ -72,10 +79,6 @@ Address | Args <img width="1000px"/> | Description
 `/create/group` | `group:s anim:s copies:i` | Create a batch of actors with a given (loaded) animation. A group will be created with this name and each actor will be named after the group with an index sufix.
 `/createordestroy` | `actor:s anim:s` | Like `/create`, but if the actor already exists, it removes it.
 `/ysort` | `[sort:b]` | Force actors to be sorted based on y position (lower on screen drawn later, i.e. "on top"). `sort` argument defaults to `true`, but initial state of y-sorting at startup is `false`.
-`/list` <br/> `/list/actors` | | Get list of current actor instances. Returned in the form of a `/list/actors/reply` OSC message.
-`/list/anims` | | Get list of available (loaded) animations. Returned in the form of a `/list/anims/reply` OSC message.
-`/list/assets` | | Get list of available (unloaded) assets on disk. Returned in the form of a `/list/assets/reply` OSC message.
-`/list/midi` | | Get list of commands mapped to MIDI events.
 `/group` | `group:s [actor:s]` | Add the actor to a named group. If run without `actor` it will return the list of actors in the group. Note that `/group "myGroup" "!"` may be used to add the current selection to a group. Use the group name as an actor name in all commands to apply it to all it's members.
 `/ungroup` | `group:s actor:s` | Remove the actor from a named group.
 `/select` | `[actor:s]` | Add the actor to the selected set. If run without `actor` it will return the list of selected actors.
@@ -91,6 +94,14 @@ Address | Args <img width="1000px"/> | Description
 `/write`| `msg:s`| Write MSG string with assets mapped to letters.
 `/letter/spacing` | `amount`| Set the spacing between letters.  It's a multiplier of the actors' size.
 `/letter/scale` | `scale`| Set the scale of the letters.
+
+## Editor commands
+Address | Args <img width="1000px"/> | Description
+--------|------|------------
+`/help` | | Open this file in a browser and print keyboard shortcuts and commands.
+`/list/commands` | | Get list of available commands.
+`/open [path:s]` | | Open an OSC file in the editor. Opens a dialog if no `path` is provided.
+`/save [path:s]` | | Save the editor contents into a file. Opens a dialog if no `path` is provided.
 
 ## Configuration commands
 Address | Args <img width=100px/> | Description

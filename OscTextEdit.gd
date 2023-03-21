@@ -20,6 +20,10 @@ func _on_OscTextEdit_gui_input(event):
 	elif event.is_action_pressed("eval_block", true):
 		undo() # FIX: this is a hack to remove the inserted line on pressing ENTER
 		selectBlock()
+	elif event.is_action_pressed("open_file", true):
+		main.get_node("OpenFileDialog").popup()
+	elif event.is_action_pressed("save_file", true):
+		main.get_node("SaveFileDialog").popup()
 
 func evalRegion():
 	print("eval region")

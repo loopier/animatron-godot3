@@ -534,6 +534,18 @@ func openHelp(args, sender):
 		reportError("openHelp expects no arguments", sender)
 	OS.shell_open(ProjectSettings.globalize_path("res://docs/Reference.md.html"))
 
+func openFile(args, sender):
+	if len(args) != 0:
+		main.openFile(args[0])
+		return
+	main.get_node("OpenFileDialog").popup()
+
+func saveFile(args, sender):
+	if len(args) != 0:
+		main.saveFile(args[0])
+		return
+	main.get_node("SaveFileDialog").popup()
+
 ############################################################
 # OSC Actor commands
 #   The first argument for all these commands is the target actor(s).

@@ -75,6 +75,22 @@ readonly = true
 wrap_enabled = true
 script = ExtResource( 10 )
 
+[node name="OpenFileDialog" type="FileDialog" parent="."]
+margin_left = 203.0
+margin_top = 92.0
+margin_right = 803.0
+margin_bottom = 492.0
+window_title = "Open a File"
+mode = 0
+
+[node name="SaveFileDialog" type="FileDialog" parent="."]
+margin_left = 203.0
+margin_top = 92.0
+margin_right = 803.0
+margin_bottom = 492.0
+
 [connection signal="gui_input" from="OscTextEdit" to="OscTextEdit" method="_on_OscTextEdit_gui_input"]
 [connection signal="visibility_changed" from="OscTextEdit" to="OscTextEdit" method="_on_OscTextEdit_visibility_changed"]
 [connection signal="text_changed" from="PostTextEdit" to="PostTextEdit" method="_on_PostTextEdit_text_changed"]
+[connection signal="file_selected" from="OpenFileDialog" to="." method="_on_OpenFileDialog_file_selected"]
+[connection signal="file_selected" from="SaveFileDialog" to="." method="_on_SaveFileDialog_file_selected"]

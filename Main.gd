@@ -77,6 +77,8 @@ onready var otherCmds = {
 	# app
 	"/list/commands": funcref($OscInterface, "listCommands"),
 	"/help": funcref($OscInterface, "openHelp"),
+	"/open": funcref($OscInterface, "openFile"),
+	"/save": funcref($OscInterface, "saveFile"),
 
 	# config commands
 	"/load/config": funcref($Config, "loadConfig"),
@@ -234,3 +236,21 @@ func _input(event):
 		$PostTextEdit.set_visible($OscTextEdit.is_visible())
 		$PostTextEdit.help()
 		evalOscCommand("/list/commands", [], null)
+
+func _on_OpenFileDialog_file_selected(path):
+	openFile(path)
+
+func openFile(path):
+	print("open file: %s" % [path])
+	var file = File.new()
+	file.open(path, File.READ)
+	$OscTextEdit.text = file.get_as_text()
+
+func _on_SaveFileDialog_file_selected(path):
+	saveFile(path)
+
+func saveFile(path):
+	print("save file to: %s" % [path])
+	var file = File.new()
+	file.open(path, File.WRITE)
+	file.store_string($OscTextEdit.text)
