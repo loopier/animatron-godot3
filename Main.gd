@@ -42,6 +42,7 @@ onready var actorCmds = {
 	"/onframe/free": funcref($OscInterface, "onFrameFreeActor"),
 	"/onfinish/free": funcref($OscInterface, "onFinishFreeActor"),
 	"/list/sequence": funcref($OscInterface, "getSequenceActor"),
+	"/rand": funcref($OscInterface, "randCmdArg"),
 }
 
 onready var otherCmds = {

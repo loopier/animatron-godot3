@@ -964,3 +964,14 @@ func getSequenceActor(inArgs, sender):
 		for actor in aa.actors:
 			actor.listSequenceCmds()
 	
+
+# set a random value (in a range) for a command argument
+func randCmdArg(inArgs, sender):
+	if len(inArgs) != 4:
+		reportError("randCmdArg expected 4 arguments: num arguments - %d" % [len(inArgs)], sender)
+		return
+	
+	var cmd = inArgs[0]
+	var actor = inArgs[1]
+	var value = rand_range(inArgs[2], inArgs[3])
+	main.evalOscCommand(cmd, [actor, value], sender)
