@@ -1,5 +1,6 @@
 extends TextEdit
-var shortcutsHelp = "\t CTRL + ENTER - evaluate current line selection.\n" \
+var shortcutsHelp = "\n\nKeyboard shortcuts:\n" \
+	+ "\t CTRL + ENTER - evaluate current line selection.\n" \
 	+ "\t CTRL + E - toggle editor and post window.\n" \
 	+ "\t CTRL + SHIFT + E - toggle editor.\n" \
 	+ "\t CTRL + P - toggle post window.\n" \
@@ -10,7 +11,6 @@ var help = "================================================================\n" 
 	+ "\n" \
 	+ "/<CMD> <TARGET_NAME> [ARG_1 ... ARG_N]\n" \
 	+ "\n" \
-	+ "Shortcuts:\n" \
 	+ shortcutsHelp \
 	+ "\n" \
 	+ "For a full list of available OSC messages see the OSC\n" \
