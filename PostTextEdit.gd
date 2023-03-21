@@ -1,5 +1,6 @@
 extends TextEdit
 var shortcutsHelp = "\n\nKeyboard shortcuts:\n" \
+	+ "\t CTRL + H - show this Help and OSC commands.\n" \
 	+ "\t CTRL + ENTER - evaluate current line selection.\n" \
 	+ "\t CTRL + E - toggle editor and post window.\n" \
 	+ "\t CTRL + SHIFT + E - toggle editor.\n" \
