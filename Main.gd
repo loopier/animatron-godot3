@@ -76,6 +76,7 @@ onready var otherCmds = {
 
 	# app
 	"/list/commands": funcref($OscInterface, "listCommands"),
+	"/help": funcref($OscInterface, "openHelp"),
 
 	# config commands
 	"/load/config": funcref($Config, "loadConfig"),

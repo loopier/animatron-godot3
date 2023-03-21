@@ -528,8 +528,11 @@ func listCommands(args, sender):
 	reportStatus("/list/commands/reply %s" % commandsMsg, sender)
 	
 	print(commandsMsg)
-	
 
+func openHelp(args, sender):
+	if !args.empty():
+		reportError("openHelp expects no arguments", sender)
+	OS.shell_open(ProjectSettings.globalize_path("res://docs/Reference.md.html"))
 
 ############################################################
 # OSC Actor commands
