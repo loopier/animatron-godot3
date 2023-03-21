@@ -15,17 +15,11 @@ func _on_OscTextEdit_gui_input(event):
 #	print(event)
 #	accept_event()
 	if event.is_action_pressed("eval_line", true):
+		undo() # FIX: this is a hack to remove the inserted line on pressing ENTER
 		evalLine()
 	elif event.is_action_pressed("eval_block", true):
-		undo()
+		undo() # FIX: this is a hack to remove the inserted line on pressing ENTER
 		selectBlock()
-#	if event.is_action_pressed("eval_block", true):
-#		undo() # FIX: this is a hack to remove the inserted line on pressing ENTER
-##		selectBlock()
-#		if get_selection_from_column() != get_selection_to_line():
-#			evalRegion()
-#		else:
-#			evalLine()
 
 func evalRegion():
 	print("eval region")
@@ -69,7 +63,7 @@ func evalLine():
 	var line = cursor_get_line()
 	cursor_set_column(len(get_line(line)))
 	select(line, 0, line, cursor_get_column())
-	textToOsc(get_selection_text())
+#	textToOsc(get_selection_text())
 #	deselect()
 
 func textToOsc( msgString ):
