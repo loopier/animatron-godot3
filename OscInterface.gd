@@ -198,8 +198,9 @@ static func sendMessage(target, oscAddress, oscArgs):
 	oscsnd.send()
 	oscsnd.stop()
 
-static func reportError(errString, target):
+func reportError(errString, target):
 	push_error(errString)
+	post.append(errString)
 	if target:
 		sendMessage(target, "/error/reply", [errString])
 
@@ -207,6 +208,7 @@ static func reportError(errString, target):
 func reportStatus(statusString, target):
 	if not allowStatusReport:
 		return
+	post.append(statusString)
 	if target:
 		sendMessage(target, "/status/reply", [statusString])
 
@@ -217,7 +219,6 @@ func getNode(nodeName, sender):
 		return node
 	else:
 		reportError("Node not found: " + nodeName, sender)
-		post.append("Node not found: " + nodeName)
 		return false
 
 
@@ -384,7 +385,6 @@ func ySortActors(args, sender):
 func listActors(args, sender):
 	if !args.empty():
 		reportError("listActors expects no arguments", sender)
-		post.append("listActors expects no arguments")
 		return
 	var pairs = {}
 	var actors = actorsNode.get_children()
@@ -402,7 +402,6 @@ func listActors(args, sender):
 func listAnims(args, sender):
 	if !args.empty():
 		reportError("listAnims expects no arguments", sender)
-		post.append("listAnims expects no arguments")
 		return
 	var names = []
 	post.append("List of loaded Animations:")
@@ -417,7 +416,6 @@ func listAnims(args, sender):
 func listAssets(args, sender):
 	if !args.empty():
 		reportError("listAssets expects no arguments", sender)
-		post.append("listAssets expects no arguments")
 		return
 	var assets = getAssetFilesMatching(config.animationAssetPath, "*")
 	var names = []
@@ -468,11 +466,9 @@ func deselectActor(args, sender):
 func listSelectedActors(args, sender):
 	if !args.empty():
 		reportError("listSelectedActors expects no arguments", sender)
-		post.append("listSelectedActors expects no arguments")
 		return
 	var nodes = get_tree().get_nodes_in_group(selectionGroup)
 	reportStatus("selected: " + String(getNames(nodes)), sender)
-	post.append("selected: " + String(getNames(nodes)))
 
 
 func defCommand(args, sender):
@@ -525,12 +521,10 @@ func wait(args, sender):
 func listCommands(args, sender):
 	if !args.empty():
 		reportError("listCommands expects no arguments", sender)
-		post.append("listCommands expects no arguments")
 		return
 	var commandsMsg = "\n=== ACTOR ===\n" + main.getActorCommandSummary()
 	commandsMsg += "\n\n=== OTHER ===\n" + main.getOtherCommandSummary()
 	commandsMsg += "\n\n=== CUSTOM ===\n" + customCmds.getCommandSummary()
-	post.append(commandsMsg)
 	reportStatus("/list/commands/reply %s" % commandsMsg, sender)
 	
 	print(commandsMsg)
@@ -921,10 +915,9 @@ func midiFreeActor(inArgs, sender):
 func listMidiCmds(args, sender):
 	if !args.empty():
 		reportError("listMidiCmds expects no arguments", sender)
-		post.append("listMidiCmds expects no arguments", sender)
 		return
 	var midiCmds = midiNode.listCmds()
-	post.printDict(midiCmds)
+	reportStatus(midiCmds, sender)
 	
 
 func onFrameActor(inArgs, sender):
