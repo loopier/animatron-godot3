@@ -44,6 +44,9 @@ def /black actor
 def /white actor
     /color $actor 1 1 1
 
+def /gray actor value
+    /color $actor $value $value $value
+
 def /red actor value
     /color/r $actor $value
 
