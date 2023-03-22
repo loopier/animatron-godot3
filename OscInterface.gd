@@ -752,7 +752,7 @@ func colorRedActor(inArgs, sender):
 	if args:
 		for actor in args.actors:
 			var rgb = getShaderUniform(actor, "uAddColor")
-			rgb.x = args.args[0]
+			rgb.x = float(args.args[0])
 			setShaderUniform(actor, "uAddColor", rgb)
 			
 func colorGreenActor(inArgs, sender):
@@ -760,7 +760,7 @@ func colorGreenActor(inArgs, sender):
 	if args:
 		for actor in args.actors:
 			var rgb = getShaderUniform(actor, "uAddColor")
-			rgb.y = args.args[0]
+			rgb.y = float(args.args[0])
 			setShaderUniform(actor, "uAddColor", rgb)
 
 func colorBlueActor(inArgs, sender):
@@ -768,7 +768,7 @@ func colorBlueActor(inArgs, sender):
 	if args:
 		for actor in args.actors:
 			var rgb = getShaderUniform(actor, "uAddColor")
-			rgb.z = args.args[0]
+			rgb.z = float(args.args[0])
 			setShaderUniform(actor, "uAddColor", rgb)
 			
 func sayActor(inArgs, sender):
