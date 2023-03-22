@@ -35,6 +35,12 @@ def /ar actor atk rel
     /wait $atk
     /fade $actor 0 $rel
 
-def /randpos actor
+def /rand/pos actor
     /rand /position/x $actor 0 1
     /rand /position/y $actor 0 1
+
+def /color/gray actor value
+    /color $actor $value $value $value
+
+def /rand/gray actor min max
+    /rand /color/gray $actor $min $max
