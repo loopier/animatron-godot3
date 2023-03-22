@@ -20,6 +20,12 @@ def /help
 def /play/rev actor
     /play $actor true
 
+def /once actor
+    /fade $actor 1
+    /play $actor
+    /onfinish $actor /fade $actor 0
+    /onfinish $actor /stop $actor
+
 def /adsr actor atk dec sus sust rel
     /fade $actor 0
     /fade $actor 1 $atk
