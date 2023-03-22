@@ -53,7 +53,6 @@ func selectBlock():
 	var line = cursor_get_line()
 	var from = findPrevLinebreak(line) - 1
 	var to = findNextLinebreak(line)
-#	print("select block from %s to %s" % [from, to])
 	cursor_set_column(len(get_line(line)))
 	select(from, 0, to + 1, cursor_get_column())
 	textToOsc(get_selection_text())
@@ -72,9 +71,8 @@ func textToOsc( msgString ):
 	var cmds = []
 	var lines = msgString.split("\n")
 	for line in lines:
-		var cmd = Array(line.split(" ")) # conver PoolStringArray to Array
+		var cmd = Array(line.split(" ")) # convert PoolStringArray to Array
 		var addr = cmd[0].strip_edges()
 		var args = cmd.slice(1,-1)
 		if len(addr) > 0:
 			main.evalOscCommand(addr, args, null)
-#	sendMessage(cmds)
