@@ -983,4 +983,4 @@ func randCmdArg(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs.slice(1,-1), "randCmdArg", 2, sender)
 	for actor in aa.actors:
 		var value = rand_range(float(aa.args[0]), float(aa.args[1]))
-		main.evalOscCommand(cmd, [actor.name, value], sender)
+		main.evalCommandList([[cmd, actor.name, value]], sender)
