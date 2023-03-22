@@ -15,6 +15,7 @@
 [sub_resource type="AudioStreamMicrophone" id=1]
 
 [sub_resource type="DynamicFont" id=2]
+outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 8 )
 
 [sub_resource type="DynamicFont" id=3]
@@ -54,6 +55,7 @@ grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 10
 size_flags_vertical = 10
+custom_colors/current_line_color = Color( 0, 0, 0, 0.113725 )
 custom_fonts/font = SubResource( 2 )
 custom_styles/normal = ExtResource( 9 )
 highlight_current_line = true
