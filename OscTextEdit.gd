@@ -55,9 +55,12 @@ func selectBlock():
 	var to = findNextLinebreak(line)
 	cursor_set_column(len(get_line(line)))
 	select(from, 0, to + 1, cursor_get_column())
-	textToOsc(get_selection_text())
+	var text = get_selection_text()
+	# group tabs with first non-indented line
+	# FIX: 'defs' are already parsed in file, but doesn't work with this
+	text = text.replace("\n\t", " ")
+	textToOsc(text)
 	deselect()
-
 
 func evalLine():
 	print("eval line")
