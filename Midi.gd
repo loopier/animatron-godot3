@@ -119,7 +119,7 @@ func eventToOsc(cmd, value):
 	var scaledValue  = Helper.linlin(value, 0, 127, minval, maxval)
 	print("MIDI PARSE: original:%s scaled:%s" % [value, scaledValue])
 	print("sending msg from MIDI: %s %s %f" % [addr, actor, value])
-	main.evalOscCommand(addr, [actor, scaledValue], null)
+	main.evalCommandList([[addr, actor, scaledValue]], null)
 
 func getKey(event, ch, num):
 	return "%s/ch%s/%s" % [event, ch, num]
