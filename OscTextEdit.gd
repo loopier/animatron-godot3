@@ -19,11 +19,13 @@ func _on_OscTextEdit_gui_input(event):
 		evalLine()
 	elif event.is_action_pressed("eval_block", true):
 		undo() # FIX: this is a hack to remove the inserted line on pressing ENTER
-		selectBlock()
+		evalBlock()
 	elif event.is_action_pressed("open_file", true):
 		main.get_node("OpenFileDialog").popup()
 	elif event.is_action_pressed("save_file", true):
 		main.get_node("SaveFileDialog").popup()
+	elif event.is_action_pressed("duplicate_line", true):
+		duplicateLine()
 
 func evalRegion():
 	print("eval region")
@@ -49,7 +51,7 @@ func findNextLinebreak( fromLine ):
 			break
 	return ln
 
-func selectBlock():
+func evalBlock():
 	var line = cursor_get_line()
 	var from = findPrevLinebreak(line) - 1
 	var to = findNextLinebreak(line)
@@ -63,12 +65,13 @@ func selectBlock():
 	deselect()
 
 func evalLine():
-	print("eval line")
-	var line = cursor_get_line()
-	cursor_set_column(len(get_line(line)))
-	select(line, 0, line, cursor_get_column())
-#	textToOsc(get_selection_text())
-#	deselect()
+	var ln = cursor_get_line()
+	var col = cursor_get_column()
+	selectLine()
+	textToOsc(get_selection_text())
+	deselect()
+	cursor_set_line(ln)
+	cursor_set_column(col)
 
 func textToOsc( msgString ):
 	var cmds = []
@@ -80,3 +83,17 @@ func textToOsc( msgString ):
 		if len(addr) > 0:
 			cmds.append(cmd)
 	main.evalCommandList(cmds, null)
+
+func selectLine():
+	print("eval line")
+	var line = cursor_get_line()
+	cursor_set_column(len(get_line(line)))
+	select(line, 0, line, cursor_get_column())
+
+func duplicateLine():
+	var col = cursor_get_column()
+	cut()
+	paste()
+	paste()
+	cursor_set_line(cursor_get_line() - 1)
+	cursor_set_column(col)

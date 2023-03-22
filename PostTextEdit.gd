@@ -1,13 +1,15 @@
 extends TextEdit
 var shortcutsHelp = "\n\nKeyboard shortcuts:\n" \
 	+ "\t CTRL + H - show this Help and OSC commands.\n" \
-	+ "\t CTRL + ENTER - evaluate current line selection.\n" \
+	+ "\t CTRL + ENTER - evaluate block.\n" \
+	+ "\t SHIFT + ENTER - evaluate line.\n" \
 	+ "\t CTRL + E - toggle editor and post window.\n" \
 	+ "\t CTRL + SHIFT + E - toggle editor.\n" \
 	+ "\t CTRL + P - toggle post window.\n" \
 	+ "\t CTRL + SHIFT + P - clear post window.\n" \
 	+ "\t CTRL + O - open a file in the text editor.\n" \
-	+ "\t CTRL + S - save text editor contents to a file.\n" 
+	+ "\t CTRL + S - save text editor contents to a file.\n" \
+	+ "\t CTRL + D - duplicate line.\n" 
 
 var help = "================================================================\n" \
 	+ "Type OSC messages with the format:\n" \
