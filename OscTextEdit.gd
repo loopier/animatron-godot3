@@ -78,9 +78,7 @@ func textToOsc( msgString ):
 	var lines = msgString.split("\n")
 	for line in lines:
 		var cmd = Array(line.strip_edges().split(" ")) # convert PoolStringArray to Array
-		var addr = cmd[0].strip_edges()
-		var args = cmd.slice(1,-1)
-		if len(addr) > 0:
+		if len(cmd[0].strip_edges()) > 0:
 			cmds.append(cmd)
 	main.evalCommandList(cmds, null)
 
