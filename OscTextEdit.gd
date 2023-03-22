@@ -78,4 +78,5 @@ func textToOsc( msgString ):
 		var addr = cmd[0].strip_edges()
 		var args = cmd.slice(1,-1)
 		if len(addr) > 0:
-			main.evalOscCommand(addr, args, null)
+			cmds.append(cmd)
+	main.evalCommandList(cmds, null)
