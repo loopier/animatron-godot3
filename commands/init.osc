@@ -34,3 +34,7 @@ def /ar actor atk rel
     /fade $actor 1 $atk
     /wait $atk
     /fade $actor 0 $rel
+
+def /randpos actor
+    /rand /position/x $actor 0 1
+    /rand /position/y $actor 0 1
