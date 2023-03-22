@@ -979,6 +979,8 @@ func randCmdArg(inArgs, sender):
 		reportError("randCmdArg expected 4 arguments: num arguments - %d" % [len(inArgs)], sender)
 		return
 	var cmd = inArgs[0]
-	var actor = inArgs[1]
-	var value = rand_range(float(inArgs[2]), float(inArgs[3]))
-	main.evalOscCommand(cmd, [actor, value], sender)
+	# need to get different values with wildcard actors
+	var aa = getActorsAndArgs(inArgs.slice(1,-1), "randCmdArg", 2, sender)
+	for actor in aa.actors:
+		var value = rand_range(float(aa.args[0]), float(aa.args[1]))
+		main.evalOscCommand(cmd, [actor.name, value], sender)
