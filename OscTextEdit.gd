@@ -32,7 +32,6 @@ func evalRegion():
 func findPrevLinebreak( fromLine ):
 	var ln = fromLine
 	while ln > 0:
-		print("p ln:",ln)
 		ln = ln - 1
 		if get_line(ln) == "":
 			ln = ln + 1
@@ -44,7 +43,6 @@ func findNextLinebreak( fromLine ):
 		return fromLine
 	var ln = fromLine
 	while ln < get_line_count():
-		print("n ln:",ln)
 		ln = ln + 1
 		if get_line(ln) == "":
 			ln = ln - 1
@@ -52,10 +50,10 @@ func findNextLinebreak( fromLine ):
 	return ln
 
 func selectBlock():
-	print("select block")
 	var line = cursor_get_line()
 	var from = findPrevLinebreak(line) - 1
 	var to = findNextLinebreak(line)
+#	print("select block from %s to %s" % [from, to])
 	cursor_set_column(len(get_line(line)))
 	select(from, 0, to + 1, cursor_get_column())
 	textToOsc(get_selection_text())
@@ -77,5 +75,6 @@ func textToOsc( msgString ):
 		var cmd = Array(line.split(" ")) # conver PoolStringArray to Array
 		var addr = cmd[0].strip_edges()
 		var args = cmd.slice(1,-1)
-		main.evalOscCommand(addr, args, null)
+		if len(addr) > 0:
+			main.evalOscCommand(addr, args, null)
 #	sendMessage(cmds)
