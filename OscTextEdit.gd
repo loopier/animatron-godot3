@@ -97,3 +97,4 @@ func duplicateLine():
 	paste()
 	cursor_set_line(cursor_get_line() - 1)
 	cursor_set_column(col)
+
