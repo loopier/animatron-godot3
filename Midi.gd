@@ -116,6 +116,12 @@ func eventToOsc(cmd, value):
 	var actor = cmd["actor"]
 	var minval = cmd["value"][0]
 	var maxval = cmd["value"][1]
+	if actor == null:
+		main.evalCommandList([[addr]], null)
+		return
+	elif minval == null or maxval == null:
+		main.evalCommandList([[addr, actor]], null)
+		return
 	var scaledValue  = Helper.linlin(value, 0, 127, minval, maxval)
 	print("MIDI PARSE: original:%s scaled:%s" % [value, scaledValue])
 	print("sending msg from MIDI: %s %s %f" % [addr, actor, value])

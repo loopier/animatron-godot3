@@ -865,8 +865,8 @@ func soundFreeActor(inArgs, sender):
 
 # see MetaNode.gd for information on differences between MIDI messages
 func midiActor(inArgs, sender):
-	if len(inArgs) != 7:
-		reportError("midiActor expects 7 arguments", sender)
+	if len(inArgs) < 4:
+		reportError("midiActor expects at least 4 arguments", sender)
 		return
 	var signalmap = {
 		"noteon": "note_on_received",
@@ -879,14 +879,21 @@ func midiActor(inArgs, sender):
 	var num = inArgs[2]
 	var cmd = inArgs[3]
 	var signalmsg = signalmap[midimsg]
-	var aa = getActorsAndArgs(inArgs.slice(4,-1), "midiActor", 2, sender)
+	var numArgs = len(inArgs.slice(4,-1)) - 1
+	var aa  = getActorsAndArgs(inArgs.slice(4,-1), "midiActor", numArgs, sender)
 #	print("MIDI msg:%s - singal:%s - num:%s - cmd:%s" % [midimsg, signalmsg, num, cmd])
 	
 	if aa:
 		for actor in aa.actors:
-			var rangemin = int(aa.args[0])
-			var rangemax = int(aa.args[1])
-			print("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
+			var rangemin = null
+			var rangemax = null
+			if len(aa.args) > 0: 
+				rangemin = int(aa.args[0])
+				rangemin = int(aa.args[1])
+				print("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
+			else:
+				# print null
+				print("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:- max-" % [midimsg, signalmsg, ch, num, cmd])
 			midiNode.addMidiCmd(midimsg, ch, num, cmd, actor, rangemin, rangemax)
 
 func midiFreeActor(inArgs, sender):
