@@ -55,6 +55,8 @@ func addMidiCmd( event, ch, num, cmd, actor, minVal, maxVal ):
 			# to map any note midievent to a command, we need to
 			# map use note number as velocity value, so we pass
 			# the same value for both min and max
+			if minVal == null: minVal = i + 1
+			if maxVal == null: maxVal = i + 1
 			var newMinVal = Helper.linlin(i, 0,127, minVal, maxVal)
 			var newMaxVal = newMinVal
 			addMidiCmd(event, ch, i, cmd, actor, newMinVal, newMaxVal)
