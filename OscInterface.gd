@@ -444,7 +444,6 @@ func ungroupActor(args, sender):
 	for node in matchNodes(args[1], sender):
 		if node.is_in_group(groupName):
 			node.remove_from_group(groupName)
-	
 
 func selectActor(args, sender):
 	if args.empty():
