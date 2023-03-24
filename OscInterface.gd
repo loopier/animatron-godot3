@@ -527,6 +527,7 @@ func listCommands(args, sender):
 	reportStatus("/list/commands/reply %s" % commandsMsg, sender)
 	
 	print(commandsMsg)
+	main.get_node("PostTextEdit").append(commandsMsg)
 
 func openHelp(args, sender):
 	if !args.empty():
