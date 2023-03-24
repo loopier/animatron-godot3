@@ -104,3 +104,7 @@ func loadTutorial():
 	var path = Helper.getPathWithDefaultDir(filename, dirname)
 	file.open(path, File.READ)
 	set_text(file.get_as_text())
+
+func append( msg ):
+	set_text("%s\n%s" % [get_text(), msg])
+	scroll_vertical = INF

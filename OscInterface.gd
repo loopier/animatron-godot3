@@ -549,6 +549,9 @@ func saveFile(args, sender):
 func loadTutorial(args, sender):
 	main.get_node("OscTextEdit").loadTutorial()
 
+func editorAppend(args, sender):
+	main.get_node("OscTextEdit").append(" ".join(args))
+
 ############################################################
 # OSC Actor commands
 #   The first argument for all these commands is the target actor(s).

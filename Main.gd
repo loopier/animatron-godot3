@@ -80,6 +80,7 @@ onready var otherCmds = {
 	"/open": funcref($OscInterface, "openFile"),
 	"/save": funcref($OscInterface, "saveFile"),
 	"/tutorial": funcref($OscInterface, "loadTutorial"),
+	"/append": funcref($OscInterface, "editorAppend"),
 
 	# config commands
 	"/load/config": funcref($Config, "loadConfig"),
