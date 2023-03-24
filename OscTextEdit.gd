@@ -1,16 +1,12 @@
 extends TextEdit
 
-const defaultTextEditorFile := "tutorial.osc"
+const defaultTextEditorFile := "docs/tutorial.osc"
 var regex
 var main
 
 func _ready():
 	regex = RegEx.new()
 	main = get_parent()
-	var file = File.new()
-	var path = Helper.getPathWithDefaultDir(defaultTextEditorFile, "docs")
-	file.open(path, File.READ)
-	set_text(file.get_as_text())
 	set_visible(true)
 
 
@@ -99,3 +95,12 @@ func duplicateLine():
 	cursor_set_line(cursor_get_line() - 1)
 	cursor_set_column(col)
 
+func loadTutorial():
+	# this is not an optimal way to do it, but we are using a method in 
+	# the Helper class
+	var dirname = defaultTextEditorFile.split("/")[0]
+	var filename = defaultTextEditorFile.split("/")[1]
+	var file = File.new()
+	var path = Helper.getPathWithDefaultDir(filename, dirname)
+	file.open(path, File.READ)
+	set_text(file.get_as_text())

@@ -12,9 +12,11 @@ var shortcutsHelp = "\n\nKeyboard shortcuts:\n" \
 	+ "\t CTRL + D - duplicate line.\n" 
 
 var help = "================================================================\n" \
-	+ "Type OSC messages with the format:\n" \
+	+ "To see the tutorial type:\n" \
 	+ "\n" \
-	+ "/<CMD> <TARGET_NAME> [ARG_1 ... ARG_N]\n" \
+	+ "/tutorial\n" \
+	+ "\n" \
+	+ "and hit CTRL + ENTER while the cursor is on that line" \
 	+ "\n" \
 	+ shortcutsHelp \
 	+ "\n" \

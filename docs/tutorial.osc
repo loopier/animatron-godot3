@@ -14,9 +14,8 @@
 
 # COMMANDS can be sent from the ANIMATRON text editor, or from any other place.
 # ANIMATRON listens for OSC messages on PORT: 56101
-# Check your IP address to set it as the remote server on your
-#   client application. If you are running it in the same device, it should
-#   be 127.0.0.1
+# Check your IP address to set it as the remote server on your client
+# application. If you are running it in the same device, it should be 127.0.0.1
 
 # To send a COMMAND from within ANIMATRON, write it in the text editor and
 # evaluate that block or line. If you are reading this in ANIMATRON, you're
@@ -27,7 +26,7 @@
 
 /list/assets
 
-# evaluate the line by placing the cursor on it and pressing SHIFT + E
+# evaluate the line by placing the cursor on it and pressing SHIFT + ENTER
 
 # see the post window (on the side) or the console. There should be a list of
 # names, corresponding to folder names in your 'animations/' folder.
@@ -36,12 +35,35 @@
 /list/commands
 
 ################################################################################
-# creating actors
+# creating and deleting actors
 ################################################################################
 # to add something to the stage first we need to load an animation(ANIM) from
-# the available ASSETs
+# the available ASSETs. Let's load an animation called 'square' (it will seem
+# that nothing happened, we're just loading the resource, the sequence of
+# images)
 /load square
 
-# then we can create an ACTOR with any loaded ANIM
-# the first argument is the ACTOR NAME, the second one is the ANIM
+# then we can create an ACTOR with the loaded animation;
+# the first argument is the ACTOR NAME (in this case 'sq') the second one is
+# the ANIM NAME we loaded in the previous step: 'square'
 /create sq square
+
+# you should se a wiggling black square
+
+# to remove the actor from stage:
+/free sq
+
+# there's a way to do both /load and /create in one command:
+/new sq square
+
+################################################################################
+# actor manipulation
+################################################################################
+# now we can start playing with the ACTOR
+#
+# try to change its size (1 is normal size)
+# make it smaller with
+/scale sq 0.5
+
+# or lager with
+/scale sq 1.5

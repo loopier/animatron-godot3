@@ -546,6 +546,9 @@ func saveFile(args, sender):
 		return
 	main.get_node("SaveFileDialog").popup()
 
+func loadTutorial(args, sender):
+	main.get_node("OscTextEdit").loadTutorial()
+
 ############################################################
 # OSC Actor commands
 #   The first argument for all these commands is the target actor(s).
