@@ -1,13 +1,16 @@
 extends TextEdit
 
+const defaultTextEditorFile := "tutorial.osc"
 var regex
 var main
 
 func _ready():
 	regex = RegEx.new()
 	main = get_parent()
-	var defaultText = "/list/assets" 
-	set_text(defaultText)
+	var file = File.new()
+	var path = Helper.getPathWithDefaultDir(defaultTextEditorFile, "docs")
+	file.open(path, File.READ)
+	set_text(file.get_as_text())
 	set_visible(true)
 
 

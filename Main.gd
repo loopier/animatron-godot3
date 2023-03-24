@@ -245,6 +245,7 @@ func openFile(path):
 	var file = File.new()
 	file.open(path, File.READ)
 	$OscTextEdit.text = file.get_as_text()
+	file.close()
 
 func _on_SaveFileDialog_file_selected(path):
 	saveFile(path)
@@ -254,3 +255,4 @@ func saveFile(path):
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_string($OscTextEdit.text)
+	file.close()

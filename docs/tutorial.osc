@@ -1,0 +1,47 @@
+# To control ANIMATRON, you send it OSC messages.
+# The syntax is:
+#
+#   /<CMD> [TARGET ARG_1 ... ARG_N]
+#
+#   CMD: a cmd with a leading slash '/' -- see OSC reference
+#   TARGET: the actor you want to send the comand to.
+#   ARG_...: any arguments that the command needs
+
+# COMMANDS can be used to:
+#   - change ACTORs state
+#   - get info from the system
+#   - perform an action on the application
+
+# COMMANDS can be sent from the ANIMATRON text editor, or from any other place.
+# ANIMATRON listens for OSC messages on PORT: 56101
+# Check your IP address to set it as the remote server on your
+#   client application. If you are running it in the same device, it should
+#   be 127.0.0.1
+
+# To send a COMMAND from within ANIMATRON, write it in the text editor and
+# evaluate that block or line. If you are reading this in ANIMATRON, you're
+# already seeing the text editor (this is it!).
+
+# Try asking the system what image sequences (clips or animations) are available
+# by typing:
+
+/list/assets
+
+# evaluate the line by placing the cursor on it and pressing SHIFT + E
+
+# see the post window (on the side) or the console. There should be a list of
+# names, corresponding to folder names in your 'animations/' folder.
+
+# to get a list of commands send
+/list/commands
+
+################################################################################
+# creating actors
+################################################################################
+# to add something to the stage first we need to load an animation(ANIM) from
+# the available ASSETs
+/load square
+
+# then we can create an ACTOR with any loaded ANIM
+# the first argument is the ACTOR NAME, the second one is the ANIM
+/create sq square
