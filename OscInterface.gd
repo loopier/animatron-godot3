@@ -19,6 +19,7 @@ const selectionGroup := "selected"
 const loadAllAssetsAtStartup := false
 const actorAnimNodePath := "Offset/Animation"
 const defaultDefsDir := "commands/"
+const defaultBgColor := Color(0.1, 0.1, 0.1)
 
 func _ready():
 	spriteFilenameRegex = RegEx.new()
@@ -31,6 +32,8 @@ func _ready():
 		var assets = getAssetFilesMatching(config.animationAssetPath, "*")
 		loadSprites(assets.sprites)
 		loadSequences(assets.seqs)
+	
+	setBackgroundColor([defaultBgColor.r, defaultBgColor.g, defaultBgColor.b], null)
 
 ############################################################
 # Helpers

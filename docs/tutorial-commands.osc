@@ -20,8 +20,11 @@
 
 # We use commands to create and modify ACTORS, print info on the POST WINDOW,
 # and interact with the APPLICATION.
-# The list of commands is too long to cover them all, so we'll just show you some basic ones,
-# namely to create and modify ACTORS.
+# The list of commands is too long to cover them all, so we'll just show you some basic ones
+
+# For example, let's change de background color by passing it RGB values
+
+/bg 0.2 0.2 0.2
 
 /tutorial/actors
 

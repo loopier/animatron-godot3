@@ -10,7 +10,7 @@ func _ready():
 	main = get_parent()
 	set_visible(true)
 	
-	add_color_region("/", " ", Color(0.329412, 0.67451, 0.964706))
+	add_color_region("/", " ", Color(1, 0.439216, 0.521569))
 	add_color_region("#", "", Color(0.447059, 0.462745, 0.498039))
 	
 	main.get_node("OscInterface").loadDefsFile([tutorialCmdsFile], null)
