@@ -1,7 +1,7 @@
 extends TextEdit
 
 const defaultTextEditorFile := "docs/tutorial.osc"
-const tutorialCmdsFile := "commands/tutorial-cmds.osc"
+const tutorialCmdsFile = "commands/tutorial-cmds.osc"
 var regex
 var main
 
@@ -10,8 +10,10 @@ func _ready():
 	main = get_parent()
 	set_visible(true)
 	
-	add_color_region("/", " ", Color(0.968627, 0.894118, 0.611765))
+	add_color_region("/", " ", Color(0.329412, 0.67451, 0.964706))
 	add_color_region("#", "", Color(0.447059, 0.462745, 0.498039))
+	
+	main.get_node("OscInterface").loadDefsFile([tutorialCmdsFile], null)
 
 
 func _on_OscTextEdit_gui_input(event):
@@ -100,7 +102,6 @@ func duplicateLine():
 	cursor_set_column(col)
 
 func loadTutorial():
-	textToOsc("/load/defs %s" % tutorialCmdsFile)
 	# this is not an optimal way to do it, but we are using a method in 
 	# the Helper class
 	var dirname = defaultTextEditorFile.split("/")[0]
