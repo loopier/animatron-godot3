@@ -1,69 +1,7 @@
-# To control ANIMATRON, you send it OSC messages.
-# The syntax is:
-#
-#   /<CMD> [TARGET ARG_1 ... ARG_N]
-#
-#   CMD: a cmd with a leading slash '/' -- see OSC reference
-#   TARGET: the actor you want to send the comand to.
-#   ARG_...: any arguments that the command needs
+# ANIMATRON TUTORIAL
+# ------------------
+# Welcome to the Animatron Tutorial.
 
-# COMMANDS can be used to:
-#   - change ACTORs state
-#   - get info from the system
-#   - perform an action on the application
+# Put the cursor on the next line and press SHIFT + ENTER
 
-# COMMANDS can be sent from the ANIMATRON text editor, or from any other place.
-# ANIMATRON listens for OSC messages on PORT: 56101
-# Check your IP address to set it as the remote server on your client
-# application. If you are running it in the same device, it should be 127.0.0.1
-
-# To send a COMMAND from within ANIMATRON, write it in the text editor and
-# evaluate that block or line. If you are reading this in ANIMATRON, you're
-# already seeing the text editor (this is it!).
-
-# Try asking the system what image sequences (clips or animations) are available
-# by typing:
-
-/list/assets
-
-# evaluate the line by placing the cursor on it and pressing SHIFT + ENTER
-
-# see the post window (on the side) or the console. There should be a list of
-# names, corresponding to folder names in your 'animations/' folder.
-
-# to get a list of commands send
-/list/commands
-
-################################################################################
-# creating and deleting actors
-################################################################################
-# to add something to the stage first we need to load an animation(ANIM) from
-# the available ASSETs. Let's load an animation called 'square' (it will seem
-# that nothing happened, we're just loading the resource, the sequence of
-# images)
-/load square
-
-# then we can create an ACTOR with the loaded animation;
-# the first argument is the ACTOR NAME (in this case 'sq') the second one is
-# the ANIM NAME we loaded in the previous step: 'square'
-/create sq square
-
-# you should se a wiggling black square
-
-# to remove the actor from stage:
-/free sq
-
-# there's a way to do both /load and /create in one command:
-/new sq square
-
-################################################################################
-# actor manipulation
-################################################################################
-# now we can start playing with the ACTOR
-#
-# try to change its size (1 is normal size)
-# make it smaller with
-/scale sq 0.5
-
-# or lager with
-/scale sq 1.5
+/tutorial/controls

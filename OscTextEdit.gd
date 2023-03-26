@@ -1,6 +1,7 @@
 extends TextEdit
 
 const defaultTextEditorFile := "docs/tutorial.osc"
+const tutorialCmdsFile := "commands/tutorial-cmds.osc"
 var regex
 var main
 
@@ -96,6 +97,7 @@ func duplicateLine():
 	cursor_set_column(col)
 
 func loadTutorial():
+	textToOsc("/load/defs %s" % tutorialCmdsFile)
 	# this is not an optimal way to do it, but we are using a method in 
 	# the Helper class
 	var dirname = defaultTextEditorFile.split("/")[0]
