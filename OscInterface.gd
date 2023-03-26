@@ -517,6 +517,15 @@ func wait(args, sender):
 ############################################################
 # App commands
 ############################################################
+func setBackgroundColor(args, sender):
+	if len(args) != 3:
+		reportError("listCommands expects 3 arguments", sender)
+		return
+	var r = float(args[0])
+	var g = float(args[1])
+	var b = float(args[2])
+	VisualServer.set_default_clear_color(Color(r,g,b))
+
 func listCommands(args, sender):
 	if !args.empty():
 		reportError("listCommands expects no arguments", sender)

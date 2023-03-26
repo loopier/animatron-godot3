@@ -75,6 +75,7 @@ onready var otherCmds = {
 	"/letters/scale": funcref($Letters, "setScale"),
 
 	# app
+	"/bg": funcref($OscInterface, "setBackgroundColor"),
 	"/list/commands": funcref($OscInterface, "listCommands"),
 	"/help": funcref($OscInterface, "openHelp"),
 	"/open": funcref($OscInterface, "openFile"),
