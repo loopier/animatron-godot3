@@ -986,7 +986,6 @@ func getSequenceActor(inArgs, sender):
 	if aa:
 		for actor in aa.actors:
 			actor.listSequenceCmds()
-	
 
 # set a random value (in a range) for a command argument
 func randCmdArg(inArgs, sender):
