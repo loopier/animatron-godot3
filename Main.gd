@@ -22,7 +22,6 @@ onready var actorCmds = {
 	"/pivot": funcref($OscInterface, "setActorPivot"),
 	"/fade": funcref($OscInterface, "setActorFade"),
 	"/speed": funcref($OscInterface, "setActorSpeed"),
-	"/loop": funcref($OscInterface, "setActorLoop"),
 	"/fliph": funcref($OscInterface, "flipActorH"),
 	"/flipv": funcref($OscInterface, "flipActorV"),
 	"/color": funcref($OscInterface, "colorActor"),

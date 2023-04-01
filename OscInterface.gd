@@ -734,16 +734,6 @@ func setActorSpeed(inArgs, sender):
 			animNode.play("")
 		animNode.set_speed_scale(abs(speed))
 
-
-func setActorLoop(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "setActorLoop", [0, 1], sender)
-	if aa:
-		var loop := Helper.getBool(aa.args[0]) if not aa.args.empty() else true
-		for node in aa.actors:
-			var animNode : AnimatedSprite = node.get_node(actorAnimNodePath)
-			animNode.loop = loop
-
-
 func flipActorH(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "flipActorH", 0, sender)
 	if args: for node in args.actors:
@@ -987,7 +977,7 @@ func onFinishFreeActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "onFinishFreeActor", null, sender)
 	if aa:
 		for actor in aa.actors:
-			var cmd = aa.args.slice(0, -1)
+			var cmd = aa.args
 			actor.removeFinishCmd(cmd)
 
 func getSequenceActor(inArgs, sender):
