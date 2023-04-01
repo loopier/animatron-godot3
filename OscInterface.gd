@@ -999,3 +999,16 @@ func randCmdArg(inArgs, sender):
 	for actor in aa.actors:
 		var value = rand_range(float(aa.args[0]), float(aa.args[1]))
 		main.evalCommandList([[cmd, actor.name, value]], sender)
+
+# choose a random value from the list for a command argument
+func chooseCmdArg(inArgs, sender):
+	if len(inArgs) < 2:
+		reportError("choosemdArg expected at least 2 arguments: num arguments - %d" % [len(inArgs)], sender)
+		return
+	var cmd = inArgs[0]
+	var actor = inArgs[1]
+	var args = inArgs.slice(2, -1)
+	var argi = randi() % len(args)
+	var arg = args[argi]
+	print("cmd:%s actor:%s args:%s arg:%s" % [cmd, actor, args, arg])
+	main.evalCommandList([[cmd, actor, arg]], sender)
