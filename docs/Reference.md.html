@@ -33,6 +33,7 @@ Address | Args <img width=675px/> | Description
 `/play` <br/> `/play!` | `actor:s` <br/> -| Play the actor's animation from the current frame.
 `/play/reverse` <br/> `/play/everse!` | `actor:s [enable:b]` <br/> `[enable:b]`| Play the `actor` frames in reverse. Defaults to `true`.
 `/play/rand` <br/> `/play/rand!` | `actor:s [enable:b]` <br/> `[enable:b]`| Play the `actor` frames in a random order. Defaults to `true`.
+
 `/stop` <br/> `/stop!` | `actor:s` <br/> - | Stop playing the actor's animation.
 `/frame` <br/> `/frame!` | `actor:s frame:i` <br/> `frame:i` | Jump to the given frame number (with wrapping). If a `float` from 0-1 is passed, it will jump to the frame corresponding to that position (`0` being the first frame and `1` the last).
 `/position` <br/> `/position!` | `actor:s x:f y:f [dur:f]` <br/> `x:f y:f [dur:f]` | Set the actor to the x,y coordinates (specified as fractions of the viewport from 0-1). If `dur` is set, interpolate the movement over that number of seconds, otherwise change instantaneously.
@@ -62,6 +63,7 @@ Address | Args <img width=675px/> | Description
 `/onfinish/free` | `actor:s subCommand`| Remove `subCommand` trigger from the last frame. The `subCommand` only needs the command address (with leading `/`) and the actor name -- don't any the command parameter value.
 `/list/sequence` | `actor:s` | Print the list of commands triggered on all `actor` frames.
 `/rand` | `cmd:s actor:s min:f max:f` | Send a `cmd` with a random value between `min` and `max`.
+`/choose` | `cmd:s actor:s arg1 ... argN` | Send a `cmd` with a value randomly chosen from any of the arguments. *It only works with single-value commands.*
 
 ## Other commands
 Address | Args <img width="1000px"/> | Description
