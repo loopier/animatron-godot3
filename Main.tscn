@@ -15,6 +15,7 @@
 [sub_resource type="AudioStreamMicrophone" id=1]
 
 [sub_resource type="DynamicFont" id=2]
+size = 22
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 8 )
 
@@ -93,6 +94,7 @@ margin_bottom = 492.0
 
 [connection signal="gui_input" from="OscTextEdit" to="OscTextEdit" method="_on_OscTextEdit_gui_input"]
 [connection signal="visibility_changed" from="OscTextEdit" to="OscTextEdit" method="_on_OscTextEdit_visibility_changed"]
+[connection signal="gui_input" from="PostTextEdit" to="PostTextEdit" method="_on_PostTextEdit_gui_input"]
 [connection signal="text_changed" from="PostTextEdit" to="PostTextEdit" method="_on_PostTextEdit_text_changed"]
 [connection signal="file_selected" from="OpenFileDialog" to="." method="_on_OpenFileDialog_file_selected"]
 [connection signal="file_selected" from="SaveFileDialog" to="." method="_on_SaveFileDialog_file_selected"]

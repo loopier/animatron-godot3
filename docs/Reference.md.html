@@ -61,21 +61,20 @@ Address | Args <img width=675px/> | Description
 `/onfinish`| `actor:s subCommand`| Add `subCommand` to be triggered on the last frame. The `subCommand` can be any valid command.
 `/onfinish/free` | `actor:s subCommand`| Remove `subCommand` trigger from the last frame. The `subCommand` only needs the command address (with leading `/`) and the actor name -- don't any the command parameter value.
 `/list/sequence` | `actor:s` | Print the list of commands triggered on all `actor` frames.
-`/rand` | `cmd:s actor:s min:f max:f` | Send a `cmd` with a random value between `min` and `max`.
-`/choose` | `cmd:s actor:s arg1 ... argN` | Send a `cmd` with a value randomly chosen from any of the arguments. *It only works with single-value commands.*
+`/rand` | `cmd:s actor:s min:f max:f` | Send a `cmd` with a random value between `min` and `max.`**This only works with single-value commands.**
+`/choose` | `cmd:s actor:s arg1 ... argN` | Send a `cmd` with a value randomly chosen from any of the arguments. **This only works with single-value commands.**
 
 ## Other commands
-Address | Args <img width="1000px"/> | Description
+Address | Args <img width="100px"/> | Description
 --------|------|------------
 `/help` | | Open this file in a browser and print the keyboard shortcuts and commands.
+`/list/commands` | | Get list of available commands.
 `/list` <br/> `/list/actors` | | Get list of current actor instances. Returned in the form of a `/list/actors/reply` OSC message.
 `/list/anims` | | Get list of available (loaded) animations. Returned in the form of a `/list/anims/reply` OSC message.
 `/list/assets` | | Get list of available (unloaded) assets on disk. Returned in the form of a `/list/assets/reply` OSC message.
 `/list/midi` | | Get list of commands mapped to MIDI events.
-
-Address | Args <img width="1000px"/> | Description
---------|------|------------
 `/load` | `asset:s` | Load an (animation) asset from disk. It will create an `anim` with the same name as the asset. Wildcards are supported, so several animations can be loaded at once. The list of assets available to load can be found by calling `/list/assets`.
+`/bg`| `r:f g:f b:f` | Set the background color.
 `/create` | `actor:s anim:s` | Create a new actor with a given (loaded) animation. If the named actor already exists, change its animation to the one specified. The initial position of a new actor will be at (0.5,0.5), the centre of the viewport.
 `/create/group` | `group:s anim:s copies:i` | Create a batch of actors with a given (loaded) animation. A group will be created with this name and each actor will be named after the group with an index sufix.
 `/createordestroy` | `actor:s anim:s` | Like `/create`, but if the actor already exists, it removes it.
@@ -97,15 +96,19 @@ Address | Args <img width="1000px"/> | Description
 `/letter/scale` | `scale`| Set the scale of the letters.
 
 ## Editor commands
-Address | Args <img width="1000px"/> | Description
+Address | Args <img width="100px"/> | Description
 --------|------|------------
-`/bg r:f g:f b:f` | | Set the background color.
-`/help` | | Open this file in a browser and print keyboard shortcuts and commands.
-`/list/commands` | | Get list of available commands.
-`/open [path:s]` | | Open an OSC file in the editor. Opens a dialog if no `path` is provided.
-`/save [path:s]` | | Save the editor contents into a file. Opens a dialog if no `path` is provided.
 `/tutorial` | | Load the tutorial in the editor.
-`/append` | | Converts the arguments to text and appends it to the editor.
+`/editor/open `| `[path:s]`  | Open an OSC file in the editor. Opens a dialog if no `path` is provided.
+`/editor/save `| `[path:s]`  | Save the editor contents into a file. Opens a dialog if no `path` is provided.
+`/editor/append` | `msg:s` | Append `msg` to editor.
+`/editor/font/size` | `size:i` | Set the font size of the editor.
+`/editor/font/increase` | | Increase the font size of the editor.
+`/editor/font/decrease` | | Decrease the font size of the editor.
+`/post` | `msg:s` | Print `msg` in the post window.
+`/post/font/size` |`size:i` | Set the font size of the post window.
+`/post/font/increase` | | Increase the font size of the post.
+`/post/font/decrease` | | Decrease the font size of the post.
 
 ## Configuration commands
 Address | Args <img width=100px/> | Description
@@ -116,7 +119,7 @@ Address | Args <img width=100px/> | Description
 `/window/screen` | `screenIndex:i` | Move the window between displays (0 = main display).
 `/window/position` | `x:i y:i` | Move window to the specified position given in pixels.
 `/window/size` | `sx:i sy:i` | Set window to the specified size in pixels. -1 may be specified for either `sx` or `sy`, in which case it will be computed using the project viewport aspect ratio.
-`/window/center` | | Center window in main display.
+`/window/center` | | Center window in main display.
 `/window/fullscreen` | `[enable:b]` | Set fullscreen mode (defaults to true).
 `/window/top` | `[enable:b]` | Set window to be always on top of other windows (defaults to true).
 

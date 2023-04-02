@@ -564,6 +564,43 @@ func loadTutorial(args, sender):
 func editorAppend(args, sender):
 	main.get_node("OscTextEdit").append(" ".join(args))
 
+func editorFontSize(args, sender):
+	if len(args) < 1:
+		reportError("editorFontSize expects 1 argument.", sender)
+		return
+	main.get_node("OscTextEdit").setFontSize(float(args[0]))
+
+func editorIncreaseFont(args, sender):
+	if len(args) > 0:
+		reportError("editorIncreaseFont expects 0 argument.", sender)
+		return
+	main.get_node("OscTextEdit").increaseFont()
+
+func editorDecreaseFont(args, sender):
+	if len(args) > 0:
+		reportError("editorDecreaseFont expects 0 argument.", sender)
+		return
+	main.get_node("OscTextEdit").decreaseFont()
+
+func postMsg(args, sender):
+	main.post(" ".join(args))
+	
+func postFontSize(args, sender):
+	if len(args) < 1:
+				reportError("postFontSize expects 1 argument.", sender)
+	main.get_node("PostTextEdit").setFontSize(float(args[0]))
+
+func postIncreaseFont(args, sender):
+	if len(args) > 0:
+		reportError("postIncreaseFont expects 0 argument.", sender)
+		return
+	main.get_node("PostTextEdit").increaseFont()
+
+func postDecreaseFont(args, sender):
+	if len(args) > 0:
+		reportError("postDecreaseFont expects 0 argument.", sender)
+		return
+	main.get_node("PostTextEdit").decreaseFont()
 ############################################################
 # OSC Actor commands
 #   The first argument for all these commands is the target actor(s).

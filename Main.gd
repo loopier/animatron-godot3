@@ -78,10 +78,19 @@ onready var otherCmds = {
 	"/bg": funcref($OscInterface, "setBackgroundColor"),
 	"/list/commands": funcref($OscInterface, "listCommands"),
 	"/help": funcref($OscInterface, "openHelp"),
-	"/open": funcref($OscInterface, "openFile"),
-	"/save": funcref($OscInterface, "saveFile"),
+	
+	# editor
 	"/tutorial": funcref($OscInterface, "loadTutorial"),
-	"/append": funcref($OscInterface, "editorAppend"),
+	"/editor/open": funcref($OscInterface, "openFile"),
+	"/editor/save": funcref($OscInterface, "saveFile"),
+	"/editor/append": funcref($OscInterface, "editorAppend"),
+	"/editor/font/size": funcref($OscInterface, "editorFontSize"),
+	"/editor/font/increase": funcref($OscInterface, "editorIncreaseFont"),
+	"/editor/font/decrease": funcref($OscInterface, "editorDecreaseFont"),
+	"/post": funcref($OscInterface, "postMsg"),
+	"/post/font/size": funcref($OscInterface, "postFontSize"),
+	"/post/font/increase": funcref($OscInterface, "postIncreaseFont"),
+	"/post/font/decrease": funcref($OscInterface, "postDecreaseFont"),
 
 	# config commands
 	"/load/config": funcref($Config, "loadConfig"),
@@ -259,3 +268,6 @@ func saveFile(path):
 	file.open(path, File.WRITE)
 	file.store_string($OscTextEdit.text)
 	file.close()
+
+func post(msg):
+	$PostTextEdit.append(msg)

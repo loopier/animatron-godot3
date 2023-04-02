@@ -31,6 +31,10 @@ func _on_OscTextEdit_gui_input(event):
 		main.get_node("SaveFileDialog").popup()
 	elif event.is_action_pressed("duplicate_line", true):
 		duplicateLine()
+	elif event.is_action_pressed("increase_editor_font", true):
+		increaseFont()
+	elif event.is_action_pressed("decrease_editor_font", true):
+		decreaseFont()
 
 func evalRegion():
 	print("eval region")
@@ -114,3 +118,16 @@ func loadTutorial():
 func append( msg ):
 	set_text("%s\n%s" % [get_text(), msg])
 	scroll_vertical = INF
+
+func increaseFont():
+	var font = get("custom_fonts/font")
+	font.set_size(font.get_size() + 1)
+	main.post("font size: %d" % [font.get_size()])
+	
+func decreaseFont():
+	var font = get("custom_fonts/font")
+	font.set_size(font.get_size() - 1)
+	main.post("font size: %d" % [font.get_size()])
+
+func setFontSize( size ):
+	get("custom_fonts/font").set_size(size)
