@@ -12,7 +12,9 @@ var shortcutsHelp = "\n\nKeyboard shortcuts:\n" \
 	+ "\t CTRL + SHIFT + P - clear post window.\n" \
 	+ "\t CTRL + O - open a file in the text editor.\n" \
 	+ "\t CTRL + S - save text editor contents to a file.\n" \
-	+ "\t CTRL + D - duplicate line.\n" 
+	+ "\t CTRL + D - duplicate line.\n" \
+	+ "\t CTRL + + - Increase font.\n" \
+	+ "\t CTRL + - - Decrease font.\n" 
 
 var help = "================================================================\n" \
 	+ "To see the tutorial type:\n" \

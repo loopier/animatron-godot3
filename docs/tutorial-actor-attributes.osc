@@ -3,23 +3,24 @@
 # Actors can be manipulated to change their appearance an behaviour.
 # For a list of commands to change them, see the 'ACTOR' section in
 
-/list/commands
+/list/commands 
 
 # we'll show just a few of them and let you explore the rest
 
-# first, create a new actor
+# first, create a couple of actors
 
 /create box box-spitneat
 
 # POSITION
 # --------
-# We just created 2 actors that overlap. We need to move either one
-# to see them both. We can change the position of any actor with
+# We can change the position of any actor with
 
 /position/x box 0.2
 
+# or
 /position/y box 0.8
 
+#or
 /position box 0.5 0.2
 
 # the center of the screen is at x:0.5 y:0.5, 0 being left and top, and
@@ -57,15 +58,11 @@
 
 /color box 0.1 0.7 0.3
 
-/color box 1 1 1
+/color box 0.3 0.2 0.6
 
 # back to the original color
 
 /color box 0 0 0
-
-# values can also be randomized; see
-
-/tutorial/utils-rand.osc
 
 # in the next section we'll cover animation manipulation
 

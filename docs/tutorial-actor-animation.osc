@@ -1,6 +1,6 @@
 # ACTOR ANIMATION
 # ---------------
-# We can also modify the animation parameters with commands.
+# Some commands manage animation parameters.
 
 /free *
 /new box box-spitneat
@@ -10,6 +10,8 @@
 /speed box 0.5
 
 /speed box 2
+
+/speed box 1
 
 # stop
 
@@ -31,6 +33,15 @@
 # play forwards
 
 /play box
+
+# stop the looping
+
+/noloop box
+
+# play once and vanish (it only hides the animation -- try evaluating it
+# multiple times
+
+/once box
 
 # in the next section we'll deal with multiple actors
 

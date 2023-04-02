@@ -2,14 +2,14 @@
 # ------
 # An ACTOR plays an image sequence (ANIM).
 
-# First we nead to load the ANIM into memory with the '/load' command.
+# First we need to load the ANIM into memory with the '/load' command.
 # The argument is the ASSET (file) name.
 
 /load box-spitneat
 
 # to see a list of all the assets use
 
-/list/assets
+/list/assets 
 
 # now we can create an actor that plays the animation we just loaded.
 # 'box' is the actor NAME, and 'box-spitneat' the name of the ASSET that

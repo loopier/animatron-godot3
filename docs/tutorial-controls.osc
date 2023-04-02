@@ -5,10 +5,10 @@
 # What you just did by pressing SHIFT + ENTER is EVALUATE A LINE
 
 # You can also EVALUATE A BLOCK by pressing CTRL + ENTER
-# A BLOCK is a group of lines that are not separated. For example
+# A BLOCK is a group of lines that are not separated by empty lines. For example:
 
-/append Line1 added to the end of this file
-/append Line2 added to the end of this file
+/editor/append Line1 added to the end of this file
+/editor/append Line2 added to the end of this file
 
 # Try putting the cursor on either of the previous lines and evaluating the block
 
