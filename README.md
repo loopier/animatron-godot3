@@ -12,10 +12,36 @@ application or live coding language &mdash; such as
 [SuperCollider](https://supercollider.github.io/) &mdash; via the
 network, using the Open Sound Control (OSC) protocol.
 
-## Getting started
+## Installation
 
-We currently do not release executables, so you need to clone or
-download this repository.
+- Download the latest release for your platform **and the animatron-assets-vX.X.X_X.zip file**.
+- Uncompress both.
+- Move the **contents** of the executable into the uncompressed assets folder. You should end up with a structure similar to this:
+
+```
+animations/
+commands/
+config/
+docs/
+fonts/
+icons/
+scripts/
+Animatron.pck
+# linux
+Animatron.x86_64
+libgdosc.so
+# windows
+Animatron.exe
+libgdosc.dll
+```
+
+Run either the `.x86_64` file if you're on Linux, or the `.exe` if you're on Windows.
+
+To start the tutorial, write `/tutorial` on the editor and press `CTRL + ENTER`.
+
+## Compile from source
+
+Clone or download this repository.
 
 1. Install [Godot](https://godotengine.org/download) (normally the
    latest version, e.g. v3.3.4 or v3.4).
