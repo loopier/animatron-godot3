@@ -13,7 +13,7 @@ application or live coding language &mdash; such as
 [SuperCollider](https://supercollider.github.io/) &mdash; via the
 network, using the Open Sound Control (OSC) protocol.
 
-## Installation
+# Installation
 
 - Download **both** the [latest release](https://github.com/loopier/animatron/releases) for your platform **and the animatron-assets-vX.X.X_X.zip file**.
 - Uncompress both.
@@ -121,7 +121,7 @@ a = Animatron();
 a.sendMsg("/list/assets"); // see the post window
 ```
 
-## License
+# License
 
 Animatron is Copyright &copy; 2021 by Glen Fraser, Roger Pibernat and
 contributors.
