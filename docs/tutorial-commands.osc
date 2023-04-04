@@ -26,6 +26,14 @@
 
 /bg 0.2 0.2 0.2
 
+# next
+
 /tutorial/actors
+
+# previous
+
+/tutorial/controls
+
+# up
 
 /tutorial/index

@@ -1,5 +1,5 @@
 # CHANGING ACTOR ATTRIBUTES
----------------------------
+# ---------------------------
 # Actors can be manipulated to change their appearance an behaviour.
 # For a list of commands to change them, see the 'ACTOR' section in
 
@@ -66,6 +66,16 @@
 
 # in the next section we'll cover animation manipulation
 
+
+
+# next
+
 /tutorial/actor-animation
+
+# previous
+
+/tutorial/actors
+
+# up
 
 /tutorial/index

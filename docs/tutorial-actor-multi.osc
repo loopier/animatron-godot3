@@ -43,8 +43,14 @@
 
 
 
-/tutorial/index 
-
 # related
 
-/tutorial/rand
+/tutorial/utils-rand
+
+# previous
+
+/tutorial/actor-attributes
+
+# up
+
+/tutorial/index
