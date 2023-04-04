@@ -14,25 +14,26 @@ network, using the Open Sound Control (OSC) protocol.
 
 ## Installation
 
-- Download the [latest release](https://github.com/loopier/animatron/releases) for your platform **and the animatron-assets-vX.X.X_X.zip file**.
+- Download **both** the [latest release](https://github.com/loopier/animatron/releases) for your platform **and the animatron-assets-vX.X.X_X.zip file**.
 - Uncompress both.
 - Move the **contents** of the executable into the uncompressed assets folder. You should end up with a structure similar to this:
 
 ```
-animations/
-commands/
-config/
-docs/
-fonts/
-icons/
-scripts/
-Animatron.pck
+animatron/
+├── animations/
+├── commands/
+├── config/
+├── docs/
+├── fonts/
+├── icons/
+├── scripts/
+├── Animatron.pck
 # linux
-Animatron.x86_64
-libgdosc.so
+├── Animatron.x86_64
+├── libgdosc.so
 # windows
-Animatron.exe
-libgdosc.dll
+├── Animatron.exe
+├── libgdosc.dll
 ```
 
 Run either the `.x86_64` file if you're on Linux, or the `.exe` if you're on Windows.
