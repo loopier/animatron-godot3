@@ -1,4 +1,5 @@
 # Animatron
+
 A tool for real-time visual poetry.
 
 ## What is it?
@@ -70,6 +71,55 @@ Clone or download this repository.
 Refer to the [OSC command reference](docs/Reference.md.html) &mdash;
 note that this file can be opened on your local machine in any web
 browser and it will appear correctly formatted.
+
+# Usage
+
+The best way to learn how it works is running through the tutorial. Type `/tutorial` and press `CTRL + ENTER`. Follow the instructions and you'll get the hang of it pretty quickly.
+
+## Remote
+
+Animatron can also be used remotely via OSC messages. The commands are the same. The exact syntax of the message depends on the software you're using to send the messages.
+
+But first, we need to set up the communication system. Animatron is listening for OSC messages on port `56101`. Following is an example for SuperCollider running on the same machine as Animatron.
+
+```
+a = NetAdress("localhost", 56101);
+a.sendMsg("/bg", 0, 0, 0.2);
+a.sendMsg("/new", "sq", "square");
+a.sendMsg("/color", "sq", 1,0,0);
+// ... etc
+```
+
+To get replies, an OSC listener needs to be set up on the client side:
+
+```
+a = NetAdress("localhost", 56101);
+
+OSCdef(\listActorsReply, { arg msg;
+    "Actors: %".format(msg[1..]).postln;
+    oscReply = msg.debug("oscdef");
+}, "/list/actors/reply");
+OSCdef(\listAnimsReply, { arg msg;
+    "Available animations:\n\t%".format(join(msg[1..], "\n\t")).postln;
+}, "/list/anims/reply");
+OSCdef(\listAssetsReply, { arg msg;
+    "Available assets:\n\t%".format(join(msg[1..], "\n\t")).postln;
+}, "/list/assets/reply");
+OSCdef(\errorReply, { arg msg;
+    "Error: %".format(msg[1]).postln;
+    oscReply = msg;
+}, "/error/reply");
+OSCdef(\statusReply, { arg msg;
+    "Status: %".format(msg[1]).postln;
+}, "/status/reply");
+```
+
+If you're going to use SuperCollider often, you can copy the `Animatron/` folder you'll find in the `sc/` directory to your SuperCollider `Extensions/` folder. When creating an instance, a listener for the replies is automatically set up:
+
+```
+a = Animatron();
+a.sendMsg("/list/assets"); // see the post window
+```
 
 ## License
 
