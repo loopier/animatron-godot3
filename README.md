@@ -14,7 +14,7 @@ network, using the Open Sound Control (OSC) protocol.
 
 ## Installation
 
-- Download the latest release for your platform **and the animatron-assets-vX.X.X_X.zip file**.
+- Download the [latest release](https://github.com/loopier/animatron/releases) for your platform **and the animatron-assets-vX.X.X_X.zip file**.
 - Uncompress both.
 - Move the **contents** of the executable into the uncompressed assets folder. You should end up with a structure similar to this:
 
