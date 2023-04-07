@@ -12,6 +12,7 @@ onready var metanode = preload("res://MetaNode.tscn")
 onready var speechBubbleNode = preload("res://SpeechBubble.tscn")
 onready var audioInputNode = main.get_node("AudioInputPlayer")
 onready var midiNode = main.get_node("Midi")
+onready var oscNode = main.get_node("OscSender")
 var animFramesLibrary
 var spriteFilenameRegex
 var sequenceFilenameRegex
@@ -601,6 +602,15 @@ func postDecreaseFont(args, sender):
 		reportError("postDecreaseFont expects 0 argument.", sender)
 		return
 	main.get_node("PostTextEdit").decreaseFont()
+
+func connectOscRemote(args, sender):
+	print(args)
+	oscNode.connectRemote(args)
+
+func sendOsc(args, sender):
+	print(args)
+	oscNode.send(args)
+
 ############################################################
 # OSC Actor commands
 #   The first argument for all these commands is the target actor(s).

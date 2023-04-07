@@ -91,6 +91,10 @@ onready var otherCmds = {
 	"/post/font/size": funcref($OscInterface, "postFontSize"),
 	"/post/font/increase": funcref($OscInterface, "postIncreaseFont"),
 	"/post/font/decrease": funcref($OscInterface, "postDecreaseFont"),
+	
+	# osc
+	"/osc/remote": funcref($OscInterface, "connectOscRemote"),
+	"/osc/send": funcref($OscInterface, "sendOsc"),
 
 	# config commands
 	"/load/config": funcref($Config, "loadConfig"),

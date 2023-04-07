@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://OscInterface.gd" type="Script" id=1]
 [ext_resource path="res://CustomCommands.gd" type="Script" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://fonts/mononoki_Bold.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://transparent_bg.tres" type="StyleBox" id=9]
 [ext_resource path="res://PostTextEdit.gd" type="Script" id=10]
+[ext_resource path="res://OscSender.gd" type="Script" id=11]
 [ext_resource path="res://Main.gd" type="Script" id=13]
 
 [sub_resource type="AudioStreamMicrophone" id=1]
@@ -91,6 +92,9 @@ margin_left = 203.0
 margin_top = 92.0
 margin_right = 803.0
 margin_bottom = 492.0
+
+[node name="OscSender" type="Node" parent="."]
+script = ExtResource( 11 )
 
 [connection signal="gui_input" from="OscTextEdit" to="OscTextEdit" method="_on_OscTextEdit_gui_input"]
 [connection signal="visibility_changed" from="OscTextEdit" to="OscTextEdit" method="_on_OscTextEdit_visibility_changed"]
