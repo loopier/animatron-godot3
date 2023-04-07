@@ -54,8 +54,6 @@ Address | Args <img width=675px/> | Description
 `/front` <br/> `/front!` | `actor:s ref:s` <br/> `ref:s` | Change the draw order for an actor to be in front of a reference actor. To move to the foreground, use `/front actor *`.
 `/sound` <br/> `/sound!` | `band:i command:s actor:s [min:f max:f]` <br/> `band:i command:s [min:f max:f]` | Map the amplitude of the sound input at the frequency `band` to any `command` within the range `min` and `max` (if ommited they default to `[0.0..1.0]`)
 `/sound/free` <br/> `/sound!` | `band:i [command:s actor:s]` <br/> `band:i [command:s actor:s]` | Unmap sound for the given `band`. If `command` and `actor` are specified, remove only that `command` for the actor.
-`/midi` <br/><br/> `/midi!` | `midimsg:s midich:i midinum:i command:s actor:s min:f max:f` <br/><br/> `midimsg:i midich:i midinum:i command:s min:f max:f` | Map the `midimsg` (`noteon`, `noteoff`, `cc`, `velocity`) received in channel `midich` to a `command` within a range between `min` and `max`. For `noteon/noteoff` events, a `*` wildcard can be passed as `midinum` to use the note number as value (ignoring the velocity). The `velocity` midimsg maps the velocity of all notes to `command`, passing it as an argument (ignoring the note number).
-`/midi/free` <br/><br/> `/midi/free!` | `midimsg:s midich:i midinum:i actor:s` <br/><br/> `midimsg:i midich:i midinum:i` | Unmap MIDI `midimsg` for `midinum` in channel `midich`.
 `/onframe`| `actor:s frame:i subCommand`| Add `subCommand` to be triggered on `frame`. The `subCommand` can be any valid command. <br><br> For example, to create an animation sequence, the animation asset can be changed on the desired `frame`: <br><br> `/create actorA animA`<br>`/onframe actorA 8 /create actorA animB`.
 `/onframe/free` | `actor:s frame:i subCommand`| Remove `subCommand` trigger from `frame`. The `subCommand` only needs the command address (with leading `/`) and the actor name -- don't any the command parameter value.
 `/onfinish`| `actor:s subCommand`| Add `subCommand` to be triggered on the last frame. The `subCommand` can be any valid command.
@@ -63,6 +61,14 @@ Address | Args <img width=675px/> | Description
 `/list/sequence` | `actor:s` | Print the list of commands triggered on all `actor` frames.
 `/rand` | `cmd:s actor:s min:f max:f` | Send a `cmd` with a random value between `min` and `max.`**This only works with single-value commands.**
 `/choose` | `cmd:s actor:s arg1 ... argN` | Send a `cmd` with a value randomly chosen from any of the arguments. **This only works with single-value commands.**
+
+## Communications commands
+Address | Args <img width="100px"/> | Description
+--------|------|------------
+`/midi` <br/><br/> `/midi!` | `midimsg:s midich:i midinum:i command:s actor:s min:f max:f` <br/><br/> `midimsg:i midich:i midinum:i command:s min:f max:f` | Map the `midimsg` (`noteon`, `noteoff`, `cc`, `velocity`) received in channel `midich` to a `command` within a range between `min` and `max`. For `noteon/noteoff` events, a `*` wildcard can be passed as `midinum` to use the note number as value (ignoring the velocity). The `velocity` midimsg maps the velocity of all notes to `command`, passing it as an argument (ignoring the note number).
+`/midi/free` <br/><br/> `/midi/free!` | `midimsg:s midich:i midinum:i actor:s` <br/><br/> `midimsg:i midich:i midinum:i` | Unmap MIDI `midimsg` for `midinum` in channel `midich`.
+`/osc/remote` | `ip:s port:i`| Connect to a remote OSC server at `ip` address on `port`.
+`/osc/send` | `addr:s ... args`| Send an OSC message with an arbitrary number of arguments to a remote server.
 
 ## Other commands
 Address | Args <img width="100px"/> | Description
