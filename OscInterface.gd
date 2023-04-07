@@ -604,11 +604,9 @@ func postDecreaseFont(args, sender):
 	main.get_node("PostTextEdit").decreaseFont()
 
 func connectOscRemote(args, sender):
-	print(args)
 	oscNode.connectRemote(args)
 
 func sendOsc(args, sender):
-	print(args)
 	oscNode.send(args)
 
 ############################################################
