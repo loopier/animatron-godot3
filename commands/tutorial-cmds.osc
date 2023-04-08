@@ -1,0 +1,33 @@
+def /tutorial/welcome
+    /tutorial
+
+def /tutorial/index
+    /editor/open docs/tutorial-index.osc
+
+def /tutorial/controls
+    /editor/open docs/tutorial-controls.osc
+
+def /tutorial/commands
+    /editor/open docs/tutorial-commands.osc
+
+# actors
+
+def /tutorial/actors
+    /editor/open docs/tutorial-actors.osc
+
+def /tutorial/actor-attributes
+    /editor/open docs/tutorial-actor-attributes.osc
+
+def /tutorial/actor-animation
+    /editor/open docs/tutorial-actor-animation.osc
+
+def /tutorial/actor-multi
+    /editor/open docs/tutorial-actor-multi.osc
+
+# utils
+
+def /tutorial/utils-rand
+    /editor/open docs/tutorial-utils-rand.osc
+
+def /tutorial/utils-custom-cmds
+    /editor/open docs/tutorial-utils-custom-cmds.osc
