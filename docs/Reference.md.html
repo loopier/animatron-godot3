@@ -67,7 +67,7 @@ Address | Args <img width="100px"/> | Description
 --------|------|------------
 `/midi` <br/><br/> `/midi!` | `midimsg:s midich:i midinum:i command:s actor:s min:f max:f` <br/><br/> `midimsg:i midich:i midinum:i command:s min:f max:f` | Map the `midimsg` (`noteon`, `noteoff`, `cc`, `velocity`) received in channel `midich` to a `command` within a range between `min` and `max`. For `noteon/noteoff` events, a `*` wildcard can be passed as `midinum` to use the note number as value (ignoring the velocity). The `velocity` midimsg maps the velocity of all notes to `command`, passing it as an argument (ignoring the note number).
 `/midi/free` <br/><br/> `/midi/free!` | `midimsg:s midich:i midinum:i actor:s` <br/><br/> `midimsg:i midich:i midinum:i` | Unmap MIDI `midimsg` for `midinum` in channel `midich`.
-`/osc/remote` | `ip:s port:i`| Register a remote OSC client at ip address on port.
+`/osc/remote` | `ip:s port:i`| Register a remote OSC client at `ip` address on `port`.
 `/osc/send` | `addr:s ... args`| Send an OSC message with an arbitrary number of arguments to a remote client.
 
 ## Other commands
