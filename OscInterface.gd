@@ -75,12 +75,12 @@ static func getAssetFilesMatching(path, nameWildcard):
 				if baseFile.match(nameWildcard):
 					var seqFrames = getAnimSequenceFrames(fullPath);
 					if !seqFrames.empty():
-						print("Sequence (%d frames) file name: %s" % [seqFrames.size(), filename])
+						Logger.info("Sequence (%d frames) file name: %s" % [seqFrames.size(), filename])
 						files.seqs.push_back(fullPath)
 			elif filename.ends_with(".png") or filename.ends_with(".jpg"):
 				var baseFile = getAssetBaseName(filename)
 				if baseFile.match(nameWildcard):
-					print("File name: ", filename)
+					Logger.info("File name: %s" % [filename])
 					files.sprites.push_back(fullPath)
 			filename = dir.get_next()
 	return files
@@ -104,7 +104,7 @@ func getSpriteFileInfo(name):
 		dict.xStep = result.get_string(3).to_int()
 		dict.yStep = result.get_string(4).to_int()
 		dict.fps = result.get_string(5).to_int()
-		print(dict)
+		Logger.debug(dict)
 	else:
 		dict.name = name
 		dict.directions = 1
@@ -120,7 +120,7 @@ func getSeqFileInfo(name):
 	if result:
 		dict.name = result.get_string(1)
 		dict.fps = result.get_string(2).to_int()
-		print(dict)
+		Logger.debug(dict)
 	else:
 		dict.name = name
 		dict.fps = 24
@@ -155,7 +155,7 @@ func addSubSprites(animFramesLibrary, atlas, suffixes, info):
 
 
 func loadSprites(sprites):
-	print("Runtime sprites:", sprites)
+	Logger.debug("Runtime sprites: %s" % [sprites])
 	# Add the runtime-loaded sprites to our pre-existing library
 	for spritePath in sprites:
 		var res
@@ -171,7 +171,7 @@ func loadSprites(sprites):
 
 
 func loadSequences(sequences):
-	print("Runtime sequences:", sequences)
+	Logger.debug("Runtime sequences: %s" % [sequences])
 	# Add the runtime-loaded image sequences to our pre-existing library
 	for seqPath in sequences:
 		var info = getSeqFileInfo(seqPath.get_file().get_basename())
@@ -207,6 +207,7 @@ static func sendMessage(target, oscAddress, oscArgs):
 func reportError(errString, target):
 	push_error(errString)
 	post.append(errString)
+	Logger.error(errString)
 	if target:
 		sendMessage(target, "/error/reply", [errString])
 
@@ -215,6 +216,7 @@ func reportStatus(statusString, target):
 	if not allowStatusReport:
 		return
 	post.append(statusString)
+	Logger.info(statusString)
 	if target:
 		sendMessage(target, "/status/reply", [statusString])
 
@@ -248,7 +250,7 @@ func matchNodes(nameWildcard, sender):
 	if matches.empty():
 		reportStatus("No matches found for: " + nameWildcard, sender)
 	elif allowStatusReport:
-		print("Matched: ", getNames(matches))
+		Logger.info("Matched: %s" % [getNames(matches)])
 	return matches
 
 
@@ -336,11 +338,11 @@ func createActor(args, sender=null):
 	var newNode
 	if actorsNode.has_node(nodeName):
 		if allowStatusReport:
-			print("replacing node '%s'" % [nodeName])
+			Logger.info("replacing node '%s'" % [nodeName])
 		newNode = actorsNode.get_node(nodeName)
 	else:
 		if allowStatusReport:
-			print("creating node '%s'" % [nodeName])
+			Logger.info("creating node '%s'" % [nodeName])
 		newNode = metanode.instance()
 		newNode.name = nodeName
 		newNode.position = Vector2(0.5, 0.5) * main.get_viewport_rect().size
@@ -395,12 +397,11 @@ func listActors(args, sender):
 	var pairs = {}
 	var actors = actorsNode.get_children()
 	actors.sort()
-	post.append("List of Actors:")
+	Logger.info("List of Actors:")
 	for a in actors:
 		var anim = a.get_node(actorAnimNodePath).get_animation()
 		pairs[a.name] = anim
-		post.append("%s - %s" % [a.name, anim])
-	print(pairs)
+		Logger.info("%s - %s" % [a.name, anim])
 	sendMessage(sender, "/list/actors/reply", pairs)
 
 
@@ -410,11 +411,10 @@ func listAnims(args, sender):
 		reportError("listAnims expects no arguments", sender)
 		return
 	var names = []
-	post.append("List of loaded Animations:")
+	Logger.info("List of loaded Animations:")
 	for a in animFramesLibrary.get_animation_names():
 		names.push_back(a)
-		post.append(a)
-	print(names)
+		Logger.info(a)
 	sendMessage(sender, "/list/anims/reply", names)
 
 
@@ -427,12 +427,11 @@ func listAssets(args, sender):
 	var names = []
 	var paths = assets.sprites + assets.seqs
 	paths.sort()
-	post.append("List of available Animations:")
+	Logger.info("List of available Animations:")
 	for path in paths:
 		var name = getAssetBaseName(path.get_file())
 		names.push_back(name)
-		post.append(name)
-	print(names)
+		Logger.info(name)
 	sendMessage(sender, "/list/assets/reply", names)
 
 func groupActor(args, sender):
@@ -541,8 +540,7 @@ func listCommands(args, sender):
 	commandsMsg += "\n\n=== CUSTOM ===\n" + customCmds.getCommandSummary()
 	reportStatus("/list/commands/reply %s" % commandsMsg, sender)
 	
-	print(commandsMsg)
-	main.get_node("PostTextEdit").append(commandsMsg)
+	Logger.info(commandsMsg)
 
 func openHelp(args, sender):
 	if !args.empty():
@@ -590,7 +588,8 @@ func postMsg(args, sender):
 	
 func postFontSize(args, sender):
 	if len(args) < 1:
-				reportError("postFontSize expects 1 argument.", sender)
+		reportError("postFontSize expects 1 argument.", sender)
+		return
 	main.get_node("PostTextEdit").setFontSize(float(args[0]))
 
 func postIncreaseFont(args, sender):
@@ -604,6 +603,23 @@ func postDecreaseFont(args, sender):
 		reportError("postDecreaseFont expects 0 argument.", sender)
 		return
 	main.get_node("PostTextEdit").decreaseFont()
+
+############################################################
+# Logger commands
+############################################################
+func setLogLevel(args, sender):
+	if len(args) < 1:
+		reportError("setLogLevel expects 1 argument.", sender)
+		return
+	var level = Logger.levelNames.find(args[0].to_upper())
+	Logger.setLevel(level)
+
+func logMsg(args, sender):
+	Logger.logMsg(" ".join(args))
+
+############################################################
+# OSC sending commands
+############################################################
 
 func connectOscRemote(args, sender):
 	oscNode.connectRemote(args)
@@ -667,7 +683,7 @@ func setActorFrame(inArgs, sender):
 		var frame = int(args.args[0])
 		if typeof(frame) != TYPE_INT:
 			frame = int(frame * anim.frames.get_frame_count(anim.animation))
-			print(frame)
+			Logger.debug("%s's frame: %s" % [frame])
 		anim.set_frame(fposmod(frame, anim.frames.get_frame_count(anim.animation)))
 
 
@@ -740,7 +756,7 @@ func setActorScaleX(inArgs, sender):
 		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
 		for node in aa.actors:
 			var scl := Vector2(aa.args[0], node.get("scale").y)
-			print("scale: ",node.get("scale").y)
+			Logger.info("scale: %.2f" % [node.get("scale").y])
 			setPropertyWithDur(node, "scale", scl, dur)
 
 func setActorScaleY(inArgs, sender):
@@ -749,7 +765,7 @@ func setActorScaleY(inArgs, sender):
 		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
 		for node in aa.actors:
 			var scl := Vector2(node.get("scale").x, aa.args[0])
-			print("scale: ",node.get("scale").y)
+			Logger.info("scale: %.2f" % [node.get("scale").y])
 			setPropertyWithDur(node, "scale", scl, dur)
 
 func setActorPivot(inArgs, sender):
@@ -870,7 +886,7 @@ func behindActor(inArgs, sender):
 			var node = aa.actors[index]
 			if node.get_index() > minIndex:
 				var reference = String(aa.args[0])
-				print("Move %s behind %s" % [node.name, reference])
+				Logger.info("Move %s behind %s" % [node.name, reference])
 				actorsNode.move_child(node, minIndex)
 
 
@@ -884,7 +900,7 @@ func frontActor(inArgs, sender):
 		for node in aa.actors:
 			if node.get_index() < maxIndex:
 				var reference = String(aa.args[0])
-				print("Move %s in front of %s" % [node.name, reference])
+				Logger.info("Move %s in front of %s" % [node.name, reference])
 				actorsNode.move_child(node, maxIndex)
 
 func soundActor(inArgs, sender):
@@ -945,10 +961,10 @@ func midiActor(inArgs, sender):
 			if len(aa.args) > 0: 
 				rangemin = int(aa.args[0])
 				rangemin = int(aa.args[1])
-				print("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
+				Logger.debug("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
 			else:
 				# print null
-				print("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:- max-" % [midimsg, signalmsg, ch, num, cmd])
+				Logger.debug("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:- max-" % [midimsg, signalmsg, ch, num, cmd])
 			midiNode.addMidiCmd(midimsg, ch, num, cmd, actor, rangemin, rangemax)
 
 func midiFreeActor(inArgs, sender):
@@ -971,7 +987,7 @@ func midiFreeActor(inArgs, sender):
 	
 	if aa:
 		for actor in aa.actors:
-			print("_on_Midi_%s" % signalmsg)
+			Logger.debug("_on_Midi_%s" % signalmsg)
 #			midiNode.disconnect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
 			midiNode.removeMidiCmd(midimsg, ch, num, cmd, actor)
 			return
@@ -1004,7 +1020,7 @@ func newRoutine(args, sender):
 	if len(args) < 4:
 		reportError("cmdsRoutine expects at least 3 arguments. %d given" % [len(args)], sender)
 		return
-	print("new routine: %s" % [args])
+	Logger.info("new routine: %s" % [args])
 	
 	var name = args[0]
 	var routine
@@ -1040,7 +1056,7 @@ func freeRoutine(args, sender):
 		var routine = routinesNode.get_node(name)
 		routine.stop()
 		routine.remove_and_skip()
-		print("free routine %s" % [name])
+		Logger.info("free routine %s" % [name])
 	else:
 		reportError("Routine not found: %s" % [name], sender)
 
@@ -1120,12 +1136,13 @@ func randCmdArg(inArgs, sender):
 # choose a random value from the list for a command argument
 func chooseCmdArg(inArgs, sender):
 	if len(inArgs) < 2:
-		reportError("choosemdArg expected at least 2 arguments: num arguments - %d" % [len(inArgs)], sender)
+		reportError("chooseCmdArg expected at least 2 arguments: num arguments - %d" % [len(inArgs)], sender)
 		return
 	var cmd = inArgs[0]
 	var actor = inArgs[1]
 	var args = inArgs.slice(2, -1)
 	var argi = randi() % len(args)
 	var arg = args[argi]
-	print("cmd:%s actor:%s args:%s arg:%s" % [cmd, actor, args, arg])
+	Logger.debug("cmd:%s actor:%s args:%s arg:%s" % [cmd, actor, args, arg])
+	Logger.info("Chose argument: %s" % [arg])
 	main.evalCommandList([[cmd, actor, arg]], sender)

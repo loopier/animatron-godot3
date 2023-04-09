@@ -1,7 +1,6 @@
 extends Node2D
 
 var oscrcv
-onready var routines : Dictionary
 # Actor commands:
 #   The first argument for all these commands is the target actor(s).
 #   It may be "!" (selection), an actor instance name or a wildcard string.
@@ -100,6 +99,10 @@ onready var otherCmds = {
 	"/post/font/increase": funcref($OscInterface, "postIncreaseFont"),
 	"/post/font/decrease": funcref($OscInterface, "postDecreaseFont"),
 	
+	# logger
+	"/log": funcref($OscInterface, "logMsg"),
+	"/log/level": funcref($OscInterface, "setLogLevel"),
+	
 	# osc
 	"/osc/remote": funcref($OscInterface, "connectOscRemote"),
 	"/osc/send": funcref($OscInterface, "sendOsc"),
@@ -127,7 +130,9 @@ func getOtherCommandSummary() -> String:
 	return (otherCmds.keys() as PoolStringArray).join('\n')
 	
 
-func _ready():
+func _ready():	
+	Logger.setLevel(Logger.LOG_LEVEL_DEBUG)
+	Logger.setTarget(get_node("PostTextEdit"))
 	randomize()
 		
 	# See: https://gitlab.com/frankiezafe/gdosc
@@ -170,10 +175,10 @@ func evalCommandList(commands : Array, sender):
 			var waitTime = $OscInterface.wait(args, sender)
 			if waitTime:
 				if $OscInterface.allowStatusReport:
-					print("Starting wait of %f seconds..." % [waitTime])
+					Logger.info("Starting wait of %f seconds..." % [waitTime])
 				yield(get_tree().create_timer(waitTime), "timeout")
 				if $OscInterface.allowStatusReport:
-					print("...done waiting %f seconds" % [waitTime])
+					Logger.info("...done waiting %f seconds" % [waitTime])
 		else:
 			var subCmds = evalOscCommand(addr, args, sender)
 			if typeof(subCmds) == TYPE_ARRAY:
@@ -182,7 +187,7 @@ func evalCommandList(commands : Array, sender):
 
 func evalOscCommand(address : String, args, sender):
 	if $OscInterface.allowStatusReport:
-		print("+++ evalOscCommand(", address, ", ", String(args), ")")
+		Logger.info("+++ evalOscCommand(%s, %s" % [address, args])
 	var applyToSelection = address.ends_with("!")
 	if applyToSelection:
 		address = address.trim_suffix("!")
@@ -224,18 +229,18 @@ func _process(_delta):
 		var msg = oscrcv.get_next()
 		var sender = [msg["ip"], msg["port"]]
 		if not $Config.allowRemoteClients and sender[0] != "127.0.0.1":
-			print("Skipping non-local OSC message from ", sender)
+			Logger.warn("Skipping non-local OSC message from %s" % [sender])
 			continue
 		var address = msg["address"]
 		var args = msg["args"]
 		# printing the values, check console
 		if false:
-			print( "address:", address )
-			print( "typetag:", msg["typetag"] )
-			print( "from:" + str( msg["ip"] ) + ":" + str( msg["port"] ) )
-			print( "arguments: ")
+			Logger.debug( "address: %s" % [address] )
+			Logger.debug( "typetag: %s" % [msg["typetag"]] )
+			Logger.debug( "from: %s:%s" % [msg["ip"], msg["port"]] )
+			Logger.debug( "arguments: ")
 			for i in range( 0, msg["arg_num"] ):
-				print( "\t", i, " = ", args[i] )
+				Logger.debug( "\t%s = %s" % [i, args[i]] )
 
 		processOscMsg(address, args, sender)
 
@@ -265,7 +270,7 @@ func _on_OpenFileDialog_file_selected(path):
 	openFile(path)
 
 func openFile(path):
-	print("open file: %s" % [path])
+	Logger.info("open file: %s" % [path])
 	var file = File.new()
 	file.open(path, File.READ)
 	$OscTextEdit.text = file.get_as_text()
@@ -275,7 +280,7 @@ func _on_SaveFileDialog_file_selected(path):
 	saveFile(path)
 
 func saveFile(path):
-	print("save file to: %s" % [path])
+	Logger.info("save file to: %s" % [path])
 	var file = File.new()
 	file.open(path, File.WRITE)
 	file.store_string($OscTextEdit.text)

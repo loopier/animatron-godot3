@@ -58,6 +58,10 @@ config/icon="res://icon.png"
 
 enable_audio_input=true
 
+[autoload]
+
+Logger="*res://Logger.gd"
+
 [display]
 
 window/size/width=1920
