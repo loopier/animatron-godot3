@@ -9,6 +9,8 @@ onready var actorsNode = main.get_node("Actors")
 onready var customCmds : CustomCommands = main.get_node("CustomCommands")
 onready var config : Config = main.get_node("Config")
 onready var metanode = preload("res://MetaNode.tscn")
+onready var routineNode = preload("res://RoutineNode.tscn")
+onready var routinesNode = main.get_node("Routines")
 onready var speechBubbleNode = preload("res://SpeechBubble.tscn")
 onready var audioInputNode = main.get_node("AudioInputPlayer")
 onready var midiNode = main.get_node("Midi")
@@ -993,8 +995,79 @@ func listMidiCmds(args, sender):
 		return
 	var midiCmds = midiNode.listCmds()
 	reportStatus(midiCmds, sender)
-	
 
+############################################################
+# Routine commands
+############################################################
+func newRoutine(args, sender):
+	# /routine name wait repeats cmd
+	if len(args) < 4:
+		reportError("cmdsRoutine expects at least 3 arguments. %d given" % [len(args)], sender)
+		return
+	print("new routine: %s" % [args])
+	
+	var name = args[0]
+	var routine
+	if routinesNode.has_node(name):
+		routine = routinesNode.get_node(name)
+	else:
+		routine = routineNode.instance()
+		routine.name = name
+		routinesNode.add_child(routine)
+	routine.setRepeats(args[1])
+	routine.wait_time = float(args[2])
+	routine.cmd = args.slice(3,-1)
+	routine.start()
+
+func startRoutine(args, sender):
+	if len(args) < 1:
+		reportError("cmdsRoutine expects 1 argument. %d given" % [len(args)], sender)
+		return
+	routinesNode.get_node(args[0]).start()
+	
+func stopRoutine(args, sender):
+	if len(args) < 1:
+		reportError("cmdsRoutine expects 1 argument. %d given" % [len(args)], sender)
+		return
+	routinesNode.get_node(args[0]).stop()
+
+func freeRoutine(args, sender):
+	if len(args) < 1:
+		reportError("cmdsRoutine expects 1 argument. %d given" % [len(args)], sender)
+		return
+	var name = args[0]
+	if routinesNode.has_node(name):
+		var routine = routinesNode.get_node(name)
+		routine.stop()
+		routine.remove_and_skip()
+		print("free routine %s" % [name])
+	else:
+		reportError("Routine not found: %s" % [name], sender)
+
+func listRoutines(args, sender):
+	if len(args) < 0:
+		reportError("cmdsRoutine expects 0 arguments. %d given" % [len(args)], sender)
+		return
+	var routines : Dictionary
+	var routinesListStr : String
+	for routine in routinesNode.get_children():
+		routines[routine.name] = routine.cmd
+		var intervalStr : String
+		if routine.repeats == 0: 
+			intervalStr = "inf"
+		else:
+			intervalStr = "%d times" % [routine.repeats]
+		var statusStr : String
+		if routine.is_stopped():
+			statusStr = "stopped"
+		else:
+			statusStr = "running"
+		routinesListStr += "\n%s (%s) %d times every %.2f: %s" % [routine.name, statusStr, routine.repeats, routine.wait_time, " ".join(routine.cmd)]
+	reportStatus("routines: %s" % [routinesListStr], sender)
+
+############################################################
+# Frame commands
+############################################################
 func onFrameActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "onFrameActor", 4, sender)
 	if aa:

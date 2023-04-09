@@ -1,6 +1,7 @@
 extends Node2D
 
 var oscrcv
+onready var routines : Dictionary
 # Actor commands:
 #   The first argument for all these commands is the target actor(s).
 #   It may be "!" (selection), an actor instance name or a wildcard string.
@@ -66,6 +67,13 @@ onready var otherCmds = {
 	"/midi/debug": funcref($OscInterface, "midiEnableStatusMessages"),
 	"/list/midi": funcref($OscInterface, "listMidiCmds"),
 	# "/wait" command is handled specially 
+	
+	# time
+	"/routine": funcref($OscInterface, "newRoutine"),
+	"/routine/start": funcref($OscInterface, "startRoutine"),
+	"/routine/stop": funcref($OscInterface, "stopRoutine"),
+	"/routine/free": funcref($OscInterface, "freeRoutine"),
+	"/list/routines": funcref($OscInterface, "listRoutines"),
 	
 	# write
 	"/load/alphabet": funcref($Letters, "loadAlphabet"),

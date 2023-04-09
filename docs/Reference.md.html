@@ -70,6 +70,14 @@ Address | Args <img width="100px"/> | Description
 `/osc/remote` | `ip:s port:i`| Register a remote OSC client at `ip` address on `port`.
 `/osc/send` | `addr:s ... args`| Send an OSC message with an arbitrary number of arguments to a remote client.
 
+## Routines commands
+Address | Args <img width="100px"/> | Description
+--------|------|------------
+`/routine` | `name:s repeats:i interval:f cmd:...`| | Start a routine named `name` that sends `cmd` every `interval` of time (in seconds) for an arbitrary number of `repeats`.
+`/routine/start` | `name:s`| | Start the routine named `name`.
+`/routine/stop` | `name:s`| | Stop the routine named `name`.
+`/routine/free` | `name:s`| | Remove the routine named `name`.
+
 ## Other commands
 Address | Args <img width="100px"/> | Description
 --------|------|------------
