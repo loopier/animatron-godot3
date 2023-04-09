@@ -26,7 +26,7 @@ func next():
 	if repeats != 0 and iteration >= (repeats - 1):
 			print("routine ended after %s times: %s" % [iteration + 1, name])
 			iteration = 0
-			stop()
+			remove_and_skip()
 			return
 	
 	iteration = (iteration + 1) % max(repeats, 1)
