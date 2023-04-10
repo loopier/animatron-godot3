@@ -1085,7 +1085,12 @@ func listRoutines(args, sender):
 # Frame commands
 ############################################################
 func onFrameActor(inArgs, sender):
-	var aa = getActorsAndArgs(inArgs, "onFrameActor", 4, sender)
+	if len(inArgs) < 4:
+		reportError("onFrameActor expects at least 4 arguments: given %s" % [len(inArgs)], sender)
+		return
+	# this is a hack to overcome the argument limit. We want it to check for minimum number
+	# of arguments, not the exact one
+	var aa = getActorsAndArgs(inArgs, "onFrameActor", len(inArgs)-1, sender)
 	if aa:
 		for actor in aa.actors:
 			var frame = inArgs[1]
