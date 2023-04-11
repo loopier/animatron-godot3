@@ -6,6 +6,7 @@ var oscrcv
 #   It may be "!" (selection), an actor instance name or a wildcard string.
 onready var actorCmds = {
 	"/free": funcref($OscInterface, "freeActor"),
+	"/anim": funcref($OscInterface, "setActorAnim"),
 	"/play": funcref($OscInterface, "playActor"),
 	"/play/rand": funcref($OscInterface, "playActorRandom"),
 	"/play/reverse": funcref($OscInterface, "playActorReverse"),
@@ -186,6 +187,7 @@ func evalCommandList(commands : Array, sender):
 
 
 func evalOscCommand(address : String, args, sender):
+	Logger.debug("OSC: %s %s" % [address, args])
 	if $OscInterface.allowStatusReport:
 		Logger.info("+++ evalOscCommand(%s, %s" % [address, args])
 	var applyToSelection = address.ends_with("!")

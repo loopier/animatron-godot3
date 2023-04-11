@@ -641,7 +641,19 @@ func freeActor(inArgs, sender):
 		actorsNode.remove_child(node)
 	reportStatus("Freed: " + String([] if !args else getNames(args.actors)), sender)
 
-
+func setActorAnim(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setActorAnim", 1, sender)
+	if args: for node in args.actors:
+		var animNode = node.get_node(actorAnimNodePath)
+		var animName = args.args[0]
+		if !animFramesLibrary.has_animation(animName):
+			reportError("Anim not found: '%s'" % animName, sender)
+			return
+		# Switch to the animation library that includes runtime-loaded data
+#		node.get_node(actorAnimNodePath).frames = animFramesLibrary
+		animNode.play(animName)
+		reportStatus("Changed node '%s' animation to '%s'" % [node.name, animName], sender)
+		
 func playActor(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "playActor", null, sender)
 	if args: for node in args.actors:
