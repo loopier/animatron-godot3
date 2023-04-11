@@ -17,14 +17,14 @@ network, using the Open Sound Control (OSC) protocol.
 
 - Download `animatron-YOUR_PLATFORM-vX.X.X_X.zip` from the [latest release](https://github.com/loopier/animatron/releases).
 - Download `animatron-assets-vX.X.X_X.zip` from the [latest release](https://github.com/loopier/animatron/releases) 
-- Uncompress both.
 
-## Linux and Windows
-- Move the **CONTENTS** of the assets folder (not the folder itself) into the exectuable folder. You should end up with a structure similar to this:
+## Linux 
+- Uncompress `animatron-linux-vX.X.X_X.zip`
+- Uncompress `animatron-assets-vX.X.X_X.zip`
+- Move the **CONTENTS** of the `animatron-assets-vX.X.X_X` directory (not the directory itself) into `animatron-linux-vX.X.X_X`. You should end up with a structure similar to this:
 
-**Linux**
 ```
-animatron/
+animatron-linux-vX.X.X_X/
 ├── animations/
 ├── commands/
 ├── config/
@@ -44,9 +44,13 @@ Alternatively: open a terminal and run the command:
 $ path/to/animatron/Animatron.x86_64
 ```
 
-**Windows**
+## Windows
+- Uncompress `animatron-windows-vX.X.X_X.zip`
+- Uncompress `animatron-assets-vX.X.X_X.zip`
+- Move the **CONTENTS** of the `animatron-assets-vX.X.X_X` folder (not the folder itself) into `animatron-windows-vX.X.X_X`. You should end up with a structure similar to this:
+
 ```
-animatron/
+animatron-windows-vX.X.X_X/
 ├── animations/
 ├── commands/
 ├── config/
@@ -71,18 +75,18 @@ Run `Animatron.exe` by double-clicking it.
 - Move the **CONTENTS** of the assets folder (not the folder itself) into `Animatron.app/Contents/MacOs`. You should end up with a structure similar to this:
 
 ```
-animatron/
-├── animations/
-├── commands/
-├── config/
-├── docs/
-├── fonts/
-├── icons/
-├── scripts/
-├── ...
-├── Animatron.pck
-├── Animatron.exe
-├── libgdosc.dll
+Animatron.app
+└── Contents
+    ├── ...
+    ├── MacOS
+    │   └── Animatron
+        ├── animations/
+        ├── commands/
+        ├── config/
+        ├── docs/
+        ├── fonts/
+        ├── icons/
+        ├── scripts/
 ```
 
 # Compile from source
