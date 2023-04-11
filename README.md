@@ -15,9 +15,60 @@ network, using the Open Sound Control (OSC) protocol.
 
 # Installation
 
-- Download **both** the [latest release](https://github.com/loopier/animatron/releases) for your platform **and the animatron-assets-vX.X.X_X.zip file**.
+- Download `animatron-YOUR_PLATFORM-vX.X.X_X.zip` from the [latest release](https://github.com/loopier/animatron/releases).
+- Download `animatron-assets-vX.X.X_X.zip` from the [latest release](https://github.com/loopier/animatron/releases) 
 - Uncompress both.
-- Move the **contents** of the executable into the uncompressed assets folder. You should end up with a structure similar to this:
+
+## Linux and Windows
+- Move the **CONTENTS** of the assets folder (not the folder itself) into the exectuable folder. You should end up with a structure similar to this:
+
+**Linux**
+```
+animatron/
+├── animations/
+├── commands/
+├── config/
+├── docs/
+├── fonts/
+├── icons/
+├── scripts/
+├── ...
+├── Animatron.pck
+├── Animatron.x86_64
+├── libgdosc.so
+```
+Run `Animatron.x86_64` executable by double-clicking it. 
+Alternatively: open a terminal and run the command:
+
+```
+$ path/to/animatron/Animatron.x86_64
+```
+
+**Windows**
+```
+animatron/
+├── animations/
+├── commands/
+├── config/
+├── docs/
+├── fonts/
+├── icons/
+├── scripts/
+├── ...
+├── Animatron.pck
+├── Animatron.exe
+├── libgdosc.dll
+```
+
+Run `Animatron.exe` by double-clicking it. 
+
+## MacOS
+
+- Uncompress the `animatron-macos-vX.X.X.zip` file. This should unpack an `Animatron.app` bundle.
+- CTRL + CLICK (or RIGHT-CLICK) on `Animatron.app` and select `Show package contents` from the popup menu.
+- Navigate to `Contents/MacOS`
+- Uncompress the `animatron-assets-VX.X.X.zip` file.
+- Move the **CONTENTS** of the assets folder (not the folder itself) into `Animatron.app/Contents/MacOs`. You should end up with a structure similar to this:
 
 ```
 animatron/
@@ -28,20 +79,13 @@ animatron/
 ├── fonts/
 ├── icons/
 ├── scripts/
+├── ...
 ├── Animatron.pck
-# linux
-├── Animatron.x86_64
-├── libgdosc.so
-# windows
 ├── Animatron.exe
 ├── libgdosc.dll
 ```
 
-Run either the `.x86_64` file if you're on Linux, or the `.exe` if you're on Windows.
-
-To start the tutorial, write `/tutorial` on the editor and press `CTRL + ENTER`.
-
-## Compile from source
+# Compile from source
 
 Clone or download this repository.
 
@@ -76,7 +120,9 @@ browser and it will appear correctly formatted.
 
 The best way to learn how it works is running through the tutorial. Type `/tutorial` and press `CTRL + ENTER`. Follow the instructions and you'll get the hang of it pretty quickly.
 
-## Remote
+See also the [OSC Reference](docs/Reference.md.html) for a list of commands and their usage.
+
+# Remote
 
 Animatron can also be used remotely via OSC messages. The commands are the same. The exact syntax of the message depends on the software you're using to send the messages.
 
