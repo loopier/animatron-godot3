@@ -89,12 +89,13 @@ Animatron.app
         ├── scripts/
 ```
 
+Run `Animatron.app` by double-clicking it. 
+
 # Compile from source
 
 Clone or download this repository.
 
-1. Install [Godot](https://godotengine.org/download) (normally the
-   latest version, e.g. v3.3.4 or v3.4).
+1. Install [Godot](https://godotengine.org/download) (currently Animatron only works with Godot v3.X).
 
 1. Clone or download [this
    repository](https://github.com/loopier/animatron).
