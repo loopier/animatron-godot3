@@ -274,8 +274,20 @@ func _on_OpenFileDialog_file_selected(path):
 func openFile(path):
 	Logger.info("open file: %s" % [path])
 	var file = File.new()
-	file.open(path, File.READ)
-	$OscTextEdit.text = file.get_as_text()
+	var err = file.open(path, File.READ)
+	if err:
+		Logger.error("can't open: %s" % [ProjectSettings.globalize_path(path)])
+		if path.is_rel_path():
+			var tryPath = "res://" + path
+			err = file.open(tryPath, File.READ)
+			if err:
+				Logger.error("can't open as: %s" % [ProjectSettings.globalize_path(tryPath)])
+				tryPath = OS.get_executable_path().get_base_dir() + "/" + path
+				err = file.open(tryPath, File.READ)
+				if err:
+					Logger.error("can't open relative to executable: %s" % [tryPath])
+	if !err:
+		$OscTextEdit.text = file.get_as_text()
 	file.close()
 
 func _on_SaveFileDialog_file_selected(path):
