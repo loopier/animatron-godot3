@@ -66,6 +66,8 @@ animatron-windows-vX.X.X_X/
 
 Run `Animatron.exe` by double-clicking it. 
 
+If you see an error like "Can't open dynamic library ... The specified module could not be found", you may need to install the [MSVC Redistributable package](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170).
+
 ## MacOS
 
 - Uncompress the `animatron-macos-vX.X.X.zip` file. This should unpack an `Animatron.app` bundle.
