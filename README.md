@@ -89,7 +89,14 @@ Animatron.app
         ├── scripts/
 ```
 
-Run `Animatron.app` by double-clicking it. 
+Run `Animatron.app` by double-clicking it. The first time you run it, it may be prevented from opening by the macOS Gatekeeper. In this case, you should right-click (or Control-click) the app and select *Open*. If a security warning dialog appears, click the *Open* button to explicitly give permission to run it (only do this if you're sure you've downloaded Animatron from a reliable source). Once you've given your permission, it will remember it for future runs.
+
+If `Animatron.app` fails to run even after following the above steps, it may have the "quarantine" extended attribute set. This can happen if the program you used to download it (e.g. Safari, Chrome, Telegram) is not trusted. If you are sure it's from a safe place, you may remove the quarantine flag by opening the *Terminal* app and changing to the directory where you have `Animatron.app`. From that directory, run the following command:
+
+```
+$ cd ~/Downloads   # change to wherever you have the app installed
+$ xattr -d -r com.apple.quarantine Animatron.app
+```
 
 # Compile from source
 
