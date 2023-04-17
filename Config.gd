@@ -10,7 +10,7 @@ var allowRemoteClients := true
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print("User data dir: ", OS.get_user_data_dir())
+	Logger.info("User data dir: %s" % [OS.get_user_data_dir()])
 
 
 ############################################################
@@ -24,7 +24,7 @@ func animPathSet(path):
 # OSC config commands
 ############################################################
 func loadConfig(args, sender):
-	print(cmds)
+#	print(cmds)
 	if args.size() != 1:
 		osc.reportError("loadConfig expects one argument", sender)
 		return
@@ -40,12 +40,12 @@ func moveWindowToScreen(screen, sender):
 
 
 func setWindowPosition(pos, sender):
-	print("window position: ", pos)
+	Logger.debug("window position: %s" % [pos])
 	OS.set_window_position(Vector2(pos[0], pos[1]))
 
 
 func setWindowSize(args, sender):
-	print("window size: ", args)
+	Logger.debug("window size: %s" % [args])
 	var size = Vector2(args[0], args[1])
 	var vp = get_viewport()
 	var aspect = vp.size.x / vp.size.y

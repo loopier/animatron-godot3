@@ -44,22 +44,22 @@ func setLevelVerbose():
 	setLevel(LOG_LEVEL_VERBOSE)
 
 func fatal( msg ):
-	logMsg("[FATAL]: %s" % [msg])
+	logMsg("[FATAL]: %s" % [msg], true)
 
 func error( msg ):
 	if level < LOG_LEVEL_ERROR:
 		return
-	logMsg("[ERROR]: %s" % [msg])
+	logMsg("[ERROR]: %s" % [msg], true)
 
 func warn( msg ):
 	if level < LOG_LEVEL_WARNING:
 		return
-	logMsg("[WARNING]: %s" % [msg])
+	logMsg("[WARNING]: %s" % [msg], true)
 
 func info( msg ):
 	if level < LOG_LEVEL_INFO:
 		return
-	logMsg("[INFO]: %s" % [msg])
+	logMsg("[INFO]: %s" % [msg], true)
 
 func debug( msg ):
 	if level < LOG_LEVEL_DEBUG:
@@ -71,7 +71,7 @@ func verbose( msg ):
 		return
 	logMsg("[VERBOSE]: %s" % [msg])
 
-func logMsg( msg ):
+func logMsg( msg, post=false ):
 	print(msg)
-	if target != null:
+	if target != null and post:
 		target.append(msg)

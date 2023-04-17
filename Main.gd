@@ -132,7 +132,7 @@ func getOtherCommandSummary() -> String:
 	
 
 func _ready():	
-	Logger.setLevel(Logger.LOG_LEVEL_DEBUG)
+	Logger.setLevel(Logger.LOG_LEVEL_INFO)
 	Logger.setTarget(get_node("PostTextEdit"))
 	randomize()
 		
@@ -175,11 +175,9 @@ func evalCommandList(commands : Array, sender):
 		if addr == "/wait":
 			var waitTime = $OscInterface.wait(args, sender)
 			if waitTime:
-				if $OscInterface.allowStatusReport:
-					Logger.info("Starting wait of %f seconds..." % [waitTime])
+				Logger.debug("Starting wait of %f seconds..." % [waitTime])
 				yield(get_tree().create_timer(waitTime), "timeout")
-				if $OscInterface.allowStatusReport:
-					Logger.info("...done waiting %f seconds" % [waitTime])
+				Logger.debug("...done waiting %f seconds" % [waitTime])
 		else:
 			var subCmds = evalOscCommand(addr, args, sender)
 			if typeof(subCmds) == TYPE_ARRAY:
@@ -187,9 +185,7 @@ func evalCommandList(commands : Array, sender):
 
 
 func evalOscCommand(address : String, args, sender):
-	Logger.debug("OSC: %s %s" % [address, args])
-	if $OscInterface.allowStatusReport:
-		Logger.info("+++ evalOscCommand(%s, %s" % [address, args])
+	Logger.debug("+++ evalOscCommand(%s, %s" % [address, args])
 	var applyToSelection = address.ends_with("!")
 	if applyToSelection:
 		address = address.trim_suffix("!")

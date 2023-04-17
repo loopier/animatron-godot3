@@ -37,7 +37,6 @@ func _on_OscTextEdit_gui_input(event):
 		decreaseFont()
 
 func evalRegion():
-	print("eval region")
 	textToOsc(get_selection_text())
 
 func findPrevLinebreak( fromLine ):
@@ -92,7 +91,6 @@ func textToOsc( msgString ):
 	main.evalCommandList(cmds, null)
 
 func selectLine():
-	print("eval line")
 	var line = cursor_get_line()
 	cursor_set_column(len(get_line(line)))
 	select(line, 0, line, cursor_get_column())
@@ -122,12 +120,12 @@ func append( msg ):
 func increaseFont():
 	var font = get("custom_fonts/font")
 	font.set_size(font.get_size() + 1)
-	main.post("font size: %d" % [font.get_size()])
+	Logger.verbose("font size: %d" % [font.get_size()])
 	
 func decreaseFont():
 	var font = get("custom_fonts/font")
 	font.set_size(font.get_size() - 1)
-	main.post("font size: %d" % [font.get_size()])
+	Logger.verbose("font size: %d" % [font.get_size()])
 
 func setFontSize( size ):
 	get("custom_fonts/font").set_size(size)
