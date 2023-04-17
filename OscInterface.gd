@@ -206,7 +206,6 @@ static func sendMessage(target, oscAddress, oscArgs):
 
 func reportError(errString, target):
 	push_error(errString)
-	post.append(errString)
 	Logger.error(errString)
 	if target:
 		sendMessage(target, "/error/reply", [errString])
@@ -215,7 +214,6 @@ func reportError(errString, target):
 func reportStatus(statusString, target):
 	if not allowStatusReport:
 		return
-	post.append(statusString)
 	Logger.info(statusString)
 	if target:
 		sendMessage(target, "/status/reply", [statusString])
@@ -250,7 +248,7 @@ func matchNodes(nameWildcard, sender):
 	if matches.empty():
 		reportStatus("No matches found for: " + nameWildcard, sender)
 	elif allowStatusReport:
-		Logger.info("Matched: %s" % [getNames(matches)])
+		Logger.verbose("Matched: %s" % [getNames(matches)])
 	return matches
 
 

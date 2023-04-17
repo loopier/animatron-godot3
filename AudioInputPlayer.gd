@@ -58,7 +58,7 @@ func _ready():
 
 func addSoundCmd( band, cmd, actor, minVal, maxVal ):
 	var key = getKey(cmd, actor)
-	cmds[min(band, len(cmds)-1)][key] = {"addr": cmd, "actor": actor, "range": [minVal, maxVal]}
+	cmds[min(int(band), len(cmds)-1)][key] = {"addr": cmd, "actor": actor, "range": [float(minVal), float(maxVal)]}
 	print(cmds)
 
 # removes all commands for BAND
@@ -69,7 +69,7 @@ func removeAllSoundCmds( band ):
 # removes only the CMD for ACTOR in BAND
 func removeSoundCmd( band, cmd, actor ):
 	var key = getKey(cmd, actor)
-	cmds[min(band, len(cmds)-1)].erase(key)
+	cmds[min(int(band), len(cmds)-1)].erase(key)
 	print(cmds)
 
 func getKey(cmd, actor):
@@ -85,5 +85,5 @@ func eventToOsc(cmdsList, value, inmin, inmax):
 		var minval = cmdsList[addr][0]
 		var maxval = cmdsList[addr][1]
 		value  = $Helper.linlin(value, inmin, inmax, minval, maxval)
-		print("sending msg from MIDI: %s %f" % [addr, value])
+		Logger.verbose("sending msg from MIDI: %s %f" % [addr, value])
 		main.evalOscCommand(addr, [name, value], null)

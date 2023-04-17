@@ -46,6 +46,10 @@ script = ExtResource( 5 )
 
 [node name="AudioInputPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 1 )
+volume_db = -11.941
+pitch_scale = 1.21
+autoplay = true
+bus = "InputBus"
 script = ExtResource( 6 )
 
 [node name="OscTextEdit" type="TextEdit" parent="."]
