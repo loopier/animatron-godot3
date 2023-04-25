@@ -75,7 +75,7 @@ static func getAssetFilesMatching(path, nameWildcard):
 				if baseFile.match(nameWildcard):
 					var seqFrames = getAnimSequenceFrames(fullPath);
 					if !seqFrames.empty():
-						Logger.info("Sequence (%d frames) file name: %s" % [seqFrames.size(), filename])
+						Logger.debug("Sequence (%d frames) file name: %s" % [seqFrames.size(), filename])
 						files.seqs.push_back(fullPath)
 			elif filename.ends_with(".png") or filename.ends_with(".jpg"):
 				var baseFile = getAssetBaseName(filename)
@@ -426,10 +426,12 @@ func listAssets(args, sender):
 	var paths = assets.sprites + assets.seqs
 	paths.sort()
 	Logger.info("List of available Animations:")
-	for path in paths:
+	for i in range(len(paths)):
+		var path = paths[i]
+		var numImgs = len(getAnimSequenceFrames(path))
 		var name = getAssetBaseName(path.get_file())
 		names.push_back(name)
-		Logger.info(name)
+		Logger.info("%s (%d)" % [name, numImgs])
 	sendMessage(sender, "/list/assets/reply", names)
 
 func groupActor(args, sender):
