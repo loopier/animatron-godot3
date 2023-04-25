@@ -86,6 +86,7 @@ onready var otherCmds = {
 	"/bg": funcref($OscInterface, "setBackgroundColor"),
 	"/list/commands": funcref($OscInterface, "listCommands"),
 	"/help": funcref($OscInterface, "openHelp"),
+	"/user/datapath": funcref($OscInterface, "postUserDataPath"),
 	
 	# editor
 	"/tutorial": funcref($OscInterface, "loadTutorial"),

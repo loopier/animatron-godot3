@@ -547,6 +547,9 @@ func openHelp(args, sender):
 		reportError("openHelp expects no arguments", sender)
 	OS.shell_open(ProjectSettings.globalize_path("res://docs/Reference.md.html"))
 
+func postUserDataPath(args, sender):
+	reportStatus(OS.get_user_data_dir(), sender)
+
 func openFile(args, sender):
 	if len(args) != 0:
 		main.openFile(args[0])
