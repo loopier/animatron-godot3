@@ -54,7 +54,6 @@ config/name="Animatron"
 config/description="A live coding framework for 2D animation."
 run/main_scene="res://Main.tscn"
 config/use_custom_user_dir=true
-config/custom_user_dir_name="animatron"
 config/icon="res://icon.png"
 
 [audio]
