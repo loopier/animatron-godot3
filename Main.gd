@@ -68,6 +68,7 @@ onready var otherCmds = {
 	#rand	
 	"/rand": funcref($OscInterface, "randCmdArg"),
 	"/choose": funcref($OscInterface, "chooseCmd"),
+	"/choose/arg": funcref($OscInterface, "chooseArg"),
 	
 	# time
 	# "/wait" command is handled specially 	

@@ -1045,8 +1045,23 @@ func randCmdArg(inArgs, sender):
 		var value = rand_range(float(aa.args[0]), float(aa.args[1]))
 		main.evalCommandList([[cmd, actor.name, value]], sender)
 
+func chooseCmd(inArgs, sender):
+	var cmds : Array
+	var last = 0
+	for i in len(inArgs):
+		if inArgs[i] == ",":
+			cmds.push_back(inArgs.slice(last, i-1))
+			last = i+1
+		if i == len(inArgs) - 1:
+			cmds.push_back(inArgs.slice(last, -1))
+	Logger.debug("choose cmd: %s" % [cmds])
+	var randIndex = randi() % len(cmds)
+	var cmd = cmds[randIndex]
+	Logger.debug("chosen cmd: %s" % [cmd])
+	main.evalCommandList([cmd], sender)
+
 # choose a random value from the list for a command argument
-func chooseCmdArg(inArgs, sender):
+func chooseArg(inArgs, sender):
 	if len(inArgs) < 2:
 		reportError("chooseCmdArg expected at least 2 arguments: num arguments - %d" % [len(inArgs)], sender)
 		return
@@ -1056,7 +1071,7 @@ func chooseCmdArg(inArgs, sender):
 	var argi = randi() % len(args)
 	var arg = args[argi]
 	Logger.debug("cmd:%s actor:%s args:%s arg:%s" % [cmd, actor, args, arg])
-	Logger.info("Chose argument: %s" % [arg])
+	Logger.debug("Chose argument: %s" % [arg])
 	main.evalCommandList([[cmd, actor, arg]], sender)
 
 ############################################################

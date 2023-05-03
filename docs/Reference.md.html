@@ -59,8 +59,6 @@ Address | Args <img width=675px/> | Description
 `/onfinish`| `actor:s subCommand`| Add `subCommand` to be triggered on the last frame. The `subCommand` can be any valid command.
 `/onfinish/free` | `actor:s subCommand`| Remove `subCommand` trigger from the last frame. The `subCommand` only needs the command address (with leading `/`) and the actor name -- don't any the command parameter value.
 `/list/sequence` | `actor:s` | Print the list of commands triggered on all `actor` frames.
-`/rand` | `cmd:s actor:s min:f max:f` | Send a `cmd` with a random value between `min` and `max.`**This only works with single-value commands.**
-`/choose` | `cmd:s actor:s arg1 ... argN` | Send a `cmd` with a value randomly chosen from any of the arguments. **This only works with single-value commands.**
 
 ## Communications commands
 Address | Args <img width="100px"/> | Description
@@ -69,6 +67,13 @@ Address | Args <img width="100px"/> | Description
 `/midi/free` <br/><br/> `/midi/free!` | `midimsg:s midich:i midinum:i actor:s` <br/><br/> `midimsg:i midich:i midinum:i` | Unmap MIDI `midimsg` for `midinum` in channel `midich`.
 `/osc/remote` | `ip:s port:i`| Register a remote OSC client at `ip` address on `port`.
 `/osc/send` | `addr:s ... args`| Send an OSC message with an arbitrary number of arguments to a remote client.
+
+## Randomness commands
+Address | Args <img width="100px"/> | Description
+--------|------|------------
+`/rand` | `cmd:s actor:s min:f max:f` | Send a `cmd` with a random value between `min` and `max.`**This only works with single-value commands.**
+`/choose` | `cmd1 , ... , cmdN` | Randomly choose one of the **comma separated** commands and send it. Commands are fully formed commands with the regular OSC syntax. **NOTE: commas need to be SURROUNDED by SPACES.**
+`/choose/arg` | `cmd:s actor:s arg1 ... argN` | Send a `cmd` with a value randomly chosen from any of the arguments. **This only works with single-value commands.**
 
 ## Routines commands
 Address | Args <img width="100px"/> | Description
@@ -119,6 +124,7 @@ Address | Args <img width="100px"/> | Description
 `/editor/font/size` | `size:i` | Set the font size of the editor.
 `/editor/font/increase` | | Increase the font size of the editor.
 `/editor/font/decrease` | | Decrease the font size of the editor.
+`/editor/clear` | | Clears the editor. **CANNOT BE UNDONE.**
 `/post` | `msg:s` | Print `msg` in the post window.
 `/post/font/size` |`size:i` | Set the font size of the post window.
 `/post/font/increase` | | Increase the font size of the post.
