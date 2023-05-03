@@ -209,7 +209,7 @@ func evalOscCommand(address : String, args, sender):
 		for subCmd in cmd.cmds:
 			var subAddr = subCmd[0]
 			Logger.debug("subCmd: (%s)%s" % [typeof(subCmd), subCmd])
-			Logger.logDict($CustomCommands.commands)
+#			Logger.logDict($CustomCommands.commands)
 			var subArgs = Array(subCmd).slice(1, -1) if subCmd.size() > 1 else []
 			for i in range(subArgs.size()):
 				if subArgs[i].begins_with("$"):

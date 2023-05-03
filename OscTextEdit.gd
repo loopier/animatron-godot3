@@ -99,10 +99,10 @@ func evalDefs(text):
 	regex.compile("\\n\\t(.*)")
 	for result in regex.search_all(text):
 		Logger.debug("def subcmd: %s" % [result.get_string()])
-		cmds.push_back(result.get_string().strip_edges())
+		cmds.push_back(result.get_string().strip_edges().split(" "))
 	Logger.debug("def: %s args: %s" % [defCmd, defArgs])
 	Logger.debug("sub cmds: %s" % [cmds])
-	main.get_node("CustomCommands").defineCommand(defCmd, [defArgs], cmds)
+	main.get_node("CustomCommands").defineCommand(defCmd, defArgs, cmds)
 
 func textToOsc( msgString ):
 	var cmds = []
