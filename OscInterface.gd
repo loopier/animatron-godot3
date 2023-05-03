@@ -470,12 +470,15 @@ func iterateGroup(args, sender):
 # in a generic way (passing the group as argument).
 # Example: /at 3 /frame gp 0 --> /frame gp3 0
 func atGroupItem(args, sender):
-	var cmd = args[1]
+	var cmd = [args[1]]
 	var groupName = args[2]
-	var cmdArgs = Array(args).slice(2, -1) if args.size() > 1 else []
+	var cmdArgs = Array(args).slice(3, -1) if args.size() > 2 else []
 	var members = get_tree().get_nodes_in_group(groupName)
 	var member = members[int(args[0])]
-	main.evalCommandList([[cmd, member.name, cmdArgs]], sender)
+	cmd.append(member.name)
+	cmd.append_array(cmdArgs)
+	Logger.verbose("cmd at: %s" % [cmd])
+	main.evalCommandList([cmd], sender)
 
 func selectActor(args, sender):
 	if args.empty():

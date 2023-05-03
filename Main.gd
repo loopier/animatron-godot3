@@ -57,7 +57,7 @@ onready var otherCmds = {
 	"/group": funcref($OscInterface, "groupActor"),
 	"/ungroup": funcref($OscInterface, "ungroupActor"),
 	"/iter": funcref($OscInterface, "iterateGroup"),
-	"/at": funcref($OscInterface, "doAtGroupItem"),
+	"/at": funcref($OscInterface, "atGroupItem"),
 	"/select": funcref($OscInterface, "selectActor"),
 	"/deselect": funcref($OscInterface, "deselectActor"),
 	"/selected": funcref($OscInterface, "listSelectedActors"),
