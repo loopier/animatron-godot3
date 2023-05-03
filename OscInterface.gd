@@ -450,6 +450,33 @@ func ungroupActor(args, sender):
 		if node.is_in_group(groupName):
 			node.remove_from_group(groupName)
 
+# send a command to every member of the group
+func iterateGroup(args, sender):
+	var cmdAddr = args[0]
+	var groupName = args[1]
+	var cmdArgs = Array(args).slice(2, -1) if args.size() > 1 else []
+	var members = get_tree().get_nodes_in_group(groupName)
+	Logger.debug("iterate: %s" % [groupName])
+	var cmds : Array
+	for member in members:
+		var cmd = [cmdAddr, member.name]
+		cmd.append_array(cmdArgs)
+		cmds.append(cmd)
+		Logger.verbose("cmd: %s" % [cmd])
+	main.evalCommandList(cmds, sender)
+
+# Send a command to a specific member in the group by index.
+# This allows for /defs to send commands to specific (indexed) members of a group
+# in a generic way (passing the group as argument).
+# Example: /at 3 /frame gp 0 --> /frame gp3 0
+func atGroupItem(args, sender):
+	var cmd = args[1]
+	var groupName = args[2]
+	var cmdArgs = Array(args).slice(2, -1) if args.size() > 1 else []
+	var members = get_tree().get_nodes_in_group(groupName)
+	var member = members[int(args[0])]
+	main.evalCommandList([[cmd, member.name, cmdArgs]], sender)
+
 func selectActor(args, sender):
 	if args.empty():
 		listSelectedActors(args, sender)

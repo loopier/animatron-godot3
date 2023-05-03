@@ -62,14 +62,9 @@ size_flags_vertical = 10
 custom_colors/current_line_color = Color( 0, 0, 0, 0.0784314 )
 custom_fonts/font = SubResource( 2 )
 custom_styles/normal = ExtResource( 9 )
-text = "/log/level debug
-/new d dot
-/choose/arg /position/x d 0.2 0.7
-/choose /cmd1 act1 arg1 arg1.2 , /cmd2 act2 arg2 , /cmd3 , /cmd4 act4"
 highlight_current_line = true
 syntax_highlighting = true
 show_line_numbers = true
-scroll_vertical = 3.0
 minimap_draw = true
 caret_block_mode = true
 caret_blink = true

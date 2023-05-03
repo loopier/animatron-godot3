@@ -56,6 +56,8 @@ onready var otherCmds = {
 	"/list/assets": funcref($OscInterface, "listAssets"),
 	"/group": funcref($OscInterface, "groupActor"),
 	"/ungroup": funcref($OscInterface, "ungroupActor"),
+	"/iter": funcref($OscInterface, "iterateGroup"),
+	"/at": funcref($OscInterface, "doAtGroupItem"),
 	"/select": funcref($OscInterface, "selectActor"),
 	"/deselect": funcref($OscInterface, "deselectActor"),
 	"/selected": funcref($OscInterface, "listSelectedActors"),
