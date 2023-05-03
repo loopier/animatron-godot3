@@ -474,7 +474,8 @@ func atGroupItem(args, sender):
 	var groupName = args[2]
 	var cmdArgs = Array(args).slice(3, -1) if args.size() > 2 else []
 	var members = get_tree().get_nodes_in_group(groupName)
-	var member = members[int(args[0])]
+	var index = int(args[0]) % len(members)
+	var member = members[index]
 	cmd.append(member.name)
 	cmd.append_array(cmdArgs)
 	Logger.verbose("cmd at: %s" % [cmd])
