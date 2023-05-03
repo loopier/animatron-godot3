@@ -205,6 +205,8 @@ func evalOscCommand(address : String, args, sender):
 		var subCmds = []
 		for subCmd in cmd.cmds:
 			var subAddr = subCmd[0]
+			Logger.debug("subCmd: (%s)%s" % [typeof(subCmd), subCmd])
+			Logger.logDict($CustomCommands.commands)
 			var subArgs = Array(subCmd).slice(1, -1) if subCmd.size() > 1 else []
 			for i in range(subArgs.size()):
 				if subArgs[i].begins_with("$"):
@@ -249,7 +251,7 @@ func _exit_tree ( ):
 	oscrcv.stop()
 
 func _input(event):
-#	print(event.as_text())
+#	Logger.debug(event.as_text())
 	if event.is_action_pressed("toggle_editor", true):
 		$OscTextEdit.set_visible(not($OscTextEdit.is_visible()))
 	elif event.is_action_pressed("toggle_editor_and_post", true):
@@ -296,3 +298,5 @@ func saveFile(path):
 
 func post(msg):
 	$PostTextEdit.append(msg)
+
+

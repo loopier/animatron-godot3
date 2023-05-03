@@ -75,3 +75,7 @@ func logMsg( msg, post=false ):
 	print(msg)
 	if target != null and post:
 		target.append(msg)
+
+func logDict( dict, post=false ):
+	for key in dict:
+		logMsg("%s:%s" % [key, dict[key]], post)
