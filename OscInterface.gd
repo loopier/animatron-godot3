@@ -961,7 +961,7 @@ func midiActor(inArgs, sender):
 		"velocity": "note_on_received",
 	}
 	var midimsg = inArgs[0]
-	var ch = inArgs[1]
+	var ch = int(inArgs[1])
 	var num = inArgs[2]
 	var cmd = inArgs[3]
 	var signalmsg = signalmap[midimsg]
@@ -975,7 +975,7 @@ func midiActor(inArgs, sender):
 			var rangemax = null
 			if len(aa.args) > 0: 
 				rangemin = int(aa.args[0])
-				rangemin = int(aa.args[1])
+				rangemax = int(aa.args[1])
 				Logger.debug("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
 			else:
 				# print null
