@@ -98,6 +98,7 @@ onready var otherCmds = {
 	"/editor/font/size": funcref($OscInterface, "editorFontSize"),
 	"/editor/font/increase": funcref($OscInterface, "editorIncreaseFont"),
 	"/editor/font/decrease": funcref($OscInterface, "editorDecreaseFont"),
+	"/editor/clear": funcref($OscInterface, "editorClear"),
 	"/post": funcref($OscInterface, "postMsg"),
 	"/post/font/size": funcref($OscInterface, "postFontSize"),
 	"/post/font/increase": funcref($OscInterface, "postIncreaseFont"),

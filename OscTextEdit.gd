@@ -154,3 +154,5 @@ func decreaseFont():
 func setFontSize( size ):
 	get("custom_fonts/font").set_size(size)
 
+func clear():
+	set_text("")

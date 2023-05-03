@@ -586,6 +586,9 @@ func editorDecreaseFont(args, sender):
 		return
 	main.get_node("OscTextEdit").decreaseFont()
 
+func editorClear(args, sender):
+	main.get_node("OscTextEdit").clear()
+
 func postMsg(args, sender):
 	main.post(" ".join(args))
 	
