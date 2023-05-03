@@ -39,6 +39,7 @@ func _on_AudioInputPlayer_sound_changed(band, amp):
 	if not get_parent():
 		return
 	var main = get_parent()
+	Logger.verbose("band:%s amp:%s" % [band, amp])
 	for cmd in cmds:
 		for key in cmd.keys():
 			# need for a check to avoid crash on removing cmds from band dictionaries
