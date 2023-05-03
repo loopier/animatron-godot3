@@ -1028,6 +1028,35 @@ func listMidiCmds(args, sender):
 	reportStatus(midiCmds, sender)
 
 ############################################################
+# Randomness commands
+############################################################
+# set a random value (in a range) for a command argument
+func randCmdArg(inArgs, sender):
+	if len(inArgs) != 4:
+		reportError("randCmdArg expected 4 arguments: num arguments - %d" % [len(inArgs)], sender)
+		return
+	var cmd = inArgs[0]
+	# need to get different values with wildcard actors
+	var aa = getActorsAndArgs(inArgs.slice(1,-1), "randCmdArg", 2, sender)
+	for actor in aa.actors:
+		var value = rand_range(float(aa.args[0]), float(aa.args[1]))
+		main.evalCommandList([[cmd, actor.name, value]], sender)
+
+# choose a random value from the list for a command argument
+func chooseCmdArg(inArgs, sender):
+	if len(inArgs) < 2:
+		reportError("chooseCmdArg expected at least 2 arguments: num arguments - %d" % [len(inArgs)], sender)
+		return
+	var cmd = inArgs[0]
+	var actor = inArgs[1]
+	var args = inArgs.slice(2, -1)
+	var argi = randi() % len(args)
+	var arg = args[argi]
+	Logger.debug("cmd:%s actor:%s args:%s arg:%s" % [cmd, actor, args, arg])
+	Logger.info("Chose argument: %s" % [arg])
+	main.evalCommandList([[cmd, actor, arg]], sender)
+
+############################################################
 # Routine commands
 ############################################################
 func newRoutine(args, sender):
@@ -1140,29 +1169,3 @@ func getSequenceActor(inArgs, sender):
 	if aa:
 		for actor in aa.actors:
 			actor.listSequenceCmds()
-
-# set a random value (in a range) for a command argument
-func randCmdArg(inArgs, sender):
-	if len(inArgs) != 4:
-		reportError("randCmdArg expected 4 arguments: num arguments - %d" % [len(inArgs)], sender)
-		return
-	var cmd = inArgs[0]
-	# need to get different values with wildcard actors
-	var aa = getActorsAndArgs(inArgs.slice(1,-1), "randCmdArg", 2, sender)
-	for actor in aa.actors:
-		var value = rand_range(float(aa.args[0]), float(aa.args[1]))
-		main.evalCommandList([[cmd, actor.name, value]], sender)
-
-# choose a random value from the list for a command argument
-func chooseCmdArg(inArgs, sender):
-	if len(inArgs) < 2:
-		reportError("chooseCmdArg expected at least 2 arguments: num arguments - %d" % [len(inArgs)], sender)
-		return
-	var cmd = inArgs[0]
-	var actor = inArgs[1]
-	var args = inArgs.slice(2, -1)
-	var argi = randi() % len(args)
-	var arg = args[argi]
-	Logger.debug("cmd:%s actor:%s args:%s arg:%s" % [cmd, actor, args, arg])
-	Logger.info("Chose argument: %s" % [arg])
-	main.evalCommandList([[cmd, actor, arg]], sender)

@@ -42,8 +42,6 @@ onready var actorCmds = {
 	"/onframe/free": funcref($OscInterface, "onFrameFreeActor"),
 	"/onfinish/free": funcref($OscInterface, "onFinishFreeActor"),
 	"/list/sequence": funcref($OscInterface, "getSequenceActor"),
-	"/rand": funcref($OscInterface, "randCmdArg"),
-	"/choose": funcref($OscInterface, "chooseCmdArg"),
 }
 
 onready var otherCmds = {
@@ -66,9 +64,13 @@ onready var otherCmds = {
 	"/debug": funcref($OscInterface, "enableStatusMessages"),
 	"/midi/debug": funcref($OscInterface, "midiEnableStatusMessages"),
 	"/list/midi": funcref($OscInterface, "listMidiCmds"),
-	# "/wait" command is handled specially 
+	
+	#rand	
+	"/rand": funcref($OscInterface, "randCmdArg"),
+	"/choose": funcref($OscInterface, "chooseCmd"),
 	
 	# time
+	# "/wait" command is handled specially 	
 	"/routine": funcref($OscInterface, "newRoutine"),
 	"/routine/start": funcref($OscInterface, "startRoutine"),
 	"/routine/stop": funcref($OscInterface, "stopRoutine"),
