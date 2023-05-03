@@ -17,7 +17,7 @@ func _ready():
 
 
 func _on_OscTextEdit_gui_input(event):
-#	print(event)
+#	Logger.verbose(event)
 #	accept_event()
 	if event.is_action_pressed("eval_line", true):
 		undo() # FIX: this is a hack to remove the inserted line on pressing ENTER
@@ -65,12 +65,16 @@ func evalBlock():
 	var to = findNextLinebreak(line)
 	cursor_set_column(len(get_line(line)))
 	select(from, 0, to + 1, cursor_get_column())
-	var text = get_selection_text()
-	# group tabs with first non-indented line
-	# FIX: 'defs' are already parsed in file, but doesn't work with this
-	text = text.replace("\n\t", " ")
+	var text = get_selection_text().strip_edges()
+	Logger.debug("text: %s" % [text])
+	Logger.debug("def: %s" % [text.begins_with("/def")])
+	if text.begins_with("/def"):
+		evalDefs(text)
+		return
+	Logger.debug("AFTER DEFS")
 	textToOsc(text)
 	deselect()
+
 
 func evalLine():
 	var ln = cursor_get_line()
@@ -81,6 +85,25 @@ func evalLine():
 	cursor_set_line(ln)
 	cursor_set_column(col)
 
+func evalDefs(text):
+	# group tabs with first non-indented line
+	# FIX: 'defs' are already parsed in file, but doesn't work with this
+	#      This is a hack converting each line into a string so the parser
+	#      can reconvert it to a command.
+	var def := Array(text.split("\n")[0].split(" "))
+	def.remove(0)
+	var defCmd = def.pop_front()
+	var defArgs = def
+	var cmds : Array
+	var regex = RegEx.new()
+	regex.compile("\\n\\t(.*)")
+	for result in regex.search_all(text):
+		Logger.debug("def subcmd: %s" % [result.get_string()])
+		cmds.push_back(result.get_string().strip_edges())
+	Logger.debug("def: %s args: %s" % [defCmd, defArgs])
+	Logger.debug("sub cmds: %s" % [cmds])
+	main.get_node("CustomCommands").defineCommand(defCmd, [defArgs], cmds)
+
 func textToOsc( msgString ):
 	var cmds = []
 	var lines = msgString.split("\n")
@@ -89,6 +112,7 @@ func textToOsc( msgString ):
 		if len(cmd[0].strip_edges()) > 0:
 			cmds.append(cmd)
 	main.evalCommandList(cmds, null)
+	Logger.debug(cmds)
 
 func selectLine():
 	var line = cursor_get_line()
@@ -129,3 +153,4 @@ func decreaseFont():
 
 func setFontSize( size ):
 	get("custom_fonts/font").set_size(size)
+
