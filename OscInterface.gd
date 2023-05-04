@@ -80,7 +80,7 @@ static func getAssetFilesMatching(path, nameWildcard):
 			elif filename.ends_with(".png") or filename.ends_with(".jpg"):
 				var baseFile = getAssetBaseName(filename)
 				if baseFile.match(nameWildcard):
-					Logger.info("File name: %s" % [filename])
+					Logger.verbose("File name: %s" % [filename])
 					files.sprites.push_back(fullPath)
 			filename = dir.get_next()
 	return files
@@ -456,7 +456,7 @@ func iterateGroup(args, sender):
 	var groupName = args[1]
 	var cmdArgs = Array(args).slice(2, -1) if args.size() > 1 else []
 	var members = get_tree().get_nodes_in_group(groupName)
-	Logger.debug("iterate: %s" % [groupName])
+	Logger.verbose("iterate: %s" % [groupName])
 	var cmds : Array
 	for member in members:
 		var cmd = [cmdAddr, member.name]
@@ -805,7 +805,7 @@ func setActorScaleX(inArgs, sender):
 		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
 		for node in aa.actors:
 			var scl := Vector2(aa.args[0], node.get("scale").y)
-			Logger.info("scale: %.2f" % [node.get("scale").y])
+			Logger.verbose("scale: %.2f" % [node.get("scale").y])
 			setPropertyWithDur(node, "scale", scl, dur)
 
 func setActorScaleY(inArgs, sender):
@@ -814,7 +814,7 @@ func setActorScaleY(inArgs, sender):
 		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
 		for node in aa.actors:
 			var scl := Vector2(node.get("scale").x, aa.args[0])
-			Logger.info("scale: %.2f" % [node.get("scale").y])
+			Logger.verbose("scale: %.2f" % [node.get("scale").y])
 			setPropertyWithDur(node, "scale", scl, dur)
 
 func setActorPivot(inArgs, sender):
@@ -935,7 +935,7 @@ func behindActor(inArgs, sender):
 			var node = aa.actors[index]
 			if node.get_index() > minIndex:
 				var reference = String(aa.args[0])
-				Logger.info("Move %s behind %s" % [node.name, reference])
+				Logger.verbose("Move %s behind %s" % [node.name, reference])
 				actorsNode.move_child(node, minIndex)
 
 
@@ -949,7 +949,7 @@ func frontActor(inArgs, sender):
 		for node in aa.actors:
 			if node.get_index() < maxIndex:
 				var reference = String(aa.args[0])
-				Logger.info("Move %s in front of %s" % [node.name, reference])
+				Logger.verbose("Move %s in front of %s" % [node.name, reference])
 				actorsNode.move_child(node, maxIndex)
 
 func soundActor(inArgs, sender):
@@ -1113,7 +1113,7 @@ func newRoutine(args, sender):
 	if len(args) < 4:
 		reportError("cmdsRoutine expects at least 3 arguments. %d given" % [len(args)], sender)
 		return
-	Logger.info("new routine: %s" % [args])
+	Logger.verbose("new routine: %s" % [args])
 	
 	var name = args[0]
 	var routine
@@ -1149,7 +1149,7 @@ func freeRoutine(args, sender):
 		var routine = routinesNode.get_node(name)
 		routine.stop()
 		routine.remove_and_skip()
-		Logger.info("free routine %s" % [name])
+		Logger.verbose("free routine %s" % [name])
 	else:
 		reportError("Routine not found: %s" % [name], sender)
 
