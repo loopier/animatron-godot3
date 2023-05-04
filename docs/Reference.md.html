@@ -100,8 +100,8 @@ Address | Args <img width="100px"/> | Description
 `/ysort` | `[sort:b]` | Force actors to be sorted based on y position (lower on screen drawn later, i.e. "on top"). `sort` argument defaults to `true`, but initial state of y-sorting at startup is `false`.
 `/group` | `group:s [actor:s]` | Add the actor to a named group. If run without `actor` it will return the list of actors in the group. Note that `/group "myGroup" "!"` may be used to add the current selection to a group. Use the group name as an actor name in all commands to apply it to all it's members.
 `/ungroup` | `group:s actor:s` | Remove the actor from a named group.
-`/iter` | `cmd:s group:s args:...` | Perform a `cmd` on the actor at the `group` `index`.
-`/at` | `index:i cmd:s group:s args:...` | Perform a `cmd` on every actor in the `group`.
+`/iter` | `cmd:s group:s args:...` | Perform a `cmd` on every actor in the `group`.
+`/at` | `index:i cmd:s group:s args:...` | Perform a `cmd` on the actor at the `group` `index`.
 `/select` | `[actor:s]` | Add the actor to the selected set. If run without `actor` it will return the list of selected actors.
 `/deselect` | `[actor:s]` | Remove the actor from the selected set. If run without `actor` it will deselect all (equivalent to `/deselect "*"` or `/deselect "!"`).
 `/selected` | | Get the list of selected actors.
