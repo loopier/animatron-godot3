@@ -774,6 +774,32 @@ func setActorPositionY(inArgs, sender):
 			var y = viewSize.y * float(args.args[0])
 			setPropertyWithDur(node, "position", Vector2(x, y), dur)
 
+func moveActor(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "moveActor", [2,3], sender)
+	if args:
+		var dur : float = 0 if args.args.size() == 2 else args.args[1]
+		for node in args.actors:
+			var x = (node.get("position").x / Helper.getViewSize().x) + float(args.args[0])
+			var y = (node.get("position").y / Helper.getViewSize().y) + float(args.args[1])
+			Logger.debug("node:%s x:%0.2f y:%0.2f" % [node.name, x, y])
+			setActorPosition([node.name, x, y, dur], sender)
+
+func moveActorX(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "moveActor", [1,2], sender)
+	if args:
+		var dur : float = 0 if args.args.size() == 1 else args.args[1]
+		for node in args.actors:
+			var x = (node.get("position").x / Helper.getViewSize().x) + float(args.args[0])
+			setActorPositionX([node.name, x, dur], sender)
+			
+func moveActorY(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "moveActor", [1,2], sender)
+	if args:
+		var dur : float = 0 if args.args.size() == 1 else args.args[1]
+		for node in args.actors:
+			var y = (node.get("position").y / Helper.getViewSize().y) + float(args.args[0])
+			setActorPositionY([node.name, y, dur], sender)
+
 func setActorRotation(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorRotation", [1, 2], sender)
 	if args:
