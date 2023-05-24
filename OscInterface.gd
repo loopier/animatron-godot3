@@ -893,13 +893,22 @@ func setActorPivot(inArgs, sender):
 			var animNode = node.get_node(actorAnimNodePath)
 			setAnimPivot(animNode, pivot, dur)
 
-func setActorFade(inArgs, sender):
+func setActorAlpha(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorFade", [1, 2], sender)
 	if args:
 		var dur : float = 0 if args.args.size() == 1 else args.args[1]
 		var target := Color(1, 1, 1, float(args.args[0]))
 		for node in args.actors:
 			setPropertyWithDur(node, "modulate", target, dur)
+
+func setActorFade(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setActorFade", [1, 2], sender)
+	if args:
+		var dur : float = 0 if args.args.size() == 1 else args.args[1]
+		var target := Color(1, 1, 1, float(args.args[0]))
+		for node in args.actors:
+			var alpha : float = node.get("modulate").a * float(args.args[0])
+			setActorAlpha([node.name, alpha, dur], sender)
 
 
 func setActorSpeed(inArgs, sender):
