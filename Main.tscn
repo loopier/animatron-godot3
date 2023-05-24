@@ -62,20 +62,9 @@ size_flags_vertical = 10
 custom_colors/current_line_color = Color( 0, 0, 0, 0.0784314 )
 custom_fonts/font = SubResource( 2 )
 custom_styles/normal = ExtResource( 9 )
-text = "/log/level debug
-/new q square
-/new p square
-/white p
-/position/x p 0.7
-
-/scale q 0.5
-/size p 0.5
-/scale p 1.5
-/size p 1.5"
 highlight_current_line = true
 syntax_highlighting = true
 show_line_numbers = true
-scroll_vertical = 9.0
 minimap_draw = true
 caret_block_mode = true
 caret_blink = true
