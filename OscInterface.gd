@@ -818,7 +818,7 @@ func rotateActor(inArgs, sender):
 			setActorAngle([node.name, angle, dur], sender)
 
 
-func setActorScale(inArgs, sender):
+func setActorSize(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "setActorScale", [1, 2], sender)
 	if aa:
 		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
@@ -826,7 +826,7 @@ func setActorScale(inArgs, sender):
 		for node in aa.actors:
 			setPropertyWithDur(node, "scale", scl, dur)
 
-func setActorScaleXY(inArgs, sender):
+func setActorSizeXY(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "setActorScaleXY", [2, 3], sender)
 	if aa:
 		var dur : float = 0 if aa.args.size() == 2 else aa.args[2]
@@ -834,7 +834,7 @@ func setActorScaleXY(inArgs, sender):
 		for node in aa.actors:
 			setPropertyWithDur(node, "scale", scl, dur)
 
-func setActorScaleX(inArgs, sender):
+func setActorSizeX(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "setActorScaleX", [1, 2], sender)
 	if aa:
 		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
@@ -843,7 +843,7 @@ func setActorScaleX(inArgs, sender):
 			Logger.verbose("scale: %.2f" % [node.get("scale").y])
 			setPropertyWithDur(node, "scale", scl, dur)
 
-func setActorScaleY(inArgs, sender):
+func setActorSizeY(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "setActorScaleX", [1, 2], sender)
 	if aa:
 		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
@@ -851,6 +851,38 @@ func setActorScaleY(inArgs, sender):
 			var scl := Vector2(node.get("scale").x, aa.args[0])
 			Logger.verbose("scale: %.2f" % [node.get("scale").y])
 			setPropertyWithDur(node, "scale", scl, dur)
+
+func scaleActor(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "setActorScale", [1, 2], sender)
+	if aa:
+		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
+		for node in aa.actors:
+			var scl : Vector2 = node.get("scale") * Helper.getVector2(aa.args[0])
+			setActorSize([node.name, scl.x, dur], sender)
+
+func scaleActorXY(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "setActorScaleXY", [2, 3], sender)
+	if aa:
+		var dur : float = 0 if aa.args.size() == 2 else aa.args[2]
+		for node in aa.actors:
+			var scl : Vector2 = node.get("scale") * Helper.getVector2(aa.args.slice(0,2))
+			setActorSizeXY([node.name, scl.x, scl.y, dur], sender)
+
+func scaleActorX(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "setActorScaleX", [1, 2], sender)
+	if aa:
+		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
+		for node in aa.actors:
+			var scl : float = float(aa.args[0]) * node.get("scale").x
+			setActorSizeX([node.name, scl, dur], sender)
+
+func scaleActorY(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "setActorScaleX", [1, 2], sender)
+	if aa:
+		var dur : float = 0 if aa.args.size() == 1 else aa.args[1]
+		for node in aa.actors:
+			var scl : float = float(aa.args[0]) * node.get("scale").y
+			setActorSizeY([node.name, scl, dur], sender)
 
 func setActorPivot(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "setActorPivot", [2, 3], sender)

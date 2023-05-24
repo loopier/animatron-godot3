@@ -12,18 +12,29 @@ onready var actorCmds = {
 	"/play/reverse": funcref($OscInterface, "playActorReverse"),
 	"/stop": funcref($OscInterface, "stopActor"),
 	"/frame": funcref($OscInterface, "setActorFrame"),
+	# absolute position
 	"/position": funcref($OscInterface, "setActorPosition"),
 	"/position/x": funcref($OscInterface, "setActorPositionX"),
 	"/position/y": funcref($OscInterface, "setActorPositionY"),
+	# relative position
 	"/move": funcref($OscInterface, "moveActor"),
 	"/move/x": funcref($OscInterface, "moveActorX"),
 	"/move/y": funcref($OscInterface, "moveActorY"),
+	# absolute angle
 	"/angle": funcref($OscInterface, "setActorAngle"),
+	# relative angle
 	"/rotate": funcref($OscInterface, "rotateActor"),
-	"/scale": funcref($OscInterface, "setActorScale"),
-	"/scale/xy": funcref($OscInterface, "setActorScaleXY"),
-	"/scale/x": funcref($OscInterface, "setActorScaleX"),
-	"/scale/y": funcref($OscInterface, "setActorScaleY"),
+	# absolute size
+	"/size": funcref($OscInterface, "setActorSize"),
+	"/size/xy": funcref($OscInterface, "setActorSizeXY"),
+	"/size/x": funcref($OscInterface, "setActorSizeX"),
+	"/size/y": funcref($OscInterface, "setActorSizeY"),
+	# relative size
+	"/scale": funcref($OscInterface, "scaleActor"),
+	"/scale/xy": funcref($OscInterface, "scaleActorXY"),
+	"/scale/x": funcref($OscInterface, "scaleActorX"),
+	"/scale/y": funcref($OscInterface, "scaleActorY"),
+	
 	"/pivot": funcref($OscInterface, "setActorPivot"),
 	"/fade": funcref($OscInterface, "setActorFade"),
 	"/speed": funcref($OscInterface, "setActorSpeed"),
