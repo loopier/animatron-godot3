@@ -800,13 +800,22 @@ func moveActorY(inArgs, sender):
 			var y = (node.get("position").y / Helper.getViewSize().y) + float(args.args[0])
 			setActorPositionY([node.name, y, dur], sender)
 
-func setActorRotation(inArgs, sender):
+func setActorAngle(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorRotation", [1, 2], sender)
 	if args:
 		var dur : float = 0 if args.args.size() == 1 else args.args[1]
-		var rot := float(args.args[0])
+		var angle := float(args.args[0])
 		for node in args.actors:
-			setPropertyWithDur(node, "rotation_degrees", rot, dur)
+			setPropertyWithDur(node, "rotation_degrees", angle, dur)
+
+func rotateActor(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setActorRotation", [1, 2], sender)
+	if args:
+		var dur : float = 0 if args.args.size() == 1 else args.args[1]
+		for node in args.actors:
+			var angle : float = node.get("rotation_degrees") + float(args.args[0])
+			Logger.debug("angle: get:%.2f + add:%.2f = %.2f" % [node.get("rotation_degrees"), float(args.args[0]), angle])
+			setActorAngle([node.name, angle, dur], sender)
 
 
 func setActorScale(inArgs, sender):
