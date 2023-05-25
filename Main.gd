@@ -67,6 +67,7 @@ onready var otherCmds = {
 	"/createordestroy": funcref($OscInterface, "createOrDestroyActor"),
 	"/parent": funcref($OscInterface, "parentActor"),
 	"/parent/free": funcref($OscInterface, "parentFreeActor"),
+	"/list/children": funcref($OscInterface, "listActorChildren"),
 	"/ysort": funcref($OscInterface, "ySortActors"),
 	"/list": funcref($OscInterface, "listActors"), # shortcut for /list/actors
 	"/list/actors": funcref($OscInterface, "listActors"),

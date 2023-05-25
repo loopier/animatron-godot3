@@ -235,15 +235,14 @@ static func getNames(objList):
 
 func matchChildrenNodes(nameWildcard, parent):
 	var matches = []
-	for a in parent.get_children():
-		if len(a.get_children()) > 0:
-			matches.append_array(matchChildrenNodes(nameWildcard, a))
-		if a.name.match("Animation") or a.name.match("Offset") \
-		or a.name.match("CollisionShape2D") or a.name.match("Tween"):
+	for child in parent.get_children():
+		if len(child.get_children()) > 0:
+			matches.append_array(matchChildrenNodes(nameWildcard, child))
+		if not(child is KinematicBody2D): 
 			continue
-		if a.name.match(nameWildcard):
-			Logger.verbose("name match: %s" % [a.name])
-			matches.push_back(a)
+		if child.name.match(nameWildcard):
+			Logger.verbose("name match: %s" % [child.name])
+			matches.push_back(child)
 	return matches
 
 func matchNodes(nameWildcard, sender):
@@ -408,6 +407,24 @@ func parentFreeActor(args, sender):
 	var parent = child.get_parent()
 	parent.remove_child(child)
 	actorsNode.add_child(child)
+
+func listActorChildren(args, sender):
+	if (args.size() < 1):
+		reportError("listActorChildren expects 2 argument. Given: %d" % [args.size()], sender)
+		return
+	
+	var pairs = {}
+	var node = getNode(args[0], sender)
+	var actors = node.get_children()
+	actors.sort()
+	Logger.info("Children of %s(%d):" % [node.name, actors.size()])
+	for actor in actors:
+		if not(actor is KinematicBody2D): 
+			continue
+		var anim = actor.get_node(actorAnimNodePath).get_animation()
+		pairs[actor.name] = anim
+		Logger.info("%s - %s" % [actor.name, anim])
+	sendMessage(sender, "/list/actors/reply", pairs)
 
 func ySortActors(args, sender):
 	if (args.size() > 1):

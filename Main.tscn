@@ -70,7 +70,6 @@ text = "/log/level debug
 highlight_current_line = true
 syntax_highlighting = true
 show_line_numbers = true
-scroll_vertical = 4.0
 minimap_draw = true
 caret_block_mode = true
 caret_blink = true
