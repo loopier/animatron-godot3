@@ -396,6 +396,8 @@ func parentActor(args, sender):
 	var oldParent = child.get_parent()
 	oldParent.remove_child(child)
 	parent.add_child(child)
+	# preserve children transforms
+	child.transform = parent.transform.affine_inverse() * child.transform
 	Logger.verbose("%s emmancipated from %s" % [child.name, oldParent.name])
 	Logger.verbose("%s is child of %s" % [child.name, parent.name])
 
@@ -407,6 +409,8 @@ func parentFreeActor(args, sender):
 	var parent = child.get_parent()
 	parent.remove_child(child)
 	actorsNode.add_child(child)
+	# preserve children transforms
+	child.transform = parent.transform * child.transform
 
 func listActorChildren(args, sender):
 	if (args.size() < 1):
