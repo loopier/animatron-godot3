@@ -75,7 +75,7 @@ static func getAssetFilesMatching(path, nameWildcard):
 				if baseFile.match(nameWildcard):
 					var seqFrames = getAnimSequenceFrames(fullPath);
 					if !seqFrames.empty():
-						Logger.debug("Sequence (%d frames) file name: %s" % [seqFrames.size(), filename])
+						Logger.verbose("Sequence (%d frames) file name: %s" % [seqFrames.size(), filename])
 						files.seqs.push_back(fullPath)
 			elif filename.ends_with(".png") or filename.ends_with(".jpg"):
 				var baseFile = getAssetBaseName(filename)
@@ -104,7 +104,7 @@ func getSpriteFileInfo(name):
 		dict.xStep = result.get_string(3).to_int()
 		dict.yStep = result.get_string(4).to_int()
 		dict.fps = result.get_string(5).to_int()
-		Logger.debug(dict)
+		Logger.verbose(dict)
 	else:
 		dict.name = name
 		dict.directions = 1
@@ -120,7 +120,7 @@ func getSeqFileInfo(name):
 	if result:
 		dict.name = result.get_string(1)
 		dict.fps = result.get_string(2).to_int()
-		Logger.debug(dict)
+		Logger.verbose(dict)
 	else:
 		dict.name = name
 		dict.fps = 24
@@ -155,7 +155,7 @@ func addSubSprites(animFramesLibrary, atlas, suffixes, info):
 
 
 func loadSprites(sprites):
-	Logger.debug("Runtime sprites: %s" % [sprites])
+	Logger.verbose("Runtime sprites: %s" % [sprites])
 	# Add the runtime-loaded sprites to our pre-existing library
 	for spritePath in sprites:
 		var res
@@ -171,7 +171,7 @@ func loadSprites(sprites):
 
 
 func loadSequences(sequences):
-	Logger.debug("Runtime sequences: %s" % [sequences])
+	Logger.verbose("Runtime sequences: %s" % [sequences])
 	# Add the runtime-loaded image sequences to our pre-existing library
 	for seqPath in sequences:
 		var info = getSeqFileInfo(seqPath.get_file().get_basename())
@@ -235,7 +235,6 @@ static func getNames(objList):
 
 func matchChildrenNodes(nameWildcard, parent):
 	var matches = []
-#	Logger.debug("looking for:%s in:%s(%d)" % [nameWildcard, parent.name, parent.get_child_count()])
 	for a in parent.get_children():
 		if len(a.get_children()) > 0:
 			matches.append_array(matchChildrenNodes(nameWildcard, a))
@@ -243,9 +242,8 @@ func matchChildrenNodes(nameWildcard, parent):
 		or a.name.match("CollisionShape2D") or a.name.match("Tween"):
 			continue
 		if a.name.match(nameWildcard):
-			Logger.debug("name match: %s" % [a.name])
+			Logger.verbose("name match: %s" % [a.name])
 			matches.push_back(a)
-#	Logger.debug("end of: %s" % [parent.name])
 	return matches
 
 func matchNodes(nameWildcard, sender):
@@ -255,12 +253,8 @@ func matchNodes(nameWildcard, sender):
 		return get_tree().get_nodes_in_group(selectionGroup)
 
 	var matches = []
-#	for a in actorsNode.get_children():
-#		if a.name.match(nameWildcard):
-#			matches.push_back(a)
-#	Logger.debug("name: %s parent: %s" % [nameWildcard, actorsNode.name])
 	matches.append_array(matchChildrenNodes(nameWildcard, actorsNode))
-	Logger.debug("matching: %s" % [matches])
+	Logger.verbose("matching: %s" % [matches])
 	if matches.empty(): matches = get_tree().get_nodes_in_group(nameWildcard)
 	if matches.empty():
 		reportStatus("No matches found for: " + nameWildcard, sender)
@@ -769,7 +763,7 @@ func setActorFrame(inArgs, sender):
 		var frame = int(args.args[0])
 		if typeof(frame) != TYPE_INT:
 			frame = int(frame * anim.frames.get_frame_count(anim.animation))
-			Logger.debug("%s's frame: %s" % [frame])
+			Logger.verbose("%s's frame: %s" % [frame])
 		anim.set_frame(fposmod(frame, anim.frames.get_frame_count(anim.animation)))
 
 
@@ -818,7 +812,7 @@ func moveActor(inArgs, sender):
 		for node in args.actors:
 			var x = (node.get("position").x / Helper.getViewSize().x) + float(args.args[0])
 			var y = (node.get("position").y / Helper.getViewSize().y) + float(args.args[1])
-			Logger.debug("node:%s x:%0.2f y:%0.2f" % [node.name, x, y])
+			Logger.verbose("node:%s x:%0.2f y:%0.2f" % [node.name, x, y])
 			setActorPosition([node.name, x, y, dur], sender)
 
 func moveActorX(inArgs, sender):
@@ -851,7 +845,7 @@ func rotateActor(inArgs, sender):
 		var dur : float = 0 if args.args.size() == 1 else args.args[1]
 		for node in args.actors:
 			var angle : float = node.get("rotation_degrees") + float(args.args[0])
-			Logger.debug("angle: get:%.2f + add:%.2f = %.2f" % [node.get("rotation_degrees"), float(args.args[0]), angle])
+			Logger.verbose("angle: get:%.2f + add:%.2f = %.2f" % [node.get("rotation_degrees"), float(args.args[0]), angle])
 			setActorAngle([node.name, angle, dur], sender)
 
 
@@ -1123,10 +1117,10 @@ func midiActor(inArgs, sender):
 			if len(aa.args) > 0: 
 				rangemin = int(aa.args[0])
 				rangemax = int(aa.args[1])
-				Logger.debug("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
+				Logger.verbose("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
 			else:
 				# print null
-				Logger.debug("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:- max-" % [midimsg, signalmsg, ch, num, cmd])
+				Logger.verbose("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:- max-" % [midimsg, signalmsg, ch, num, cmd])
 			midiNode.addMidiCmd(midimsg, ch, num, cmd, actor, rangemin, rangemax)
 
 func midiFreeActor(inArgs, sender):
@@ -1149,7 +1143,7 @@ func midiFreeActor(inArgs, sender):
 	
 	if aa:
 		for actor in aa.actors:
-			Logger.debug("_on_Midi_%s" % signalmsg)
+			Logger.verbose("_on_Midi_%s" % signalmsg)
 #			midiNode.disconnect(signalmsg, actor, "_on_Midi_%s" % signalmsg)
 			midiNode.removeMidiCmd(midimsg, ch, num, cmd, actor)
 			return
@@ -1198,10 +1192,10 @@ func chooseCmd(inArgs, sender):
 			last = i+1
 		if i == len(inArgs) - 1:
 			cmds.push_back(inArgs.slice(last, -1))
-	Logger.debug("choose cmd: %s" % [cmds])
+	Logger.verbose("choose cmd: %s" % [cmds])
 	var randIndex = randi() % len(cmds)
 	var cmd = cmds[randIndex]
-	Logger.debug("chosen cmd: %s" % [cmd])
+	Logger.verbose("chosen cmd: %s" % [cmd])
 	main.evalCommandList([cmd], sender)
 
 # choose a random value from the list for a command argument
@@ -1214,8 +1208,8 @@ func chooseArg(inArgs, sender):
 	var args = inArgs.slice(2, -1)
 	var argi = randi() % len(args)
 	var arg = args[argi]
-	Logger.debug("cmd:%s actor:%s args:%s arg:%s" % [cmd, actor, args, arg])
-	Logger.debug("Chose argument: %s" % [arg])
+	Logger.verbose("cmd:%s actor:%s args:%s arg:%s" % [cmd, actor, args, arg])
+	Logger.verbose("Chose argument: %s" % [arg])
 	main.evalCommandList([[cmd, actor, arg]], sender)
 
 ############################################################
