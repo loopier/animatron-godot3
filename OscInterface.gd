@@ -233,6 +233,17 @@ static func getNames(objList):
 	for o in objList: names.push_back(o.name)
 	return names
 
+func matchChildrenNodes(nameWildcard, parent, tabs):
+	var matches = []
+#	Logger.debug("looking for:%s in:%s(%d)" % [nameWildcard, parent.name, parent.get_child_count()])
+	for a in parent.get_children():
+		if len(a.get_children()) > 0:
+			matches.append_array(matchChildrenNodes(nameWildcard, a, tabs+1))
+		if a.name.match(nameWildcard):
+			Logger.debug("name match: %s" % [a.name])
+			matches.push_back(a)
+#	Logger.debug("end of: %s" % [parent.name])
+	return matches
 
 func matchNodes(nameWildcard, sender):
 	nameWildcard = nameWildcard as String;
@@ -241,9 +252,12 @@ func matchNodes(nameWildcard, sender):
 		return get_tree().get_nodes_in_group(selectionGroup)
 
 	var matches = []
-	for a in actorsNode.get_children():
-		if a.name.match(nameWildcard):
-			matches.push_back(a)
+#	for a in actorsNode.get_children():
+#		if a.name.match(nameWildcard):
+#			matches.push_back(a)
+#	Logger.debug("name: %s parent: %s" % [nameWildcard, actorsNode.name])
+	matches.append_array(matchChildrenNodes(nameWildcard, actorsNode, 0))
+	Logger.debug("matching: %s" % [matches])
 	if matches.empty(): matches = get_tree().get_nodes_in_group(nameWildcard)
 	if matches.empty():
 		reportStatus("No matches found for: " + nameWildcard, sender)
@@ -377,6 +391,26 @@ func createOrDestroyActor(args, sender):
 	else:
 		createActor(args, sender)
 
+func parentActor(args, sender):
+	if (args.size() < 2):
+		reportError("parentActor expects 2 arguments. Given: %d" % [args.size()], sender)
+		return
+	var parent = getNode(args[1], sender)
+	var child = getNode(args[0], sender)
+	var oldParent = child.get_parent()
+	oldParent.remove_child(child)
+	parent.add_child(child)
+	Logger.verbose("%s emmancipated from %s" % [child.name, oldParent.name])
+	Logger.verbose("%s is child of %s" % [child.name, parent.name])
+
+func parentFreeActor(args, sender):
+	if (args.size() < 1):
+		reportError("parentFreeActor expects 1 argument. Given: %d" % [args.size()], sender)
+		return
+	var child = getNode(args[0], sender)
+	var parent = child.get_parent()
+	parent.remove_child(child)
+	actorsNode.add_child(child)
 
 func ySortActors(args, sender):
 	if (args.size() > 1):
