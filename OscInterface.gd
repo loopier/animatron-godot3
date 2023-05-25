@@ -233,12 +233,15 @@ static func getNames(objList):
 	for o in objList: names.push_back(o.name)
 	return names
 
-func matchChildrenNodes(nameWildcard, parent, tabs):
+func matchChildrenNodes(nameWildcard, parent):
 	var matches = []
 #	Logger.debug("looking for:%s in:%s(%d)" % [nameWildcard, parent.name, parent.get_child_count()])
 	for a in parent.get_children():
 		if len(a.get_children()) > 0:
-			matches.append_array(matchChildrenNodes(nameWildcard, a, tabs+1))
+			matches.append_array(matchChildrenNodes(nameWildcard, a))
+		if a.name.match("Animation") or a.name.match("Offset") \
+		or a.name.match("CollisionShape2D") or a.name.match("Tween"):
+			continue
 		if a.name.match(nameWildcard):
 			Logger.debug("name match: %s" % [a.name])
 			matches.push_back(a)
@@ -256,7 +259,7 @@ func matchNodes(nameWildcard, sender):
 #		if a.name.match(nameWildcard):
 #			matches.push_back(a)
 #	Logger.debug("name: %s parent: %s" % [nameWildcard, actorsNode.name])
-	matches.append_array(matchChildrenNodes(nameWildcard, actorsNode, 0))
+	matches.append_array(matchChildrenNodes(nameWildcard, actorsNode))
 	Logger.debug("matching: %s" % [matches])
 	if matches.empty(): matches = get_tree().get_nodes_in_group(nameWildcard)
 	if matches.empty():
