@@ -417,7 +417,7 @@ func listActorChildren(args, sender):
 	var node = getNode(args[0], sender)
 	var actors = node.get_children()
 	actors.sort()
-	Logger.info("Children of %s(%d):" % [node.name, actors.size()])
+	Logger.info("'%s' has %d children:" % [node.name, actors.size()-3]) # not counting MetaNode's children
 	for actor in actors:
 		if not(actor is KinematicBody2D): 
 			continue

@@ -112,7 +112,8 @@ Address | Args <img width="100px"/> | Description
 `/create/group` | `group:s anim:s copies:i` | Create a batch of actors with a given (loaded) animation. A group will be created with this name and each actor will be named after the group with an index sufix.
 `/createordestroy` | `actor:s anim:s` | Like `/create`, but if the actor already exists, it removes it.
 `/parent`| `child:s parent:s` | Set the `child` as child of `parent`. Will inherit all transformations.
-`/parent/free`| `child:s parent:s` | Free the `child` from `parent`.
+`/parent/free`| `child:s` | Free the `child` from any parent.
+`/list/children`| `actor:s` | List the `actor`'s children (if any).
 `/ysort` | `[sort:b]` | Force actors to be sorted based on y position (lower on screen drawn later, i.e. "on top"). `sort` argument defaults to `true`, but initial state of y-sorting at startup is `false`.
 `/group` | `group:s [actor:s]` | Add the actor to a named group. If run without `actor` it will return the list of actors in the group. Note that `/group "myGroup" "!"` may be used to add the current selection to a group. Use the group name as an actor name in all commands to apply it to all it's members.
 `/ungroup` | `group:s actor:s` | Remove the actor from a named group.
