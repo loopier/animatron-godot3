@@ -98,6 +98,8 @@ onready var otherCmds = {
 	"/routine/stop": funcref($OscInterface, "stopRoutine"),
 	"/routine/free": funcref($OscInterface, "freeRoutine"),
 	"/list/routines": funcref($OscInterface, "listRoutines"),
+	# interpolation -- tweening
+	"/easeinout": funcref($OscInterface, "easeInOut"),
 	
 	# write
 	"/load/alphabet": funcref($Letters, "loadAlphabet"),

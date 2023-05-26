@@ -288,6 +288,20 @@ static func setPropertyWithDur(node, propertyName : String, newValue, dur : floa
 	else:
 		node.set(propertyName, newValue)
 
+static func tweenProperty(node, propertyName : String, newValue, dur : float, tweenPath := "Tween", transition := Tween.TRANS_LINEAR, easing := Tween.EASE_IN_OUT):
+	if dur <= 0: 
+		node.set(propertyName, newValue)
+		return
+	var tween = node.get_node(tweenPath)
+	tween.interpolate_property(
+		node,
+		propertyName,
+		newValue,
+		float(dur),
+		transition,
+		easing
+	)
+	tween.start()
 
 static func setShaderUniform(node, uName, uValue):
 	var image = node.get_node(actorAnimNodePath)
@@ -1301,6 +1315,27 @@ func listRoutines(args, sender):
 			statusStr = "running"
 		routinesListStr += "\n%s (%s) %d times every %.2f: %s" % [routine.name, statusStr, routine.repeats, routine.wait_time, " ".join(routine.cmd)]
 	reportStatus("routines: %s" % [routinesListStr], sender)
+
+############################################################
+# Interpolation -- tweening
+############################################################
+func easeInOut(inArgs, sender):
+	Logger.debug("Interpolator:easeInOut: %s" % [inArgs])
+	var actor = getNode(inArgs[0], sender)
+	var dur = float(inArgs[1]) if inArgs.size() > 1 else 1
+	Logger.debug("Interpolator:actor: %s dur:%.2f" % [actor.name, dur])
+	stopActor([actor.name], sender)
+	var tween = actor.get_node("Tween")
+	var anim = actor.get_node(actorAnimNodePath)
+	var numFrames = anim.frames.get_frame_count(anim.animation)
+#	tween.interpolate_method(anim, "set_frame", 0, numFrames-1, dur, Tween.TRANS_QUAD, Tween.EASE_OUT_IN)
+	tween.interpolate_property(anim, "frame", 0, numFrames-1, dur, Tween.TRANS_BOUNCE, Tween.EASE_OUT)
+	tween.start()
+#	tween.interpolate_property(actor, "position.x", 0.5, 1, dur, Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+#	anim.set_frame(20)
+#	tween.interpolate_property(anim.frame, "frame", 0, numFrames-1, dur, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+#	anim.set_frame(fposmod(frame, anim.frames.get_frame_count(anim.animation)))
+	Logger.debug("Interpolator:actor: %s anim:%s" % [actor.name, anim.frames])
 
 ############################################################
 # Frame commands
