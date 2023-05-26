@@ -20,7 +20,7 @@ func next():
 		print("routine without commands: %s %s" % [name, cmd])
 		return
 	
-	print("routine:%s iteration:%s/%s cmd:%s" % [name, iteration+1, repeats, cmd])
+#	print("routine:%s iteration:%s/%s cmd:%s" % [name, iteration+1, repeats, cmd])
 	main.evalCommandList([cmd], null)
 	
 	if repeats != 0 and iteration >= (repeats - 1):
