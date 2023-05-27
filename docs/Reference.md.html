@@ -37,6 +37,8 @@ Address | Args <img width=675px/> | Description
 `/loop` <br/> `/loop!` | `actor:s`| Set the `actor`'s animation to loop.
 `/stop` <br/> `/stop!` | `actor:s` <br/> - | Stop playing the actor's animation.
 `/frame` <br/> `/frame!` | `actor:s frame:i` <br/> `frame:i` | Jump to the given frame number (with wrapping). If a `float` from 0-1 is passed, it will jump to the frame corresponding to that position (`0` being the first frame and `1` the last).
+`/frame/next` <br/> `/frame/next!` | `actor:s` | Jump to the next frame of the `actor`'s' animation.
+`/frame/prev` <br/> `/frame/prev!` | `actor:s` | Jump to the previous frame of the `actor`'s' animation.
 `/position` <br/> `/position!` | `actor:s x:f y:f [dur:f]` <br/> `x:f y:f [dur:f]` | Set the actor to the x,y coordinates (specified as fractions of the viewport from 0-1). If `dur` is set, interpolate the movement over that number of seconds, otherwise change instantaneously.
 `/position/x` <br/> `/position/x!` | `actor:s x:f [dur:f]` <br/> `x:f [dur:f]` | Set the actor to the x coordinate (specified as fractions of the viewport from 0-1). If `dur` is set, interpolate the movement over that number of seconds, otherwise change instantaneously.
 `/position/y` <br/> `/position/y!` | `actor:s y:f [dur:f]` <br/> `y:f [dur:f]` | Set the actor to the y coordinate (specified as fractions of the viewport from 0-1). If `dur` is set, interpolate the movement over that number of seconds, otherwise change instantaneously.

@@ -15,6 +15,8 @@ onready var actorCmds = {
 	"/play/rand": funcref($OscInterface, "playActorRandom"),
 	"/stop": funcref($OscInterface, "stopActor"),
 	"/frame": funcref($OscInterface, "setActorFrame"),
+	"/frame/next": funcref($OscInterface, "nextActorFrame"),
+	"/frame/prev": funcref($OscInterface, "previousActorFrame"),
 	# absolute position
 	"/position": funcref($OscInterface, "setActorPosition"),
 	"/position/x": funcref($OscInterface, "setActorPositionX"),

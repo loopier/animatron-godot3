@@ -808,6 +808,19 @@ func setActorFrame(inArgs, sender):
 			Logger.verbose("%s's frame: %s" % [frame])
 		anim.set_frame(fposmod(frame, anim.frames.get_frame_count(anim.animation)))
 
+func nextActorFrame(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "nextActorFrame", [0], sender)
+	if args: for node in args.actors:
+		var anim = node.get_node(actorAnimNodePath)
+		var frame = anim.frame + 1
+		anim.set_frame(fposmod(frame, anim.frames.get_frame_count(anim.animation)))
+
+func previousActorFrame(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "nextActorFrame", [0], sender)
+	if args: for node in args.actors:
+		var anim = node.get_node(actorAnimNodePath)
+		var frame = anim.frame - 1
+		anim.set_frame(fposmod(frame, anim.frames.get_frame_count(anim.animation)))
 
 func setActorPosition(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorPosition", [2, 3], sender)
