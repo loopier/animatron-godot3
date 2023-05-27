@@ -59,9 +59,6 @@ size_flags_vertical = 10
 custom_colors/current_line_color = Color( 0, 0, 0, 0.0784314 )
 custom_fonts/font = SubResource( 2 )
 custom_styles/normal = ExtResource( 9 )
-text = "/new n numbers
-/speed n 0.1
-/play/range n 2 4"
 highlight_current_line = true
 syntax_highlighting = true
 show_line_numbers = true
