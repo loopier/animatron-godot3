@@ -751,12 +751,12 @@ func playActor(inArgs, sender):
 		animNode.play(animName)
 
 func playActorRange(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "playActorRange", [2], sender)
+	var args = getActorsAndArgs(inArgs, "playActorRange", [1,2], sender)
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
 		var animName = animNode.get_animation()
 		var start = float(args.args[0])
-		var end = float(args.args[1])
+		var end = float(args.args[1]) if args.args.size() > 1 else -1
 		animNode.setRange(start, end)
 		animNode.set_frame(fposmod(start, animNode.frames.get_frame_count(animNode.animation)))
 		animNode.play(animName)

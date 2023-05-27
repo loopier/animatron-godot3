@@ -31,7 +31,7 @@ func _on_Animation_frame_changed():
 #	Logger.debug("loop end: %s" % [reverse])
 	if not reverse and frame > loopEnd:
 		emit_signal("animation_finished")
-	if reverse and frame < loopStart:
+	if reverse and frame < loopStart or frame > loopEnd:
 		emit_signal("animation_finished")
 
 func setSpeed(speed):
@@ -54,6 +54,10 @@ func setRandom(newRandom):
 func setRange(startFrame, endFrame):
 	loopStart = int(startFrame)
 	loopEnd = int(endFrame)
+	if frame < loopStart:
+		frame = loopStart
+	if frame > endFrame:
+		endFrame
 #	frame = loopStart if not reverse else loopEnd
 
 func setStart(startFrame):
