@@ -7,9 +7,10 @@ var oscrcv
 onready var actorCmds = {
 	"/free": funcref($OscInterface, "freeActor"),
 	"/anim": funcref($OscInterface, "setActorAnim"),
+	# play
 	"/play": funcref($OscInterface, "playActor"),
+	"/play/range": funcref($OscInterface, "playActorRange"),
 	"/play/rand": funcref($OscInterface, "playActorRandom"),
-	"/play/reverse": funcref($OscInterface, "playActorReverse"),
 	"/stop": funcref($OscInterface, "stopActor"),
 	"/frame": funcref($OscInterface, "setActorFrame"),
 	# absolute position
@@ -158,7 +159,7 @@ func getOtherCommandSummary() -> String:
 	
 
 func _ready():	
-	Logger.setLevel(Logger.LOG_LEVEL_INFO)
+	Logger.setLevel(Logger.LOG_LEVEL_DEBUG)
 	Logger.setTarget(get_node("PostTextEdit"))
 	randomize()
 		

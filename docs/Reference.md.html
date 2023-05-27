@@ -31,7 +31,7 @@ Address | Args <img width=675px/> | Description
 --------|------|------------
 `/free` <br/> `/free!` | `actor:s` <br/> - | Delete the actor (remove its instance).
 `/play` <br/> `/play!` | `actor:s` <br/> -| Play the actor's animation from the current frame.
-`/play/reverse` <br/> `/play/everse!` | `actor:s [enable:b]` <br/> `[enable:b]`| Play the `actor` frames in reverse. Defaults to `true`.
+`/play/range` <br/> `/play/range!` | `actor:s [enable:b]` <br/> `[start:i end:i]`| Play an `actor` range of frames, begining on the `start` frame up to (and including) the `end` frame.
 `/play/rand` <br/> `/play/rand!` | `actor:s [enable:b]` <br/> `[enable:b]`| Play the `actor` frames in a random order. Defaults to `true`.
 `/stop` <br/> `/stop!` | `actor:s` <br/> - | Stop playing the actor's animation.
 `/frame` <br/> `/frame!` | `actor:s frame:i` <br/> `frame:i` | Jump to the given frame number (with wrapping). If a `float` from 0-1 is passed, it will jump to the frame corresponding to that position (`0` being the first frame and `1` the last).
@@ -54,7 +54,7 @@ Address | Args <img width=675px/> | Description
 `/pivot` <br/> `/pivot!` | `actor:s px:f py:f [dur:f]` <br/> `px:f py:f [dur:f]` | Set the actor's animation pivot to the specified point. `px` and `py` should be in the normalized range 0-1, with 0 being left/top of the frame and 1 being right/bottom. If `dur` is set, interpolate the pivot over that number of seconds, otherwise change instantaneously.
 `/alpha` <br/> `/alpha!` | `actor:s opacity:f [dur:f]` <br/> `opacity:f [dur:f]` | Set the actor's opacity, where 1 is fully opaque/visible and 0 is transparent/invisible). If `dur` is set, interpolate the alpha over that number of seconds, otherwise change instantaneously.
 `/fade` <br/> `/fade!` | `actor:s opacity:f [dur:f]` <br/> `opacity:f [dur:f]` | Set the actor's opacity realtive to the current value (where 1 is keep as it is). If `dur` is set, interpolate the fade over that number of seconds, otherwise change instantaneously.
-`/speed` <br/> `/speed!` | `actor:s rate:f` <br/> `rate:f` | Set the playback speed (1 is normal speed).
+`/speed` <br/> `/speed!` | `actor:s rate:f` <br/> `rate:f` | Set the playback speed (1 is normal speed). Negative values play in reverse.
 `/loop` <br/> `/loop!` | `actor:s [enable:b]` <br/> `[enable:b]` | Enable or disable looped animation playback. `enable` argument defaults to `true`, and initial state of animation looping for new actors is also `true`.
 `/fliph` <br/> `/fliph!` | `actor:s` <br/> - | Flip the actor horizontally.
 `/flipv` <br/> `/flipv!` | `actor:s` <br/> - | Flip the actor vertically.

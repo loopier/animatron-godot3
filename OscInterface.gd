@@ -750,16 +750,15 @@ func playActor(inArgs, sender):
 		var animName = animNode.get_animation()
 		animNode.play(animName)
 
-func playActorReverse(inArgs, sender):
-	var args = getActorsAndArgs(inArgs, "playActor", null, sender)
+func playActorRange(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "playActorRange", [2], sender)
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
 		var animName = animNode.get_animation()
-		var reverse = true
-		if len(args.args) > 0:
-			reverse = args.args[0]
-		animNode.play(animName, reverse)
-	
+		var start = args.args[0]
+		var end = args.args[1]
+		animNode.setRange(start, end)
+		Logger.debug("Set player range: %s from:%s to:%s" % [animNode.name, start, end])
 
 func playActorRandom(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "playActor", [0,1], sender)
@@ -968,11 +967,7 @@ func setActorSpeed(inArgs, sender):
 	var speed := args.args[0] as float
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
-		if speed < 0:
-			animNode.play("", true)
-		else:
-			animNode.play("")
-		animNode.set_speed_scale(abs(speed))
+		animNode.setSpeed(speed)
 
 func flipActorH(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "flipActorH", 0, sender)
