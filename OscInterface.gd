@@ -4,6 +4,7 @@ extends Node
 # but not on exported builds. Can be overridden at runtime with /debug message.
 var allowStatusReport : bool = not OS.has_feature("standalone")
 onready var main = get_parent()
+onready var helpDocsPath = "res://docs/help/"
 onready var post = main.get_node("PostTextEdit")
 onready var actorsNode = main.get_node("Actors")
 onready var customCmds : CustomCommands = main.get_node("CustomCommands")
@@ -626,9 +627,16 @@ func listCommands(args, sender):
 	Logger.info(commandsMsg)
 
 func openHelp(args, sender):
-	if !args.empty():
-		reportError("openHelp expects no arguments", sender)
-	OS.shell_open(ProjectSettings.globalize_path("res://docs/Reference.md.html"))
+	if args.size() != 1:
+		reportError("openHelp expects 1 argument", sender)
+#	OS.shell_open(ProjectSettings.globalize_path("res://docs/Reference.md.html"))
+	var cmd = args[0]
+	if cmd.begins_with("/"):
+		cmd = cmd.substr(1)
+	var filename = "%shelp-%s.osc" % [helpDocsPath, "-".join(cmd.split("/"))]
+	Logger.verbose("open help: %s" % [filename])
+	main.get_node("PostTextEdit").append(" --- ")
+	postFile([filename], sender)
 
 func postUserDataPath(args, sender):
 	reportStatus(OS.get_user_data_dir(), sender)
@@ -692,6 +700,12 @@ func postDecreaseFont(args, sender):
 		reportError("postDecreaseFont expects 0 argument.", sender)
 		return
 	main.get_node("PostTextEdit").decreaseFont()
+
+func postFile(args, sender):
+	if len(args) != 1:
+		reportError("postFile expects 1 argumnet. Given: %s" % [args.size()], sender)
+		return
+	main.get_node("PostTextEdit").append(main.getTextFromFile(args[0]))
 
 ############################################################
 # Logger commands

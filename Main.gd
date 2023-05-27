@@ -130,6 +130,7 @@ onready var otherCmds = {
 	"/post/font/size": funcref($OscInterface, "postFontSize"),
 	"/post/font/increase": funcref($OscInterface, "postIncreaseFont"),
 	"/post/font/decrease": funcref($OscInterface, "postDecreaseFont"),
+	"/post/open": funcref($OscInterface, "postFile"),
 	
 	# logger
 	"/log": funcref($OscInterface, "logMsg"),
@@ -301,7 +302,11 @@ func _on_OpenFileDialog_file_selected(path):
 	openFile(path)
 
 func openFile(path):
+	$OscTextEdit.text = getTextFromFile(path)
+
+func getTextFromFile(path) -> String:
 	var file = File.new()
+	var text : String
 	var err = file.open(path, File.READ)
 	if err:
 		if path.is_rel_path():
@@ -312,9 +317,10 @@ func openFile(path):
 		else:
 			Logger.error("can't open absolute path: %s" % [ProjectSettings.globalize_path(path)])
 	if !err:
-		Logger.info("opened file: %s" % [path])
-		$OscTextEdit.text = file.get_as_text()
+		Logger.verbose("opened file: %s" % [path])
+		text = file.get_as_text()
 	file.close()
+	return text
 
 func _on_SaveFileDialog_file_selected(path):
 	saveFile(path)
