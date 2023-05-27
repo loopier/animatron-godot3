@@ -1,5 +1,9 @@
 extends Timer
 
+# This is not the code for the Main.Routines node.
+# Main.Routines holds different instances of this script, which is a
+# single routine.
+
 var cmd : Array
 onready var main = get_parent().get_parent()
 onready var repeats = 0 setget setRepeats
