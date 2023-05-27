@@ -27,16 +27,13 @@ def /center actor
 def /play/rev actor
     /play $actor true
 
-
 # play the animation once and vanish
 def /once actor
     /oneshot $actor 0
 
-def /loop actor
-    /play $actor
-    /fade $actor 1
-    /onfinish/free $actor /fade $actor
-    /onfinish/free $actor /stop $actor
+# play the animation once and stop on the last frame
+def /noloop actor
+    /oneshot $actor 1
 
 # visibility envelope
 def /adsr actor atk dec sus sust rel

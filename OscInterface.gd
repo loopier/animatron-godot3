@@ -748,6 +748,7 @@ func playActor(inArgs, sender):
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
 		var animName = animNode.get_animation()
+		animNode.reset()
 		animNode.play(animName)
 
 func playActorRange(inArgs, sender):
@@ -767,16 +768,19 @@ func playActorOneshot(inArgs, sender):
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
 		var visibleEnd = int(args.args[0])
-		animNode.loop(false)
+		node.set_visible(true)
 		node.setVisibleEnd(visibleEnd)
+		animNode.loop(false)
+		animNode.reset()
 
 func playActorLoop(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "playActorLoop", [0,1], sender)
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
 		animNode.loop(true)
+		animNode.reset()
 		node.setVisibleEnd(true)
-		setActorAlpha([node.name, 1, 0], sender)
+		node.set_visible(true)
 
 func playActorRandom(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "playActor", [0,1], sender)
@@ -969,6 +973,7 @@ func setActorAlpha(inArgs, sender):
 		var target := Color(1, 1, 1, float(args.args[0]))
 		for node in args.actors:
 			setPropertyWithDur(node, "modulate", target, dur)
+#			node.set_visible(true)
 
 func setActorFade(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorFade", [1, 2], sender)
@@ -977,7 +982,8 @@ func setActorFade(inArgs, sender):
 		var target := Color(1, 1, 1, float(args.args[0]))
 		for node in args.actors:
 			var alpha : float = node.get("modulate").a * float(args.args[0])
-			setActorAlpha([node.name, alpha, dur], sender)
+#			setActorAlpha([node.name, alpha, dur], sender)
+			setPropertyWithDur(node, "modulate", target, dur)
 
 
 func setActorSpeed(inArgs, sender):

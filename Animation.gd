@@ -54,14 +54,22 @@ func setRandom(newRandom):
 func setRange(startFrame, endFrame):
 	loopStart = int(startFrame)
 	loopEnd = int(endFrame)
-	if frame < loopStart:
-		frame = loopStart
-	if frame > endFrame:
-		endFrame
-#	frame = loopStart if not reverse else loopEnd
+	reset()
 
 func setStart(startFrame):
 	loopStart = int(startFrame)
 
 func setEnd(endFrame):
 	loopEnd = int(endFrame)
+
+func reset():
+	Logger.debug("frame: %d st:%s end:%s rev:%s" % [frame, loopStart, loopEnd, reverse])
+	if frame < loopStart and not reverse:
+		frame = loopStart
+	elif frame >= loopEnd and not reverse:
+		frame = loopStart
+	elif frame > loopEnd and reverse:
+		frame = loopEnd
+	elif frame <= loopStart and reverse:
+		frame = loopEnd
+	Logger.debug("frame: %s" % [frame])

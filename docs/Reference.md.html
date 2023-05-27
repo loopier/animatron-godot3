@@ -33,6 +33,8 @@ Address | Args <img width=675px/> | Description
 `/play` <br/> `/play!` | `actor:s` <br/> -| Play the actor's animation from the current frame.
 `/play/range` <br/> `/play/range!` | `actor:s [enable:b]` <br/> `[start:i end:i]`| Play an `actor` range of frames, begining on the `start` frame up to (and including) the `end` frame.
 `/play/rand` <br/> `/play/rand!` | `actor:s [enable:b]` <br/> `[enable:b]`| Play the `actor` frames in a random order. Defaults to `true`.
+`/oneshot` <br/> `/oneshot!` | `actor:s [visibility:b]` <br/> `[visibility:b]`| Play the `actor` to the end, and stop. Then set `visibility`.
+`/loop` <br/> `/loop!` | `actor:s`| Set the `actor`'s animation to loop.
 `/stop` <br/> `/stop!` | `actor:s` <br/> - | Stop playing the actor's animation.
 `/frame` <br/> `/frame!` | `actor:s frame:i` <br/> `frame:i` | Jump to the given frame number (with wrapping). If a `float` from 0-1 is passed, it will jump to the frame corresponding to that position (`0` being the first frame and `1` the last).
 `/position` <br/> `/position!` | `actor:s x:f y:f [dur:f]` <br/> `x:f y:f [dur:f]` | Set the actor to the x,y coordinates (specified as fractions of the viewport from 0-1). If `dur` is set, interpolate the movement over that number of seconds, otherwise change instantaneously.
