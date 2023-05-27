@@ -3,12 +3,11 @@ extends AnimatedSprite
 var loop = true setget setLoop
 var random = false setget setRandom
 var loopStart := 0 setget setStart
-var loopEnd := 0 setget setEnd
+var loopEnd := -1 setget setEnd
 var reverse := false
 
 func _ready():
 	connect("frame_changed", self, "_on_Animation_frame_changed")
-	loopEnd = frames.get_frame_count(animation)
 
 func _on_Animation_animation_finished():
 #	Logger.debug("finished:%s" % [get_parent().get_parent().name])
@@ -20,6 +19,8 @@ func _on_Animation_frame_changed():
 	if random:
 		set_frame( randi() % frames.get_frame_count( animation ) )
 	if is_playing() and loop:
+		if loopEnd < 0:
+			loopEnd = frames.get_frame_count(animation)
 		if not reverse and frame > loopEnd:
 			frame = loopStart
 			emit_signal("animation_finished")
