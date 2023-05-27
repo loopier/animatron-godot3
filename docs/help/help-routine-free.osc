@@ -1,0 +1,3 @@
+/routine/free name:s
+
+/description Remove the routine named NAME.

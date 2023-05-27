@@ -1,0 +1,3 @@
+/ungroup group:s
+
+/description Remove the actor from a named group.

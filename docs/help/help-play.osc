@@ -1,0 +1,3 @@
+/play actor:s
+
+/description Play the actor's animation from the current frame.

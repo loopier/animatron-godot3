@@ -1,0 +1,3 @@
+/frame/next actor:s
+
+/description Jump to the next frame of the ACTOR's' animation.

@@ -1,0 +1,3 @@
+/play/rand actor:s
+
+/description Play the ACTOR frames in a random order. Defaults to TRUE.

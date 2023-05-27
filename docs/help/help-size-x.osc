@@ -1,0 +1,3 @@
+/size/x actor:s
+
+/description Set the actor's uniform size on the x axis. If DUR is set, interpolate the scale over that number of seconds, otherwise change instantaneously.

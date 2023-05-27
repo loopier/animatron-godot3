@@ -1,0 +1,3 @@
+/window/position x:i
+
+/description Move window to the specified position given in pixels.

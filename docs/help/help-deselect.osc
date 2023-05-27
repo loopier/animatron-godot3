@@ -1,0 +1,3 @@
+/deselect [actor:s]
+
+/description Remove the actor from the selected set. If run without ACTOR it will deselect all (equivalent to `/deselect "*"` or `/deselect "!"`).

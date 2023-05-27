@@ -1,0 +1,3 @@
+/parent child:s
+
+/description Set the CHILD as child of PARENT. Will inherit all transformations.

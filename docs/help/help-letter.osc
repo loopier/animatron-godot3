@@ -1,0 +1,3 @@
+/letter letter:c
+
+/description Map a single letter to an asset.  Creates an actor named after LETTER with ASSET.

@@ -1,0 +1,3 @@
+/color actor:s
+
+/description Add an RGB colour to the actor. Red, green and blue should be in the 0-1 range (can be negative to subtract colour). Set to black (0,0,0) to restore its original colour.

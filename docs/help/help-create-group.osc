@@ -1,0 +1,3 @@
+/create/group group:s
+
+/description Create a batch of actors with a given (loaded) animation. A group will be created with this name and each actor will be named after the group with an index sufix.

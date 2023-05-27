@@ -1,0 +1,3 @@
+/frame actor:s
+
+/description Jump to the given frame number (with wrapping). If a FLOAT from 0-1 is passed, it will jump to the frame corresponding to that position (0 being the first frame and 1 the last).

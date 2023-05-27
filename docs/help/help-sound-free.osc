@@ -1,0 +1,3 @@
+/sound/free band:i
+
+/description Unmap sound for the given BAND. If COMMAND and ACTOR are specified, remove only that COMMAND for the actor.

@@ -1,0 +1,3 @@
+/routine/stop name:s
+
+/description Stop the routine named NAME.

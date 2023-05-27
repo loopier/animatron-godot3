@@ -1,0 +1,3 @@
+/midi/debug [enable:b]
+
+/description Enable (or disable) reporting of MIDI input events.

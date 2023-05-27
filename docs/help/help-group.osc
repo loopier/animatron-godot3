@@ -1,0 +1,3 @@
+/group group:s
+
+/description Add the actor to a named group. If run without ACTOR it will return the list of actors in the group. Note that `/group "myGroup" "!"` may be used to add the current selection to a group. Use the group name as an actor name in all commands to apply it to all it's members.

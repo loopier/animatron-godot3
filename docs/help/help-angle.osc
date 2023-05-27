@@ -1,0 +1,3 @@
+/angle actor:s
+
+/description Set the actor's rotation angle to DEGREES. If DUR is set, interpolate the rotation over that number of seconds, otherwise change instantaneously.

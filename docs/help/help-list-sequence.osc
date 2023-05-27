@@ -1,0 +1,3 @@
+/list/sequence actor:s
+
+/description Print the list of commands triggered on all ACTOR frames.

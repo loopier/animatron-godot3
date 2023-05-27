@@ -1,0 +1,6 @@
+/loop actor:s
+
+/description Set the ACTOR's animation to loop.
+/loop actor:s
+
+/description Enable or disable looped animation playback. ENABLE argument defaults to TRUE, and initial state of animation looping for new actors is also TRUE.

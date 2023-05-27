@@ -1,0 +1,3 @@
+/speed actor:s
+
+/description Set the playback speed (1 is normal speed). Negative values play in reverse.

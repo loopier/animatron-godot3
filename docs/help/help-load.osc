@@ -1,0 +1,3 @@
+/load asset:s
+
+/description Load an (animation) asset from disk. It will create an ANIM with the same name as the asset. Wildcards are supported, so several animations can be loaded at once. The list of assets available to load can be found by calling `/list/assets`.

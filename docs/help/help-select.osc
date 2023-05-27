@@ -1,0 +1,3 @@
+/select [actor:s]
+
+/description Add the actor to the selected set. If run without ACTOR it will return the list of selected actors.

@@ -1,0 +1,3 @@
+/onframe actor:s
+
+/description Add SUBCOMMAND to be triggered on FRAME. The SUBCOMMAND can be any valid command. <br><br> For example, to create an animation sequence, the animation asset can be changed on the desired FRAME: <br><br> `/create actorA animA`<br>`/onframe actorA 8 /create actorA animB`.

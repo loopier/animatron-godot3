@@ -1,0 +1,3 @@
+/rand cmd:s
+
+/description Send a CMD with a random value between MIN and `max.`**This only works with single-value commands.**

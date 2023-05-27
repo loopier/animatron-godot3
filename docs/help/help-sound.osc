@@ -1,0 +1,3 @@
+/sound band:i
+
+/description Map the amplitude of the sound input at the frequency BAND to any COMMAND within the range MIN and MAX (if ommited they default to `[0.0..1.0]`)

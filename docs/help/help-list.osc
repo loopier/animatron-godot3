@@ -1,0 +1,3 @@
+/list 
+
+/description Get list of current actor instances. Returned in the form of a `/list/actors/reply` OSC message.

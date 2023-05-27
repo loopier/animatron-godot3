@@ -1,0 +1,3 @@
+/stop actor:s
+
+/description Stop playing the actor's animation.

@@ -1,0 +1,3 @@
+/status/reply status:s
+
+/description Return a status message to the client.

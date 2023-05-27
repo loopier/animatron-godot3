@@ -1,0 +1,3 @@
+/osc/remote ip:s
+
+/description Register a remote OSC client at IP address on PORT.

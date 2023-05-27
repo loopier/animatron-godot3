@@ -1,0 +1,3 @@
+/osc/send addr:s
+
+/description Send an OSC message with an arbitrary number of arguments to a remote client.
