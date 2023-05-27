@@ -11,19 +11,21 @@ func _ready():
 	loopEnd = frames.get_frame_count(animation)
 
 func _on_Animation_animation_finished():
+#	Logger.debug("finished:%s" % [get_parent().get_parent().name])
 	if not loop:
 		stop()
 
 func _on_Animation_frame_changed():
-	Logger.debug("play:%s frame:%s loop:%s start:%s end:%s speed:%s" % [is_playing(), frame, loop, loopStart, loopEnd, frames.get_animation_speed(animation)])
-	Logger.debug("frame > end: %s" % [frame > loopEnd])
+#	Logger.debug("play:%s frame:%s loop:%s start:%s end:%s speed:%s" % [is_playing(), frame, loop, loopStart, loopEnd, frames.get_animation_speed(animation)])
 	if random:
 		set_frame( randi() % frames.get_frame_count( animation ) )
 	if is_playing() and loop:
 		if not reverse and frame > loopEnd:
 			frame = loopStart
+			emit_signal("animation_finished")
 		if reverse and frame < loopStart:
 			frame = loopEnd
+			emit_signal("animation_finished")
 
 func setSpeed(speed):
 	if float(speed) < 0:
