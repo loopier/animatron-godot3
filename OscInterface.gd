@@ -755,10 +755,28 @@ func playActorRange(inArgs, sender):
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
 		var animName = animNode.get_animation()
-		var start = args.args[0]
-		var end = args.args[1]
+		var start = float(args.args[0])
+		var end = float(args.args[1])
 		animNode.setRange(start, end)
+		animNode.set_frame(fposmod(start, animNode.frames.get_frame_count(animNode.animation)))
+		animNode.play(animName)
 		Logger.debug("Set player range: %s from:%s to:%s" % [animNode.name, start, end])
+
+func playActorOneshot(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "playActorOneshot", [1], sender)
+	if args: for node in args.actors:
+		var animNode = node.get_node(actorAnimNodePath)
+		var visibleEnd = int(args.args[0])
+		animNode.loop(false)
+		node.setVisibleEnd(visibleEnd)
+
+func playActorLoop(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "playActorLoop", [0,1], sender)
+	if args: for node in args.actors:
+		var animNode = node.get_node(actorAnimNodePath)
+		animNode.loop(true)
+		node.setVisibleEnd(true)
+		setActorAlpha([node.name, 1, 0], sender)
 
 func playActorRandom(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "playActor", [0,1], sender)

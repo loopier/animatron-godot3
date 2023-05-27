@@ -2,6 +2,7 @@ extends KinematicBody2D
 
 var sequence : Dictionary
 var finishCmds : Dictionary
+var isVisibleEnd := true setget setVisibleEnd
 var sequenceIndex = 0
 # frame that triggers the next command in the sequence
 var trigFrame = 0
@@ -26,6 +27,8 @@ func _on_Animation_frame_changed():
 func _on_Animation_animation_finished():
 	for cmd in finishCmds:
 		main.evalOscCommand(finishCmds[cmd][0], finishCmds[cmd].slice(1,-1), null)
+	
+	set_visible(isVisibleEnd)
 
 func resetSequence():
 	sequenceIndex = 0
@@ -97,3 +100,6 @@ func sendCmds( inframe ):
 func listSequenceCmds():
 	print("frame commands for %s:\n%s" % [name,sequence])
 	print("finish commands for %s:\n%s" % [name,finishCmds])
+
+func setVisibleEnd(visible):
+	isVisibleEnd = visible

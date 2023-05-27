@@ -10,6 +10,8 @@ onready var actorCmds = {
 	# play
 	"/play": funcref($OscInterface, "playActor"),
 	"/play/range": funcref($OscInterface, "playActorRange"),
+	"/oneshot": funcref($OscInterface, "playActorOneshot"),
+	"/loop": funcref($OscInterface, "playActorLoop"),
 	"/play/rand": funcref($OscInterface, "playActorRandom"),
 	"/stop": funcref($OscInterface, "stopActor"),
 	"/frame": funcref($OscInterface, "setActorFrame"),

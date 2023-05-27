@@ -27,22 +27,10 @@ def /center actor
 def /play/rev actor
     /play $actor true
 
-# play the animation once
-# @param    actor
-# @param    visibility  bool    Wether to fade on end or not
-def /oneshot actor visibility
-    /fade $actor 1
-    /play $actor
-    /onfinish $actor /fade $actor $visibility
-    /onfinish $actor /stop $actor
 
 # play the animation once and vanish
 def /once actor
     /oneshot $actor 0
-
-# play the animation once and stop on last frame
-def /noloop actor
-    /oneshot $actor 1
 
 def /loop actor
     /play $actor
