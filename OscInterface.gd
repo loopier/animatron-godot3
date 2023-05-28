@@ -1026,6 +1026,13 @@ func setActorSpeed(inArgs, sender):
 		var animNode = node.get_node(actorAnimNodePath)
 		animNode.setSpeed(speed)
 
+func setActorSpeedSlow(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "setActorSpeedFast", 1, sender)
+	if not args or float(args.args[0]) == 0: 
+		return
+	inArgs[1] = 1/float(args.args[0])
+	setActorSpeed(inArgs, sender)
+
 func flipActorH(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "flipActorH", 0, sender)
 	if args: for node in args.actors:

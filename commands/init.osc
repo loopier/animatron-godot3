@@ -17,8 +17,8 @@ def /newsel actor anim
     /new $actor $anim
     /select $actor
 
-def /help
-    /list/commands
+def /fast actor amount
+    /speed $actor $amount
 
 def /center actor
     /position $actor 0.5 0.5
