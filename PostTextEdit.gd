@@ -2,7 +2,7 @@ extends TextEdit
 
 var main
 
-var shortcutsHelp = "\n\nKeyboard shortcuts:\n" \
+var shortcutsHelp = "\nKeyboard shortcuts:\n" \
 	+ "\t CTRL + H - show this Help and OSC commands.\n" \
 	+ "\t CTRL + ENTER - evaluate block.\n" \
 	+ "\t SHIFT + ENTER - evaluate line.\n" \
@@ -21,12 +21,12 @@ var help = "================================================================\n" 
 	+ "\n" \
 	+ "/tutorial\n" \
 	+ "\n" \
-	+ "and hit CTRL + ENTER while the cursor is on that line" \
+	+ "and evaluate by hitting CTRL + ENTER while the cursor is on that line.\n" \
 	+ "\n" \
+	+ "See the docs by evaluating:\n" \
+	+ "\n" \
+	+ "/help\n" \
 	+ shortcutsHelp \
-	+ "\n" \
-	+ "For a full list of available OSC messages see the OSC\n" \
-	+ "interface documentation in 'docs/Reference.md.html\n" \
 	+ "================================================================\n\n"
 
 # Called when the node enters the scene tree for the first time.
