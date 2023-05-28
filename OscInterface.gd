@@ -627,16 +627,20 @@ func listCommands(args, sender):
 	Logger.info(commandsMsg)
 
 func openHelp(args, sender):
-	if args.size() != 1:
-		reportError("openHelp expects 1 argument", sender)
 #	OS.shell_open(ProjectSettings.globalize_path("res://docs/Reference.md.html"))
-	var cmd = args[0]
+	if args.size() == 0:
+		listCommands(args, sender)
+		return
+	var cmd : String = args[0]
 	if cmd.begins_with("/"):
 		cmd = cmd.substr(1)
 	var filename = "%shelp-%s.osc" % [helpDocsPath, "-".join(cmd.split("/"))]
 	Logger.verbose("open help: %s" % [filename])
-	main.get_node("PostTextEdit").append(" --- ")
+	var delimiter = "------------------------------"
+	main.get_node("PostTextEdit").append(delimiter)
+	main.get_node("PostTextEdit").append("HELP\n")
 	postFile([filename], sender)
+	main.get_node("PostTextEdit").append(delimiter)
 
 func postUserDataPath(args, sender):
 	reportStatus(OS.get_user_data_dir(), sender)
