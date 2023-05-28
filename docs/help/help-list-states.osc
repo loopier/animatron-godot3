@@ -1,0 +1,3 @@
+/list/states actor
+
+/description Get a list of states for the given ACTOR.

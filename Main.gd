@@ -62,7 +62,10 @@ onready var actorCmds = {
 	"/onfinish": funcref($OscInterface, "onFinishActor"),
 	"/onframe/free": funcref($OscInterface, "onFrameFreeActor"),
 	"/onfinish/free": funcref($OscInterface, "onFinishFreeActor"),
-	"/list/sequence": funcref($OscInterface, "getSequenceActor"),
+	"/list/sequence": funcref($OscInterface, "getActorFrameCmds"),
+	"/state/add": funcref($OscInterface, "addActorState"),
+	"/state/free": funcref($OscInterface, "freeActorState"),
+	"/list/states": funcref($OscInterface, "listActorStates"),
 }
 
 onready var otherCmds = {

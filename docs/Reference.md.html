@@ -77,7 +77,9 @@ Address | Args <img width=675px/> | Description
 `/onfinish`| `actor:s subCommand`| Add `subCommand` to be triggered on the last frame. The `subCommand` can be any valid command.
 `/onfinish/free` | `actor:s subCommand`| Remove `subCommand` trigger from the last frame. The `subCommand` only needs the command address (with leading `/`) and the actor name -- don't any the command parameter value.
 `/list/sequence` | `actor:s` | Print the list of commands triggered on all `actor` frames.
-
+`/state/add` | `actor:s` `new:s` `... next:s` | Add a NEW state to the ACTOR's state machine. NEXT states is an arbitrary number of next possible states. States are asset names.
+`/state/free` | `actor:s` `state:s` | Remove the STATE from the ACTOR's state machine.
+`/list/states` | `actor:s` | Get a list of states for the given ACTOR.
 ## Communications commands
 Address | Args <img width="100px"/> | Description
 --------|------|------------

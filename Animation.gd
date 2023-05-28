@@ -4,6 +4,7 @@ var random = false setget setRandom
 var loopStart := 0 setget setStart
 var loopEnd := -1 setget setEnd
 var reverse := false
+var nextAnim := 0
 
 func _ready():
 	connect("frame_changed", self, "_on_Animation_frame_changed")

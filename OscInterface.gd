@@ -756,7 +756,7 @@ func setActorAnim(inArgs, sender):
 #		node.get_node(actorAnimNodePath).frames = animFramesLibrary
 		animNode.play(animName)
 		reportStatus("Changed node '%s' animation to '%s'" % [node.name, animName], sender)
-		
+
 func playActor(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "playActor", null, sender)
 	if args: for node in args.actors:
@@ -1015,6 +1015,8 @@ func setActorFade(inArgs, sender):
 
 func setActorSpeed(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorSpeed", 1, sender)
+	if not args: 
+		return
 	var speed := args.args[0] as float
 	if args: for node in args.actors:
 		var animNode = node.get_node(actorAnimNodePath)
@@ -1362,7 +1364,7 @@ func onFrameActor(inArgs, sender):
 		for actor in aa.actors:
 			var frame = inArgs[1]
 			var cmd = aa.args.slice(1, -1)
-			actor.addCmdToSequence(frame, cmd)
+			actor.addCmdToFrameCmds(frame, cmd)
 
 func onFrameFreeActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "onFrameFreeActor", 3, sender)
@@ -1370,7 +1372,7 @@ func onFrameFreeActor(inArgs, sender):
 		for actor in aa.actors:
 			var frame = inArgs[1]
 			var cmd = aa.args.slice(1, -1)
-			actor.removeCmdFromSequence(frame, cmd)
+			actor.removeCmdFromFrameCmds(frame, cmd)
 
 func onFinishActor(inArgs, sender):
 	var aa = getActorsAndArgs(inArgs, "onFrameActor", null, sender)
@@ -1386,9 +1388,31 @@ func onFinishFreeActor(inArgs, sender):
 			var cmd = aa.args
 			actor.removeFinishCmd(cmd)
 
-func getSequenceActor(inArgs, sender):
+func getActorFrameCmds(inArgs, sender):
 	reportError("TODO getSequenceActor", sender)
 	var aa = getActorsAndArgs(inArgs, "getSequenceActor", 0, sender)
 	if aa:
 		for actor in aa.actors:
-			actor.listSequenceCmds()
+			actor.listFrameCmds()
+
+func addActorState(inArgs, sender):
+	if inArgs.size() < 3:
+		reportError("addActorState expects at least 3 arguments. Given: %s" % [inArgs.size()], sender)
+		return
+	var actor = getNode(inArgs[0], sender)
+	var state = inArgs[1]
+	var nextStates = inArgs.slice(2,-1)
+	actor.addState(state, nextStates)
+
+func freeActorState(inArgs, sender):
+	if inArgs.size() != 2:
+		reportError("freeActorState expects 2 arguments. Given: %s" % [inArgs.size()], sender)
+		return
+	var actor = getNode(inArgs[0], sender)
+	var state = inArgs[1]
+	actor.removeState(state)
+
+func listActorStates(inArgs, sender):
+	var aa = getActorsAndArgs(inArgs, "listActorStates", 0, sender)
+	if aa: for actor in aa.actors:
+		actor.listStates()
