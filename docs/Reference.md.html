@@ -59,6 +59,7 @@ Address | Args <img width=675px/> | Description
 `/alpha` <br/> `/alpha!` | `actor:s opacity:f [dur:f]` <br/> `opacity:f [dur:f]` | Set the actor's opacity, where 1 is fully opaque/visible and 0 is transparent/invisible). If `dur` is set, interpolate the alpha over that number of seconds, otherwise change instantaneously.
 `/fade` <br/> `/fade!` | `actor:s opacity:f [dur:f]` <br/> `opacity:f [dur:f]` | Set the actor's opacity realtive to the current value (where 1 is keep as it is). If `dur` is set, interpolate the fade over that number of seconds, otherwise change instantaneously.
 `/speed` <br/> `/speed!` | `actor:s rate:f` <br/> `rate:f` | Set the playback speed (1 is normal speed). Negative values play in reverse.
+`/slow` <br/> `/slow!` | `actor:s amount:f` <br/> `amount:f` | Devide the speed by a specific AMOUNT. Negative values play in reverse.
 `/loop` <br/> `/loop!` | `actor:s [enable:b]` <br/> `[enable:b]` | Enable or disable looped animation playback. `enable` argument defaults to `true`, and initial state of animation looping for new actors is also `true`.
 `/fliph` <br/> `/fliph!` | `actor:s` <br/> - | Flip the actor horizontally.
 `/flipv` <br/> `/flipv!` | `actor:s` <br/> - | Flip the actor vertically.
