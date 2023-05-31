@@ -23,6 +23,12 @@ def /fast actor amount
 def /center actor
     /position $actor 0.5 0.5
 
+def /left actor amout
+    /move/x $actor -$amount
+
+def /right actor amout
+    /move/x $actor $amount 0
+
 # play actor in reverse
 def /play/rev actor
     /play $actor true
