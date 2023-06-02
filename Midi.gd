@@ -65,6 +65,7 @@ func addMidiCmd( event, ch, num, cmd, actor, minVal, maxVal ):
 	var key = "%s/ch%s/%s" % [event, ch, num]
 	if not midiCmds.has(key):
 		midiCmds[key] = []
+	
 	midiCmds[key].append(
 		{"addr":cmd, "actor":actor.name, "value":[minVal, maxVal]}
 		)
@@ -125,10 +126,15 @@ func eventToOsc(cmd, value):
 	elif minval == null or maxval == null:
 		main.evalCommandList([[addr, actor]], null)
 		return
-	var scaledValue  = Helper.linlin(value, 0, 127, minval, maxval)
-	print("MIDI PARSE: original:%s scaled:%s" % [value, scaledValue])
-	print("sending msg from MIDI: %s %s %f" % [addr, actor, value])
-	main.evalCommandList([[addr, actor, scaledValue]], null)
+	var args  
+	if minval.is_valid_float() and maxval.is_valid_float():
+		args = Helper.linlin(value, 0, 127, float(minval), float(maxval))
+	else:
+		args = minval
+	
+	Logger.info("MIDI PARSE: original:%s scaled:%s" % [value, args])
+	Logger.info("sending msg from MIDI: %s %s %f" % [addr, actor, value])
+	main.evalCommandList([[addr, actor, args]], null)
 
 func getKey(event, ch, num):
 	return "%s/ch%s/%s" % [event, ch, num]

@@ -1194,10 +1194,10 @@ func midiActor(inArgs, sender):
 		for actor in aa.actors:
 			var rangemin = null
 			var rangemax = null
-			if len(aa.args) > 0: 
-				rangemin = int(aa.args[0])
-				rangemax = int(aa.args[1])
-				Logger.verbose("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%.2f max%.2f" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
+			if aa.args.size() > 0: 
+				rangemin = aa.args[0]
+				rangemax = aa.args[1] if aa.args.size() > 1 else aa.args[0]
+				Logger.verbose("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:%s max%s" % [midimsg, signalmsg, ch, num, cmd, rangemin, rangemax])
 			else:
 				# print null
 				Logger.verbose("MIDI msg:%s - singal:%s - ch:%d - num:%s - cmd:%s min:- max-" % [midimsg, signalmsg, ch, num, cmd])
