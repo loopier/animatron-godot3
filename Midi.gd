@@ -132,8 +132,8 @@ func eventToOsc(cmd, value):
 	else:
 		args = minval
 	
-	Logger.info("MIDI PARSE: original:%s scaled:%s" % [value, args])
-	Logger.info("sending msg from MIDI: %s %s %f" % [addr, actor, value])
+	Logger.verbose("MIDI PARSE: original:%s scaled:%s" % [value, args])
+	Logger.verbose("sending msg from MIDI: %s %s %f" % [addr, actor, value])
 	main.evalCommandList([[addr, actor, args]], null)
 
 func getKey(event, ch, num):

@@ -170,7 +170,7 @@ func getOtherCommandSummary() -> String:
 func _ready():	
 	Logger.setLevel(Logger.LOG_LEVEL_INFO)
 	Logger.setTarget(get_node("PostTextEdit"))
-	Logger.info("version 0.1.0_15")
+	Logger.info("version 0.1.0_16")
 	randomize()
 		
 	# See: https://gitlab.com/frankiezafe/gdosc
