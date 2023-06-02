@@ -62,13 +62,8 @@ func addMidiCmd( event, ch, num, cmd, actor, minVal, maxVal ):
 			var newMaxVal = newMinVal
 			addMidiCmd(event, ch, i, cmd, actor, newMinVal, newMaxVal)
 		return
-	var key = "%s/ch%s/%s" % [event, ch, num]
-	if not midiCmds.has(key):
-		midiCmds[key] = []
-	
-	midiCmds[key].append(
-		{"addr":cmd, "actor":actor.name, "value":[minVal, maxVal]}
-		)
+	var key = "%s/ch%s/%s" % [event, ch, num]	
+	midiCmds[key] = {"addr":cmd, "actor":actor.name, "value":[minVal, maxVal]}
 #	print(midiCmds)
 	print("added midi cmd %s: %s" % [key, midiCmds[key]])
 
@@ -81,31 +76,21 @@ func removeMidiCmd( event, ch, num, cmd, actor ):
 	var key = "%s/ch%s/%s" % [event, ch, num]
 	
 	if not midiCmds.has(key): 
-		print("trying to erase non-existing MIDI cmd: %s" % [key])
+		Logger.info("trying to erase non-existing MIDI cmd: %s" % [key])
 		return
 	
-	for cmd in midiCmds[key]:
-		if cmd["actor"] == actor["name"]:
-			midiCmds[key].erase(cmd)
-			print("removed midi cmd %s: %s" % [key, cmd])
-		else:
-			print("trying to erease non-existing MIDI cmd: %s - %s" % [key, cmd])
-	
-	print(len(midiCmds[key]))
-	if len(midiCmds[key]) == 0:
-		midiCmds.erase(key)
-	print(midiCmds)
+	midiCmds.erase(key)
+	Logger.info("midi cmds: %s" % [midiCmds])
 
 func processMidiCmd( event, ch, num, val ):
 	var key = getKey(event, ch, num)
 	if not midiCmds.has(key):
 		return
 	
-	for cmd in midiCmds[key]:
-		eventToOsc(cmd, val)
+	eventToOsc(midiCmds[key], val)
 #	
 	if debug:
-		print("key: %s cmd: %s" % [key, midiCmds[key]] )
+		Logger.info("key: %s cmd: %s" % [key, midiCmds[key]] )
 #	print(midiCmds.keys())
 
 func eventToOsc(cmd, value):
@@ -140,5 +125,12 @@ func getKey(event, ch, num):
 	return "%s/ch%s/%s" % [event, ch, num]
 
 func listCmds():
-	print(midiCmds)
-	return midiCmds
+	var cmds : String
+	for key in midiCmds:
+		var cmd = midiCmds[key]["addr"]
+		var actor = midiCmds[key]["actor"]
+		var args = midiCmds[key]["value"]
+		cmds = "%s\n%s: %s %s %s" % [cmds, key, cmd, actor, args]
+#		print(cmd, midiCmds[cmd])
+#	Logger.info(cmds)
+	return cmds
