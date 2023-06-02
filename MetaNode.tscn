@@ -3,7 +3,7 @@
 [ext_resource path="res://Animation.gd" type="Script" id=1]
 [ext_resource path="res://MetaNode.gd" type="Script" id=2]
 
-[sub_resource type="Shader" id=1]
+[sub_resource type="Shader" id=4]
 code = "shader_type canvas_item;
 
 uniform vec3 uAddColor = vec3(0, 0, 0);
@@ -16,12 +16,11 @@ void fragment() {
 	if (uSelected) {
 		if (COLOR.a < 1.0) COLOR.rgb = vec3(1);
 	}
-}
-"
+}"
 
 [sub_resource type="ShaderMaterial" id=2]
 resource_local_to_scene = true
-shader = SubResource( 1 )
+shader = SubResource( 4 )
 shader_param/uAddColor = Vector3( 0, 0, 0 )
 shader_param/uSelected = false
 
