@@ -3,6 +3,8 @@ extends Node2D
 var osc: OscReceiver
 
 func _ready():
+	Log.setLevel(Log.LOG_LEVEL_VERBOSE)
+	Log.verbose("alo")
 	osc = OscReceiver.new()
 	self.add_child(osc)
 	osc.startServer()
@@ -13,4 +15,5 @@ func _process(delta):
 	pass
 
 func _on_osc_msg_received(addr, args, sender):
-	print("OSC msg received in Main from '%s': %s %s" % [sender, addr, args])
+	# map incoming OSC message to a function
+	Log.warn("TODO: Map incoming messages to functions: Main._on_osc_msg_received")

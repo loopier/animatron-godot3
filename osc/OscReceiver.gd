@@ -24,9 +24,9 @@ func _ready():
 func startServer():
 	var err = socketUdp.bind(serverPort)
 	if err != 0:
-		print("OSC ERROR while trying to listen on port: %s" % [serverPort])
+		Log.error("OSC ERROR while trying to listen on port: %s" % [serverPort])
 	else:
-		print("OSC server listening on port: %s" % [socketUdp.get_local_port()])
+		Log.info("OSC server listening on port: %s" % [socketUdp.get_local_port()])
 
 func startServerOn(listenPort):
 	serverPort = listenPort
@@ -38,7 +38,7 @@ func _process(delta):
 		var msg = parseOsc(socketUdp.get_packet())
 		var sender = socketUdp.get_packet_ip()
 		osc_msg_received.emit(msg.addr, msg.args, sender)
-		print("OSC message received from '%s': %s %s" % [socketUdp.get_packet_ip(), msg.addr, msg.args])
+		Log.verbose("OSC message received from '%s': %s %s" % [socketUdp.get_packet_ip(), msg.addr, msg.args])
 #	print(sockestUdp.get_available_packet_count())
 #	print(socketUdp.get_local_port())
 	pass
