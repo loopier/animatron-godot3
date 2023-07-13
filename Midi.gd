@@ -65,7 +65,7 @@ func addMidiCmd( event, ch, num, cmd, actor, minVal, maxVal ):
 	var key = "%s/ch%s/%s" % [event, ch, num]	
 	midiCmds[key] = {"addr":cmd, "actor":actor.name, "value":[minVal, maxVal]}
 #	print(midiCmds)
-	print("added midi cmd %s: %s" % [key, midiCmds[key]])
+	Logger.info("added midi cmd %s: %s" % [key, midiCmds[key]])
 
 func removeMidiCmd( event, ch, num, cmd, actor ):
 	if String(num) == "*":
@@ -90,7 +90,7 @@ func processMidiCmd( event, ch, num, val ):
 	eventToOsc(midiCmds[key], val)
 #	
 	if debug:
-		Logger.info("key: %s cmd: %s" % [key, midiCmds[key]] )
+		Logger.debug("key: %s cmd: %s" % [key, midiCmds[key]] )
 #	print(midiCmds.keys())
 
 func eventToOsc(cmd, value):

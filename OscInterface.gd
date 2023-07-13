@@ -742,7 +742,7 @@ func sendOsc(args, sender):
 func freeActor(inArgs, sender):
 #	soundFreeActor(inArgs, sender)
 #	midiFreeActor(inArgs, sender)
-	
+
 	var args = getActorsAndArgs(inArgs, "freeActor", 0, sender)
 	if args: for node in args.actors:
 		actorsNode.remove_child(node)
@@ -1186,7 +1186,7 @@ func midiActor(inArgs, sender):
 	var num = inArgs[2]
 	var cmd = inArgs[3]
 	var signalmsg = signalmap[midimsg]
-	var numArgs = len(inArgs.slice(4,-1)) - 1
+	var numArgs = len(inArgs.slice(4,-1)) - 1 if inArgs.size() > 4 else 0
 	var aa  = getActorsAndArgs(inArgs.slice(4,-1), "midiActor", numArgs, sender)
 #	print("MIDI msg:%s - singal:%s - num:%s - cmd:%s" % [midimsg, signalmsg, num, cmd])
 	
@@ -1205,7 +1205,7 @@ func midiActor(inArgs, sender):
 
 func midiFreeActor(inArgs, sender):
 	if len(inArgs) != 5:
-		reportError("midiActor expects 6 arguments", sender)
+		reportError("midiFreeActor expects 5 arguments", sender)
 		return
 	var signalmap = {
 		"noteon": "note_on_received",
