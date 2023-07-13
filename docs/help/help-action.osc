@@ -1,3 +1,0 @@
-/action actor:s
-
-/description Apply an action (behaviour) to the actor. Actions are script classes that define custom behaviours, such as "wander". Each action type will have its own unique list of arguments. You can see the [built-in actions here](#actions). Calling it without any ACTION will remove any existing actions.

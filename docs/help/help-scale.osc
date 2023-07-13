@@ -1,3 +1,0 @@
-/scale actor:s
-
-/description Set the actor's relative uniform scale to the current size. If DUR is set, interpolate the scale over that number of seconds, otherwise change instantaneously.

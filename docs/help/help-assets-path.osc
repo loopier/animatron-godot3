@@ -1,3 +1,0 @@
-/assets/path [path:s]
-
-/description Sets the path to the assets root directory.  If no argument is provided, it returns the current value of the path.

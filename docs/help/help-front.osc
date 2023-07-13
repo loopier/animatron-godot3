@@ -1,3 +1,0 @@
-/front actor:s
-
-/description Change the draw order for an actor to be in front of a reference actor. To move to the foreground, use `/front actor *`.

@@ -1,3 +1,0 @@
-/debug [enable:b]
-
-/description Enable (or disable) reporting of informative status messages (via OSC and to the debug window). By default, this is disabled when running in exported builds, but enabled when running in the Godot editor. This flag does not affect error reporting (errors are always reported).

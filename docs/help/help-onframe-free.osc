@@ -1,3 +1,0 @@
-/onframe/free actor:s
-
-/description Remove SUBCOMMAND trigger from FRAME. The SUBCOMMAND only needs the command address (with leading `/`) and the actor name -- don't any the command parameter value.

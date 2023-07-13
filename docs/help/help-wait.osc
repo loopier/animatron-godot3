@@ -1,3 +1,0 @@
-/wait duration
-
-/description Wait for DURATION seconds before executing the next command. Only relevant within a list of commands being executed together at once, such as inside a custom DEFined command list.

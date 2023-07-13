@@ -1,3 +1,0 @@
-/load/alphabet 
-
-/description Load the alphabet (default letters load from folders named `letter-[ASCII_CHAR]`)

@@ -1,3 +1,0 @@
-/say actor:s
-
-/description Have the actor "say" something via a speech bubble, with an optional duration (defaults to three seconds).

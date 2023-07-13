@@ -1,3 +1,0 @@
-/pivot actor:s
-
-/description Set the actor's animation pivot to the specified point. PX and PY should be in the normalized range 0-1, with 0 being left/top of the frame and 1 being right/bottom. If DUR is set, interpolate the pivot over that number of seconds, otherwise change instantaneously.

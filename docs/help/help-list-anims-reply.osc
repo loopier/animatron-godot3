@@ -1,3 +1,0 @@
-/list/anims/reply [anim:s]
-
-/description Return the list of available (loaded) animations to the client (one name per argument).

@@ -1,3 +1,0 @@
-/alpha actor:s
-
-/description Set the actor's opacity, where 1 is fully opaque/visible and 0 is transparent/invisible). If DUR is set, interpolate the alpha over that number of seconds, otherwise change instantaneously.

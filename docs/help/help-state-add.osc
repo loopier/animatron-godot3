@@ -1,3 +1,0 @@
-/state/add actor new_state ... next_states
-
-/description Add a NEW_STATE to the ACTOR's state machine. NEXT_STATES is an arbitrary number of next possible states. States are asset names.

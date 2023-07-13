@@ -1,3 +1,0 @@
-/list/assets 
-
-/description Get list of available (unloaded) assets on disk. Returned in the form of a `/list/assets/reply` OSC message.

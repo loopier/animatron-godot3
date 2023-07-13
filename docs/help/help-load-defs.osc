@@ -1,3 +1,0 @@
-/load/defs filename
-
-/description Load a custom command definitions file, which should have the format [described below](#def-files).

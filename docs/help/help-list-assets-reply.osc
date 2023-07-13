@@ -1,3 +1,0 @@
-/list/assets/reply [asset:s]
-
-/description return the list of available (unloaded) assets to the client (one name per argument). assets must be loaded as anims in order to create actor instances.

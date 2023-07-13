@@ -1,3 +1,0 @@
-/list/anims 
-
-/description Get list of available (loaded) animations. Returned in the form of a `/list/anims/reply` OSC message.

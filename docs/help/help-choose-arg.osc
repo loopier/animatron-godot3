@@ -1,3 +1,0 @@
-/choose/arg cmd:s
-
-/description Send a CMD with a value randomly chosen from any of the arguments. **This only works with single-value commands.**

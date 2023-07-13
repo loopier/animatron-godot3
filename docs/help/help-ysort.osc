@@ -1,3 +1,0 @@
-/ysort [sort:b]
-
-/description Force actors to be sorted based on y position (lower on screen drawn later, i.e. "on top"). SORT argument defaults to TRUE, but initial state of y-sorting at startup is FALSE.

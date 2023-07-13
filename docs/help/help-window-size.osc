@@ -1,3 +1,0 @@
-/window/size sx:i
-
-/description Set window to the specified size in pixels. -1 may be specified for either SX or SY, in which case it will be computed using the project viewport aspect ratio.

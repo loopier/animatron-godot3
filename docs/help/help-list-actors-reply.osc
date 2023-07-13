@@ -1,3 +1,0 @@
-/list/actors/reply [actor:s]
-
-/description Return the list of instanced actors to the client (one name per argument).

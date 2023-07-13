@@ -1,3 +1,0 @@
-/routine name:s
-
-/description Start a routine named NAME that sends CMD every INTERVAL of time (in seconds) for an arbitrary number of REPEATS.

@@ -1,3 +1,0 @@
-/play/range actor:s
-
-/description Play an ACTOR range of frames, begining on the START frame up to (and including) the END frame.

@@ -1,3 +1,0 @@
-/move/x actor:s
-
-/description Move the actor to the x coordinate relative to the current position (specified as fractions of the viewport from 0-1). If DUR is set, interpolate the move/xment over that number of seconds, otherwise change instantaneously.

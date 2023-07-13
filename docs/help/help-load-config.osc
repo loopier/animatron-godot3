@@ -1,3 +1,0 @@
-/load/config filename:s
-
-/description Load a config file following the DEF syntax (**WARNING** This might change in the futre).  After loading the file, the method defined with DEF needs to be explicitly called.

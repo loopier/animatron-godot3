@@ -1,3 +1,0 @@
-/app/remote [allow:b]
-
-/description Allow (or prevent) executing OSC commands from remote (non-localhost) clients.

@@ -1,3 +1,0 @@
-/createordestroy actor:s
-
-/description Like `/create`, but if the actor already exists, it removes it.

@@ -1,3 +1,0 @@
-/scale/y actor:s
-
-/description Set the actor's relative scale to the current size on the y axis. If DUR is set, interpolate the scale over that number of seconds, otherwise change instantaneously.

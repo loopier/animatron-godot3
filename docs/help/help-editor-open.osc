@@ -1,3 +1,0 @@
-/editor/open [path:s]
-
-/description Open an OSC file in the editor. Opens a dialog if no PATH is provided.

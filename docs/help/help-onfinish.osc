@@ -1,3 +1,0 @@
-/onfinish actor:s
-
-/description Add SUBCOMMAND to be triggered on the last frame. The SUBCOMMAND can be any valid command.

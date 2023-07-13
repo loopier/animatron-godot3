@@ -1,3 +1,0 @@
-/create actor animation
-
-/despcription Create a new ACTOR with a given (loaded) ANIMATION. If the named actor already exists, change its animation to the one specified. The initial position of a new actor will be at (0.5,0.5), the centre of the viewport.

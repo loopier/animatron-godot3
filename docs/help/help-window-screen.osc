@@ -1,3 +1,0 @@
-/window/screen screenIndex:i
-
-/description Move the window between displays (0 = main display).

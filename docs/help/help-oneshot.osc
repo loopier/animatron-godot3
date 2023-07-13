@@ -1,3 +1,0 @@
-/oneshot actor:s
-
-/description Play the ACTOR to the end, and stop. Then set VISIBILITY.

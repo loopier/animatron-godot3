@@ -1,3 +1,0 @@
-/onfinish/free actor:s
-
-/description Remove SUBCOMMAND trigger from the last frame. The SUBCOMMAND only needs the command address (with leading `/`) and the actor name -- don't any the command parameter value.

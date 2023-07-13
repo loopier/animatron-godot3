@@ -1,3 +1,0 @@
-/midi 
-
-/description Map the MIDIMSG (NOTEON, NOTEOFF, CC, VELOCITY) received in channel MIDICH to a COMMAND within a range between MIN and MAX. For `noteon/noteoff` events, a `*` wildcard can be passed as MIDINUM to use the note number as value (ignoring the velocity). The VELOCITY midimsg maps the velocity of all notes to COMMAND, passing it as an argument (ignoring the note number).

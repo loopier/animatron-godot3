@@ -1,3 +1,0 @@
-/window/top [enable:b]
-
-/description Set window to be always on top of other windows (defaults to true).

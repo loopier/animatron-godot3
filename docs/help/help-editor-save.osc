@@ -1,3 +1,0 @@
-/editor/save [path:s]
-
-/description Save the editor contents into a file. Opens a dialog if no PATH is provided.

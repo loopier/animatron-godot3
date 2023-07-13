@@ -1,3 +1,0 @@
-/def cmdName
-
-/description Define a custom OSC command that is a list of other OSC commands. This may be recursive, so each SUBCOMMAND may reference one of the built-in commands, or another custom-defined command. Another way to define custom commands is via the file `commands/init.osc`. The CMDNAME string (first argument) may include argument names, which may be referenced as SUBCOMMAND arguments using $NAME. Example: `/def "/addsel actor anim" "/create $actor $anim" "/select $actor"`.

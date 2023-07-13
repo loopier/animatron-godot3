@@ -1,3 +1,0 @@
-/choose cmd1
-
-/description Randomly choose one of the **comma separated** commands and send it. Commands are fully formed commands with the regular OSC syntax. **NOTE: commas need to be SURROUNDED by SPACES.**

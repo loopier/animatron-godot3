@@ -1,4 +1,0 @@
-def /config
-    /window/screen 1
-    /window/center
-    /window/top
