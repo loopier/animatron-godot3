@@ -6,6 +6,8 @@ class OscMessage:
 	var args: Array
 	var semder: String # IP
 
+signal osc_msg_received(addr, args, sender)
+
 var socketUdp: PacketPeerUDP = PacketPeerUDP.new()
 var senderIP: String
 enum {OSC_ARG_TYPE_NULL, OSC_ARG_TYPE_FLOAT=102, OSC_ARG_TYPE_INT=105, OSC_ARG_TYPE_STRING=115}
@@ -34,6 +36,8 @@ func startServerOn(listenPort):
 func _process(delta):
 	if socketUdp.get_available_packet_count() > 0:
 		var msg = parseOsc(socketUdp.get_packet())
+		var sender = socketUdp.get_packet_ip()
+		osc_msg_received.emit(msg.addr, msg.args, sender)
 		print("OSC message received from '%s': %s %s" % [socketUdp.get_packet_ip(), msg.addr, msg.args])
 #	print(sockestUdp.get_available_packet_count())
 #	print(socketUdp.get_local_port())
@@ -82,6 +86,7 @@ func parseOsc(packet):
 	var msg = OscMessage.new()
 	msg.addr = addr
 	msg.args = args
+	
 	return msg
 
 func getString(buf) -> String:
