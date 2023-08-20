@@ -15,8 +15,8 @@ network, using the Open Sound Control (OSC) protocol.
 
 # Installation
 
-- Download `animatron-YOUR_PLATFORM-vX.X.X_X.zip` from the [latest release](https://github.com/loopier/animatron/releases).
-- Download `animatron-assets-vX.X.X_X.zip` from the [latest release](https://github.com/loopier/animatron/releases) 
+- Download `animatron-YOUR_PLATFORM-vX.X.X_X.zip` from the [latest release](https://github.com/loopier/animatron-godot3/releases).
+- Download `animatron-assets-vX.X.X_X.zip` from the [latest release](https://github.com/loopier/animatron-godot3/releases) 
 
 ## Linux 
 - Uncompress `animatron-linux-vX.X.X_X.zip`
