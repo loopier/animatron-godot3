@@ -75,6 +75,8 @@ window/stretch/aspect="keep"
 
 frame=false
 audio=false
+memor=false
+memory=false
 
 [input]
 
@@ -147,6 +149,10 @@ decrease_editor_font={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":true,"meta":false,"command":true,"pressed":false,"scancode":45,"physical_scancode":0,"unicode":0,"echo":false,"script":null)
  ]
 }
+
+[memory]
+
+limits/message_queue/max_size_kb=8192
 
 [physics]
 

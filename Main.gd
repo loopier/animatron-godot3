@@ -135,6 +135,7 @@ onready var otherCmds = {
 	"/post/font/increase": funcref($OscInterface, "postIncreaseFont"),
 	"/post/font/decrease": funcref($OscInterface, "postDecreaseFont"),
 	"/post/open": funcref($OscInterface, "postFile"),
+	"/post/clear": funcref($OscInterface, "postClear"),
 	
 	# logger
 	"/log": funcref($OscInterface, "logMsg"),
@@ -169,6 +170,7 @@ func getOtherCommandSummary() -> String:
 
 func _ready():	
 	Logger.setLevel(Logger.LOG_LEVEL_INFO)
+#	Logger.setLevel(Logger.LOG_LEVEL_VERBOSE)
 	Logger.setTarget(get_node("PostTextEdit"))
 	Logger.info("version 0.1.0_17")
 	randomize()
