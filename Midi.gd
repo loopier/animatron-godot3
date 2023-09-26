@@ -112,7 +112,10 @@ func eventToOsc(cmd, value):
 		main.evalCommandList([[addr, actor]], null)
 		return
 	var args  
-	if minval.is_valid_float() and maxval.is_valid_float():
+	print("%s(%s) %s(%s)" % [minval, typeof(minval), maxval, typeof(maxval)])
+	if minval is String and minval.is_valid_float() and maxval is String and maxval.is_valid_float():
+		args = Helper.linlin(value, 0, 127, float(minval), float(maxval))
+	elif (minval is float or minval is int) and (maxval is float or maxval is int):
 		args = Helper.linlin(value, 0, 127, float(minval), float(maxval))
 	else:
 		args = minval
