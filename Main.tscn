@@ -46,7 +46,6 @@ script = ExtResource( 5 )
 
 [node name="AudioInputPlayer" type="AudioStreamPlayer" parent="."]
 stream = SubResource( 1 )
-autoplay = true
 script = ExtResource( 6 )
 
 [node name="OscTextEdit" type="TextEdit" parent="."]
