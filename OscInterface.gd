@@ -332,7 +332,11 @@ func loadAsset(args, sender):
 		reportStatus("loaded sprites: " + String(assets.sprites), sender)
 	if not assets.seqs.empty():
 		loadSequences(assets.seqs)
-		reportStatus("loaded sequences: " + String(assets.seqs), sender)
+		var msg = "loaded sequences: "
+		for seq in assets.seqs:
+			msg = msg + seq.get_file()
+		reportStatus(msg, sender)
+	
 
 
 func createActor(args, sender=null):
@@ -710,6 +714,9 @@ func postFile(args, sender):
 		reportError("postFile expects 1 argumnet. Given: %s" % [args.size()], sender)
 		return
 	main.get_node("PostTextEdit").append(main.getTextFromFile(args[0]))
+
+func postClear(args, sender):
+	main.get_node("PostTextEdit").clear()
 
 ############################################################
 # Logger commands
@@ -1411,6 +1418,7 @@ func addActorState(inArgs, sender):
 		reportError("addActorState expects at least 3 arguments. Given: %s" % [inArgs.size()], sender)
 		return
 	var actor = getNode(inArgs[0], sender)
+	if not actor: return
 	var state = inArgs[1]
 	var nextStates = inArgs.slice(2,-1)
 	actor.addState(state, nextStates)
