@@ -304,6 +304,8 @@ func _input(event):
 		$PostTextEdit.set_visible($OscTextEdit.is_visible())
 		$PostTextEdit.help()
 		evalOscCommand("/list/commands", [], null)
+	elif event.is_action_pressed("pedal_input", true):
+		processOscMsg("/pedal/pressed", [], null)
 
 func _on_OpenFileDialog_file_selected(path):
 	openFile(path)
