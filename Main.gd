@@ -59,6 +59,7 @@ onready var actorCmds = {
 	"/sound/free": funcref($OscInterface, "soundFreeActor"),
 	"/midi": funcref($OscInterface, "midiActor"),
 	"/midi/free": funcref($OscInterface, "midiFreeActor"),
+	"/midi/free/all": funcref($OscInterface, "midiFreeAll"),
 	"/onframe": funcref($OscInterface, "onFrameActor"),
 	"/onfinish": funcref($OscInterface, "onFinishActor"),
 	"/onframe/free": funcref($OscInterface, "onFrameFreeActor"),

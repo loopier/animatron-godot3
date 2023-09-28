@@ -1248,6 +1248,9 @@ func midiFreeActor(inArgs, sender):
 			elif midimsg == "velocity":
 				midiNode.removeMidiVelocityCmd(ch, cmd, actor)
 
+func midiFreeAll(args, sender):
+	midiNode.midiCmds.clear()
+
 func listMidiCmds(args, sender):
 	if !args.empty():
 		reportError("listMidiCmds expects no arguments", sender)
