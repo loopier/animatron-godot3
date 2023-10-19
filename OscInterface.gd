@@ -1023,6 +1023,15 @@ func setActorFade(inArgs, sender):
 #			setActorAlpha([node.name, alpha, dur], sender)
 			setPropertyWithDur(node, "modulate", target, dur)
 
+func toggleActorFade(inArgs, sender):
+	var args = getActorsAndArgs(inArgs, "toggleActorFade", [0, 1], sender)
+	if args:
+		var dur : float = 0 if args.args.size() == 0 else args.args[1]
+#		var target := Color(1, 1, 1, float(args.args[0]))
+		for node in args.actors:
+			var alpha : float = 0 if node.get("modulate").a == 1 else 1
+			setActorFade([inArgs[0], alpha], sender)
+#			print(inArgs[0], alpha)
 
 func setActorSpeed(inArgs, sender):
 	var args = getActorsAndArgs(inArgs, "setActorSpeed", 1, sender)

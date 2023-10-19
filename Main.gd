@@ -43,6 +43,7 @@ onready var actorCmds = {
 	"/pivot": funcref($OscInterface, "setActorPivot"),	
 	"/alpha": funcref($OscInterface, "setActorAlpha"),
 	"/fade": funcref($OscInterface, "setActorFade"),
+	"/fade/toggle": funcref($OscInterface, "toggleActorFade"),
 	"/speed": funcref($OscInterface, "setActorSpeed"),
 	"/slow": funcref($OscInterface, "setActorSpeedSlow"), # /fast is an alias of /speed
 	"/fliph": funcref($OscInterface, "flipActorH"),
