@@ -1121,7 +1121,7 @@ func actionActor(inArgs, sender):
 					if action:
 						actor.add_child(action)
 						action.name = actionName
-						reportStatus("added action '%s' to '%s' with args %s" % [actionName, actor.name, actionArgs], sender)
+						#reportStatus("added action '%s' to '%s' with args %s" % [actionName, actor.name, actionArgs], sender)
 				else:
 					reportError("Action '%s' not found" % actionName, sender)
 
