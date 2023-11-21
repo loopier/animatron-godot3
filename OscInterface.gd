@@ -1359,6 +1359,12 @@ func freeRoutine(args, sender):
 	else:
 		reportError("Routine not found: %s" % [name], sender)
 
+func routineFreeAll(args, sender):
+	for routine in routinesNode.get_children():
+		routine.stop()
+		routine.remove_and_skip()
+		Logger.verbose("free routine %s" % [name])
+
 func listRoutines(args, sender):
 	if len(args) < 0:
 		reportError("cmdsRoutine expects 0 arguments. %d given" % [len(args)], sender)

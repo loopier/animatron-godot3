@@ -108,6 +108,7 @@ onready var otherCmds = {
 	"/routine/start": funcref($OscInterface, "startRoutine"),
 	"/routine/stop": funcref($OscInterface, "stopRoutine"),
 	"/routine/free": funcref($OscInterface, "freeRoutine"),
+	"/routine/free/all": funcref($OscInterface, "routineFreeAll"),
 	"/list/routines": funcref($OscInterface, "listRoutines"),
 	
 	# write
