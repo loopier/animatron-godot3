@@ -5,23 +5,15 @@
 "setup.scd".loadRelative.first;
 )
 
-//x.("/speed c0 1")
-//x.("/noloop c0")
-//x.("/speed c0 -1")
-//x.("/noloop c0")
-
 (
 // Create the actor setup commands
 n.sendMsg("/def", "/updown actor holdTime",
-	"/noloop $actor",
 	"/speed $actor 1",
 	"/frame $actor 0",
-	"/play $actor",
+	"/noloop $actor",
 	"/wait $holdTime",
-	"/stop $actor",
 	"/speed $actor -1",
-	"/loop $actor",
-	"/once $actor"
+	"/noloop $actor",
 );
 n.sendMsg("/def", "/make-c actor red green blue offsetx offsety period holdTime",
 	"/create $actor cube-unshrink-h",
@@ -35,18 +27,18 @@ x.("/load cube-unshrink-h");
 )
 
 (
-// Algorithmically created a bunch of cubes
-var num = 15;
+// Algorithmically create and animate a bunch of cubes
+~num = 15;
 x.("/routine/free/all");
 x.("/free *");
-num.do{ arg i;
+~num.do{ arg i;
 	var rgb = rrand(-0.3, 0.3 ! 3);
 	var row = (i % 3) - 1;
 	var col = 1 - (i div: 3 - 1);
 	var posx = 0.12 * col + 0.5;
 	var posy = 0.25 * row + 0.5 + (0.105 * col);
-	// Try different modulus, from 2 to num
-	var period = (i % 4).linexp(0, num-1, 0.5, 8);
+	// Try different modulus, from 2 to ~num
+	var period = (i % ~num).linexp(0, ~num-1, 0.5, 8);
 	x.("/make-c c% % % % % % % %".format(i, rgb[0], rgb[1], rgb[2], posx, posy, period, period / 2).debug("cmd"));
 }
 )
@@ -54,7 +46,10 @@ num.do{ arg i;
 
 
 x.("/action c* wander 0.2 0.5")
-
+x.("/rotate c* 90 1")
+{ ~num.do{ arg i; x.("/size c% 0.5 2".format(i)); 0.25.wait; } }.fork
+{ ~num.do{ arg i; x.("/rotate c% 90 2".format(i)); 0.25.wait; } }.fork
+{ ~num.do{ arg i; x.("/fade c% 0 8".format(i)); 0.25.wait; } }.fork
 
 
 

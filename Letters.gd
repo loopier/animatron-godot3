@@ -71,7 +71,7 @@ func write(inArgs, sender=null):
 
 
 func setSpacing(inArgs, sender=null):
-	spacing = inArgs[0]
+	spacing = inArgs[0] as float
 	write([msg], null)
 
 
