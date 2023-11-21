@@ -50,7 +50,8 @@ Tdef(\anim, {
 )
 
 Tdef(\anim).stop
+x.("/fade om* 0 4")
+x.("/free *")
 
 x.("/list/assets")
 
-x.("/free *")

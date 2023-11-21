@@ -42,7 +42,7 @@ n.sendMsg("/def", "/update actor posx posy fadeTime",
 	"/position $actor $posx $posy $fadeTime",
 );
 )
-x.("/update dot5 0.2 0.4")
+x.("/update dot5 0.2 0.4 2")
 
 (
 Tdef(\anim, {
@@ -56,6 +56,7 @@ Tdef(\anim, {
 			var posx = cos(t + offset) * i.linexp(0, ~numActors-1, 0.02, 0.4) + 0.5;
 			var posy = sin(t + offset) * i.linexp(0, ~numActors-1, 0.02, 0.4) + 0.5;
 			var size = rrand(0.75,1.333) * 0.25;
+			var fadeTime = i.linexp(0, ~numActors-1, 2, 0.5);
 			// posx = (1 - posx).wrap(0.25, 0.75);
 			// posy = (1 - posy).wrap(0.25, 0.75);
 			x.("/update dot% % % % %".format(i, posx, posy, fadeTime));
@@ -70,21 +71,20 @@ Tdef(\anim, {
 (
 ~numActors.do{ arg i;
 	var startFrame = 0;
-	var oldEndFrame = 2;
-	var endFrame = 3;
+	var oldEndFrame = 3;
+	var endFrame = 2;
 	var actor = "dot" ++ i;
 	var numFrames = endFrame - startFrame + 1;
 	x.("/frame % %".format(actor, rrand(startFrame, endFrame - 1)));
 	x.("/onframe/free % % /frame %".format(actor, oldEndFrame, actor));
 	x.("/onframe/free % % /frame %".format(actor, endFrame, actor));
-	// x.("/onframe % % /frame % %".format(actor, endFrame, actor, startFrame));
+	x.("/onframe % % /frame % %".format(actor, endFrame, actor, startFrame));
 };
 )
 
 Tdef(\anim).stop
+x.("/free dot*")
 
 x.("/list/assets")
 x.("/list/anims")
 x.("/list")
-x.("/free dot*")
-
