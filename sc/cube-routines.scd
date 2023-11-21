@@ -5,6 +5,11 @@
 "setup.scd".loadRelative.first;
 )
 
+//x.("/speed c0 1")
+//x.("/noloop c0")
+//x.("/speed c0 -1")
+//x.("/noloop c0")
+
 (
 // Create the actor setup commands
 n.sendMsg("/def", "/updown actor holdTime",
