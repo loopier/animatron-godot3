@@ -111,7 +111,6 @@ func listStates():
 
 func addState(newState, nextStates):
 	stateMachine[newState] = nextStates if nextStates is Array else [nextStates]
-	listStates()
 
 func removeState(state):
 	stateMachine.erase(state)
