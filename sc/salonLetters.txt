@@ -1,0 +1,49 @@
+/load/alphabet
+
+/letters/spacing 0.2
+/letters/scale 1.2
+
+/write salon
+/create s letter-s
+
+/front l *
+/free *
+/list
+
+/rotate * 90 2
+
+/move * 0 -0.5 4
+
+
+//////////
+
+/load/alphabet
+
+/create s letter-s
+/state/add s letter-s letter-a
+/state/add s letter-a letter-l
+/state/add s letter-l letter-o letter-a
+/state/add s letter-o letter-n
+/state/add s letter-n letter-s
+
+/load boomBig
+
+/def /let actor
+	/create $actor letter-s
+	/size $actor 0.333
+	/rand /color/r $actor -0.6 -0.1
+	/rand /color/g $actor -0.6 -0.1
+	/rand /color/b $actor -0.6 -0.1
+	/rand /position/x $actor 0.2 0.8
+	/rand /position/y $actor 0.1 0.9
+	/state/add $actor letter-s letter-s letter-a
+	/state/add $actor letter-a letter-a letter-l
+	/state/add $actor letter-l letter-l letter-o
+	/state/add $actor letter-o letter-o letter-n
+	/state/add $actor letter-n letter-n letter-s boomBig
+	/state/add $actor boomBig letter-s
+
+/let a0
+
+/fade * 0 5
+/free *
